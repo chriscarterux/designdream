@@ -1,0 +1,15 @@
+# Tasks Directory
+
+This directory contains:
+- Product Requirements Documents (PRDs)
+- Feature Issues
+- Task Lists
+
+## File Naming Conventions
+
+- Project PRD: `project-prd.md` (in root directory)
+- Feature Issues: `[n]-feature-[name].md` (e.g., `0001-feature-user-authentication.md`)
+- Task Lists: `tasks-[feature-id].md` (e.g., `tasks-0001-feature-user-authentication.md`)
+- Legacy PRDs: `[n]-prd-[name].md` (e.g., `0001-prd-dashboard.md`)
+
+Where `[n]` is a zero-padded 4-digit sequence starting from 0001.

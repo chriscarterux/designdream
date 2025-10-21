@@ -1,0 +1,30 @@
+# Evidence Directory
+
+This directory stores validation evidence for acceptance criteria.
+
+## Structure
+
+```
+/tasks/evidence/
+  [feature-id]/
+    ac-1/
+      test-output.log
+      screenshot-*.png
+      manual-verification.md
+      README.md
+    ac-2/
+      ...
+```
+
+## Evidence Types
+
+- **test-output.log**: Test execution results
+- **screenshot-*.png**: Visual proof of functionality
+- **logs.txt**: Application logs showing behavior
+- **manual-verification.md**: Manual testing results
+- **performance.txt**: Performance test results
+- **README.md**: Index of all evidence for this AC
+
+## Requirements
+
+Each acceptance criterion must have complete evidence before being marked complete.
