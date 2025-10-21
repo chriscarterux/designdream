@@ -2,6 +2,28 @@
 
 AI-powered design and development workspace with structured workflow management.
 
+## Quick Setup
+
+Install the slash commands globally:
+
+```bash
+./setup.sh
+```
+
+Or manually:
+
+```bash
+cp slash-commands/*.md ~/.claude/commands/
+```
+
+Then verify:
+
+```bash
+ls ~/.claude/commands/
+```
+
+You should see: `create-project-prd.md`, `create-feature-issue.md`, `generate-tasks.md`, `process-tasks.md`
+
 ## Workflow Overview
 
 This project uses a structured development workflow aligned with Linear's project management approach:
