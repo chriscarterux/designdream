@@ -1,11 +1,6 @@
 import { LinearClient } from '@linear/sdk';
 
-const LINEAR_API_KEY = process.env.LINEAR_API_KEY;
-
-if (!LINEAR_API_KEY) {
-  console.error('❌ LINEAR_API_KEY environment variable is not set');
-  process.exit(1);
-}
+const LINEAR_API_KEY = 'YOUR_LINEAR_API_KEY_HERE';
 
 const client = new LinearClient({
   apiKey: LINEAR_API_KEY,
