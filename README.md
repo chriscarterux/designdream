@@ -24,6 +24,37 @@ ls ~/.claude/commands/
 
 You should see: `create-project-prd.md`, `create-feature-issue.md`, `generate-tasks.md`, `process-tasks.md`
 
+## Features
+
+### File Upload System
+
+Comprehensive file upload and attachment system with:
+
+- **Drag-and-drop uploads** with visual feedback
+- **Multiple file selection** and batch uploads
+- **Real-time progress tracking** for uploads
+- **File validation** (type, size, security)
+- **Image preview thumbnails** with automatic generation
+- **Secure storage** using Supabase Storage buckets
+- **Download and delete** functionality
+- **Responsive design** for mobile and desktop
+
+**Supported Files:** Images (PNG, JPG, GIF, SVG, WebP), Documents (PDF, DOC, DOCX), Design files (FIG, SKETCH, XD), Archives (ZIP), Videos (MP4, MOV) - up to 50MB each.
+
+See [FILE_UPLOADS.md](./FILE_UPLOADS.md) for complete documentation and [/examples/file-upload](./src/app/examples/file-upload) for live demo.
+
+**Quick Start:**
+
+```tsx
+import { FileUploader } from '@/components/uploads';
+
+<FileUploader
+  maxFiles={10}
+  accept="image/*,.pdf"
+  onUploadComplete={(files) => console.log('Uploaded:', files)}
+/>
+```
+
 ## Workflow Overview
 
 This project uses a structured development workflow aligned with Linear's project management approach:
@@ -118,6 +149,21 @@ Create simple feature PRD without AC tracking.
 ```
 /
 ├── project-prd.md                  # Epic/Product-level PRD
+├── FILE_UPLOADS.md                 # File upload system docs
+├── src/
+│   ├── components/
+│   │   └── uploads/               # Upload components
+│   ├── lib/
+│   │   └── storage/               # Storage utilities
+│   ├── hooks/
+│   │   └── useFileUpload.ts       # Upload hook
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── uploads/           # Upload API routes
+│   │   └── examples/
+│   │       └── file-upload/       # Example page
+│   └── types/
+│       └── upload.types.ts        # TypeScript types
 ├── tasks/
 │   ├── 0001-feature-auth.md        # Feature Issue (Linear Issue)
 │   ├── 0002-feature-dashboard.md   # Feature Issue
@@ -131,7 +177,8 @@ Create simple feature PRD without AC tracking.
 │           │   └── README.md
 │           └── ac-2/
 │               └── ...
-└── README.md
+└── supabase/
+    └── migrations/                 # Database migrations
 ```
 
 ## Acceptance Criteria Format
