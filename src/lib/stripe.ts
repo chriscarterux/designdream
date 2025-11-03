@@ -1,5 +1,11 @@
 import Stripe from 'stripe';
 
+<<<<<<< HEAD
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('STRIPE_SECRET_KEY is not defined in environment variables');
+}
+
+=======
 /**
  * Validates Stripe secret key format and environment
  * Throws if key is missing or invalid
@@ -45,17 +51,28 @@ function validateStripeKey(): string {
 // Validate key on module load
 const validatedKey = validateStripeKey();
 
+>>>>>>> origin/main
 /**
  * Stripe server-side client
  * Used for creating checkout sessions, managing subscriptions, etc.
  */
+<<<<<<< HEAD
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2024-11-20.acacia',
+=======
 export const stripe = new Stripe(validatedKey, {
   apiVersion: '2023-10-16',
+>>>>>>> origin/main
   typescript: true,
   appInfo: {
     name: 'DesignDream',
     version: '0.1.0',
   },
+<<<<<<< HEAD
+});
+
+/**
+=======
   maxNetworkRetries: 3, // Retry failed requests up to 3 times
   timeout: 30000, // 30 second timeout
 });
@@ -69,6 +86,7 @@ export const SERVER_PRICE_CONSTANTS = {
 } as const;
 
 /**
+>>>>>>> origin/main
  * Stripe configuration
  */
 export const stripeConfig = {
@@ -77,7 +95,11 @@ export const stripeConfig = {
     subscription: {
       name: 'DesignDream Monthly Subscription',
       description: 'Full access to DesignDream platform with unlimited projects and team collaboration',
+<<<<<<< HEAD
+      priceAmount: 449500, // $4,495.00 in cents
+=======
       priceAmount: SERVER_PRICE_CONSTANTS.MONTHLY_SUBSCRIPTION,
+>>>>>>> origin/main
       currency: 'usd',
       interval: 'month' as const,
     },
@@ -87,20 +109,54 @@ export const stripeConfig = {
   urls: {
     success: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/success`,
     cancel: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/cancel`,
+<<<<<<< HEAD
+    billing: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard/billing`,
+=======
+>>>>>>> origin/main
   },
 } as const;
 
 /**
  * Helper function to format Stripe amount (cents) to USD
  */
+<<<<<<< HEAD
+export function formatStripeAmount(amount: number, currency = 'USD'): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+=======
 export function formatStripeAmount(amount: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+>>>>>>> origin/main
   }).format(amount / 100);
 }
 
 /**
+<<<<<<< HEAD
+ * Helper function to format date
+ */
+export function formatDate(date: Date | string | number): string {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(d);
+}
+
+/**
+ * Helper function to format short date
+ */
+export function formatShortDate(date: Date | string | number): string {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).format(d);
+=======
  * Validates that an amount matches expected server-side pricing
  * Prevents price manipulation attacks
  */
@@ -306,4 +362,5 @@ export function generateIdempotencyKey(
     .join('-');
 
   return parts.substring(0, 255); // Stripe limit
+>>>>>>> origin/main
 }
