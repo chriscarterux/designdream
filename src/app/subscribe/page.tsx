@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { formatStripeAmount, stripeConfig } from '@/lib/stripe';
+import { ArrowLeft, CheckCircle2, Lock, Sparkles } from 'lucide-react';
 
 export default function SubscribePage() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +32,9 @@ export default function SubscribePage() {
         body: JSON.stringify({
           email,
           customerName: name || undefined,
+          metadata: {
+            company: company || undefined,
+          },
           // In a real app, you'd get userId from authentication
           userId: 'user_placeholder',
         }),
@@ -52,21 +58,34 @@ export default function SubscribePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
+        {/* Back Link */}
+        <Link
+          href="/"
+          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 font-medium"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Home
+        </Link>
+
         {/* Header */}
         <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <Sparkles className="h-4 w-4" />
+            First 10 clients lock in this rate forever
+          </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Subscribe to DesignDream
+            Start Your Design Dream Subscription
           </h1>
-          <p className="text-xl text-gray-600">
-            Start creating amazing designs with your team
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Your always-on design & development partner. Unlimited requests, delivered in 48 hours.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Pricing Card */}
-          <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-gray-900">
+          <div className="bg-white rounded-lg shadow-xl p-8 border-2 border-blue-600">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 Monthly Subscription
@@ -77,35 +96,29 @@ export default function SubscribePage() {
                 </span>
                 <span className="text-gray-600 ml-2">/month</span>
               </div>
+              <p className="mt-2 text-sm text-amber-600 font-semibold">
+                Limited time: First 10 clients only
+              </p>
             </div>
 
             <div className="space-y-4 mb-8">
               <h3 className="font-semibold text-gray-900">What's included:</h3>
               <ul className="space-y-3">
                 {[
-                  'Unlimited projects',
-                  'Unlimited team members',
-                  'Advanced design tools',
-                  'Real-time collaboration',
-                  'Version control',
-                  'Premium templates',
-                  'Priority support',
-                  'Custom integrations',
-                  'Advanced analytics',
-                  'Export in all formats',
+                  'Unlimited design requests',
+                  'Unlimited development requests',
+                  'UI/UX, branding, mobile app design',
+                  'Web development (Next.js, React, Node.js)',
+                  'Mobile app development (React Native)',
+                  'AI-powered features & automations',
+                  'One task at a time (ensures quality)',
+                  '48-hour turnaround per task',
+                  'Two rounds of revisions per task',
+                  'Daily progress updates via Basecamp',
+                  'Pause or cancel anytime',
                 ].map((feature, index) => (
-                  <li key={index} className="flex items-start">
-                    <svg
-                      className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                  <li key={index} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700">{feature}</span>
                   </li>
                 ))}
@@ -113,31 +126,35 @@ export default function SubscribePage() {
             </div>
 
             <div className="border-t pt-6">
+              <p className="text-sm text-gray-600 mb-2">
+                <strong>Perfect for:</strong>
+              </p>
               <p className="text-sm text-gray-600">
-                Cancel anytime. No long-term contracts.
+                Startups, agencies, marketing teams, and product teams with backlogs
               </p>
             </div>
           </div>
 
           {/* Checkout Form */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="bg-white rounded-lg shadow-xl p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Get Started
+              Get Started Today
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
+                  Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all"
-                  placeholder="John Doe"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
+                  placeholder="Chris Carter"
+                  required
                   disabled={loading}
                 />
               </div>
@@ -152,9 +169,25 @@ export default function SubscribePage() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all"
-                  placeholder="john@example.com"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
+                  placeholder="chris@yourcompany.com"
                   required
+                  disabled={loading}
+                />
+              </div>
+
+              {/* Company Field */}
+              <div>
+                <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+                  Company Name (Optional)
+                </label>
+                <input
+                  type="text"
+                  id="company"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
+                  placeholder="Your Company"
                   disabled={loading}
                 />
               </div>
@@ -183,7 +216,7 @@ export default function SubscribePage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gray-900 text-white py-4 px-6 rounded-lg hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-semibold text-lg flex items-center justify-center"
+                className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-semibold text-lg flex items-center justify-center"
               >
                 {loading ? (
                   <>
@@ -210,33 +243,38 @@ export default function SubscribePage() {
                     Processing...
                   </>
                 ) : (
-                  'Continue to Payment'
+                  'Continue to Secure Checkout'
                 )}
               </button>
 
               {/* Security Notice */}
               <div className="flex items-center justify-center text-sm text-gray-500">
-                <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <Lock className="h-4 w-4 mr-1" />
                 Secure checkout powered by Stripe
               </div>
             </form>
 
             {/* Additional Info */}
             <div className="mt-8 pt-6 border-t">
-              <h3 className="font-semibold text-gray-900 mb-3">Money-back guarantee</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Not satisfied? Get a full refund within 30 days, no questions asked.
-              </p>
-              <p className="text-sm text-gray-600">
-                Questions? Contact us at{' '}
-                <a href="mailto:support@designdream.com" className="text-gray-900 hover:underline">
-                  support@designdream.com
+              <h3 className="font-semibold text-gray-900 mb-3">What happens next?</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex gap-2">
+                  <span className="text-blue-600">1.</span>
+                  <span>Complete secure payment via Stripe</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-600">2.</span>
+                  <span>Get instant access to your Basecamp project</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-600">3.</span>
+                  <span>Submit your first request and see results in 48 hours</span>
+                </li>
+              </ul>
+              <p className="text-sm text-gray-600 mt-4">
+                Questions? Email{' '}
+                <a href="mailto:hello@designdream.is" className="text-blue-600 hover:underline">
+                  hello@designdream.is
                 </a>
               </p>
             </div>
@@ -244,43 +282,75 @@ export default function SubscribePage() {
         </div>
 
         {/* FAQ Section */}
-        <div className="mt-16 bg-white rounded-lg shadow-lg p-8">
+        <div className="mt-16 bg-white rounded-lg shadow-xl p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
                 Can I cancel anytime?
               </h3>
-              <p className="text-gray-600">
-                Yes, you can cancel your subscription at any time. You'll continue to have access until the end of your current billing period.
+              <p className="text-gray-600 text-sm">
+                Yes, you can pause or cancel your subscription at any time. No contracts, no hard feelings. You'll keep access until the end of your current billing period.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                What does "one task at a time" mean?
+              </h3>
+              <p className="text-gray-600 text-sm">
+                To ensure quality and speed, one task is active at a time. You can have unlimited requests in your backlog and prioritize them however you want.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                How fast will I get my work?
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Each task is delivered within 48 business hours (Monday-Friday, 9am-5pm Central). Larger projects are broken into tasks delivered every 48 hours.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
                 What payment methods do you accept?
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-sm">
                 We accept all major credit cards (Visa, Mastercard, American Express) and debit cards through our secure payment processor, Stripe.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                Is there a free trial?
+                Do you offer refunds?
               </h3>
-              <p className="text-gray-600">
-                We offer a 30-day money-back guarantee instead of a free trial, giving you a full month to explore all features risk-free.
+              <p className="text-gray-600 text-sm">
+                Due to the high quality of work, refunds are handled on a case-by-case basis. Contact us if you're not satisfied and we'll make it right.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                How many team members can I add?
+                Is this price locked in forever?
               </h3>
-              <p className="text-gray-600">
-                You can add unlimited team members to your subscription at no additional cost.
+              <p className="text-gray-600 text-sm">
+                Yes! The first 10 clients lock in $4,495/month forever. After that, the price increases to $5,995/month for new subscribers.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Trust Signals */}
+        <div className="mt-12 text-center">
+          <p className="text-sm text-gray-500 mb-4">
+            Backed by 15+ years of experience at:
+          </p>
+          <div className="flex flex-wrap justify-center gap-6 text-gray-400 font-semibold">
+            <span>Microsoft</span>
+            <span className="text-gray-300">•</span>
+            <span>JPMorgan Chase</span>
+            <span className="text-gray-300">•</span>
+            <span>Home Depot</span>
+            <span className="text-gray-300">•</span>
+            <span>Indeed</span>
           </div>
         </div>
       </div>

@@ -53,7 +53,7 @@ export const stripe = new Stripe(validatedKey, {
   apiVersion: '2023-10-16',
   typescript: true,
   appInfo: {
-    name: 'DesignDream',
+    name: 'Design Dream',
     version: '0.1.0',
   },
   maxNetworkRetries: 3, // Retry failed requests up to 3 times
