@@ -248,7 +248,7 @@ async function createGraphicsIssues() {
     // Get existing labels (case-insensitive search)
     const allLabels = await client.issueLabels();
     let graphicsLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'graphics');
-    let designLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'design');
+    let designLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'design' || l.name.toLowerCase() === 'design-graphics');
     let visualContentLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'visual-content');
 
     // Create labels if they don't exist
@@ -266,14 +266,14 @@ async function createGraphicsIssues() {
 
     if (!designLabel) {
       const labelResponse = await client.createIssueLabel({
-        name: 'design-graphics',
+        name: 'design',
         color: '#3B82F6',
         teamId: team.id
       });
       designLabel = await labelResponse.issueLabel;
-      console.log('Created label: design-graphics');
+      console.log('Created label: design');
     } else {
-      console.log('Found existing label: design');
+      console.log(`Found existing label: ${designLabel.name}`);
     }
 
     if (!visualContentLabel) {
@@ -379,10 +379,12 @@ ${issue.midjourneyPrompt}
     p3Issues.forEach(i => console.log(`  - ${i.identifier}: ${i.title}`));
 
     console.log('\n' + '='.repeat(80));
-    console.log('MIDJOURNEY PROMPTS');
+    console.log('TOP 3 PRIORITY MIDJOURNEY PROMPTS');
     console.log('='.repeat(80) + '\n');
 
-    createdIssues.forEach((issue, index) => {
+    // Show top 3 priority issues with full prompts
+    const top3 = p1Issues.slice(0, 3);
+    top3.forEach((issue, index) => {
       console.log(`${index + 1}. ${issue.identifier} - ${issue.title}`);
       console.log(`   ${issue.url}`);
       console.log('');
