@@ -1,5 +1,6 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import { Database } from '@/types/database.types';
 
 /**
  * Creates a Supabase client for use in Server Components, Server Actions, and Route Handlers
@@ -8,19 +9,19 @@ import { cookies } from 'next/headers'
  * @returns Supabase client instance for server-side usage
  */
 export async function createClient() {
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
-          return cookieStore.get(name)?.value
+          return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
-            cookieStore.set(name, value, options)
+            cookieStore.set(name, value, options);
           } catch {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
@@ -29,7 +30,7 @@ export async function createClient() {
         },
         remove(name: string, options: CookieOptions) {
           try {
-            cookieStore.set(name, '', options)
+            cookieStore.set(name, '', options);
           } catch {
             // The `remove` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
@@ -38,7 +39,7 @@ export async function createClient() {
         },
       },
     }
-  )
+  );
 }
 
 /**
@@ -49,13 +50,13 @@ export async function createClient() {
  * @returns Supabase admin client with elevated privileges
  */
 export function createAdminClient() {
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
       cookies: {
         get() {
-          return undefined
+          return undefined;
         },
         set() {
           // Admin client doesn't need to set cookies
@@ -65,5 +66,5 @@ export function createAdminClient() {
         },
       },
     }
-  )
+  );
 }
