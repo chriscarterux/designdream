@@ -2,9 +2,13 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from '@/types/database.types';
 
+/**
+ * Creates a Supabase client for use in Server Components, Server Actions, and Route Handlers
+ * This client handles cookie-based authentication with proper cookie management
+ *
+ * @returns Supabase client instance for server-side usage
+ */
 export async function createClient() {
-  // Placeholder implementation
-  // This will be properly implemented in the P1 Supabase Setup worktree
   const cookieStore = await cookies();
 
   return createServerClient<Database>(
@@ -17,8 +21,8 @@ export async function createClient() {
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value, ...options });
-          } catch (error) {
+            cookieStore.set(name, value, options);
+          } catch {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
@@ -26,12 +30,39 @@ export async function createClient() {
         },
         remove(name: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value: '', ...options });
-          } catch (error) {
-            // The `delete` method was called from a Server Component.
+            cookieStore.set(name, '', options);
+          } catch {
+            // The `remove` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
           }
+        },
+      },
+    }
+  );
+}
+
+/**
+ * Creates a Supabase admin client with service role key for privileged operations
+ * WARNING: This should only be used in server-side code and never exposed to the client
+ * Use sparingly and only when you need to bypass Row Level Security (RLS)
+ *
+ * @returns Supabase admin client with elevated privileges
+ */
+export function createAdminClient() {
+  return createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      cookies: {
+        get() {
+          return undefined;
+        },
+        set() {
+          // Admin client doesn't need to set cookies
+        },
+        remove() {
+          // Admin client doesn't need to remove cookies
         },
       },
     }

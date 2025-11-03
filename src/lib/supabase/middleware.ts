@@ -2,9 +2,14 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { Database } from '@/types/database.types';
 
+/**
+ * Creates a Supabase client for use in Next.js Middleware
+ * This ensures auth sessions are refreshed and cookies are properly managed
+ *
+ * @param request - The Next.js request object
+ * @returns Object containing the Supabase client and response
+ */
 export async function updateSession(request: NextRequest) {
-  // Placeholder implementation
-  // This will be properly implemented in the P1 Supabase Setup worktree
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -57,7 +62,9 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
+  // Refreshing the auth token will update the cookie
+  // This is important for server-side rendering to have the latest session
   await supabase.auth.getUser();
 
-  return response;
+  return { supabase, response };
 }

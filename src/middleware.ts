@@ -90,16 +90,16 @@ export async function middleware(request: NextRequest) {
       }
 
       // Continue with normal flow but add rate limit headers
-      const response = await updateSession(request);
+      const { response: sessionResponse } = await updateSession(request);
       const updatedResponse = applyRateLimitHeaders(
-        NextResponse.next({ request: { headers: response.headers } }),
+        NextResponse.next({ request: { headers: sessionResponse.headers } }),
         result.limit,
         result.remaining,
         result.reset
       );
 
       // Copy cookies from updateSession response
-      response.cookies.getAll().forEach((cookie) => {
+      sessionResponse.cookies.getAll().forEach((cookie) => {
         updatedResponse.cookies.set(cookie);
       });
 
@@ -125,7 +125,7 @@ export async function middleware(request: NextRequest) {
         });
 
         // Copy cookies
-        response.cookies.getAll().forEach((cookie) => {
+        sessionResponse.cookies.getAll().forEach((cookie) => {
           redirectResponse.cookies.set(cookie);
         });
 
@@ -146,7 +146,7 @@ export async function middleware(request: NextRequest) {
         });
 
         // Copy cookies
-        response.cookies.getAll().forEach((cookie) => {
+        sessionResponse.cookies.getAll().forEach((cookie) => {
           redirectResponse.cookies.set(cookie);
         });
 
@@ -161,7 +161,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Update session and get the response for non-rate-limited routes
-  const response = await updateSession(request);
+  const { response } = await updateSession(request);
 
   // Check authentication status
   const supabase = await createClient();
