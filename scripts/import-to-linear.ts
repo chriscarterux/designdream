@@ -561,7 +561,7 @@ async function main() {
           name: labelName,
           teamId: team.id,
         });
-        labelMap.set(labelName.toLowerCase(), (await newLabel.issueLabel)!.id);
+        labelMap.set(labelName.toLowerCase(), newLabel.issueLabel!.id);
         console.log(`  ✅ Created label: ${labelName}`);
       } else {
         console.log(`  ℹ️  Label already exists: ${labelName}`);

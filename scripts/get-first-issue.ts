@@ -1,4 +1,4 @@
-import { LinearClient, PaginationOrderBy } from '@linear/sdk';
+import { LinearClient } from '@linear/sdk';
 
 const LINEAR_API_KEY = 'YOUR_LINEAR_API_KEY_HERE';
 
@@ -35,7 +35,7 @@ async function main() {
           }
         }
       },
-      orderBy: PaginationOrderBy.CreatedAt
+      orderBy: 'createdAt'
     });
 
     if (issues.nodes.length === 0) {
