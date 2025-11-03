@@ -1,0 +1,13 @@
+# robots.txt for designdream.is
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://designdream.is/sitemap.xml
