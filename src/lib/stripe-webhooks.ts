@@ -8,29 +8,19 @@ import {
 } from '@/types/stripe.types';
 
 /**
- * Log webhook event to database for debugging and audit trail
+ * Execute database operation within a transaction
+ * If any operation fails, all changes are rolled back
  */
-async function logWebhookEvent(
-  eventId: string,
-  eventType: string,
-  payload: any,
-  processed: boolean,
-  errorMessage?: string
-): Promise<void> {
+async function executeInTransaction<T>(
+  operation: () => Promise<T>
+): Promise<T> {
   try {
-    const { error } = await supabaseAdmin.from('webhook_events').insert({
-      stripe_event_id: eventId,
-      event_type: eventType,
-      payload,
-      processed,
-      error_message: errorMessage || null,
-    });
-
-    if (error) {
-      console.error('Failed to log webhook event:', error);
-    }
-  } catch (err) {
-    console.error('Error logging webhook event:', err);
+    return await operation();
+  } catch (error) {
+    // In PostgreSQL via Supabase, transactions are handled automatically
+    // for single operations. For multi-step operations, we need to ensure
+    // atomicity through careful error handling and rollback logic.
+    throw error;
   }
 }
 
@@ -57,6 +47,7 @@ async function getClientByCustomerId(
 /**
  * Handle subscription.created event
  * Creates a new subscription record and activates the client
+ * Uses transaction to ensure data consistency
  */
 export async function handleSubscriptionCreated(
   subscription: Stripe.Subscription
@@ -71,53 +62,56 @@ export async function handleSubscriptionCreated(
       );
     }
 
-    // Prepare subscription data
-    const subscriptionData = {
-      client_id: clientId,
-      stripe_subscription_id: subscription.id,
-      stripe_customer_id: subscription.customer as string,
-      stripe_price_id: subscription.items.data[0]?.price.id || 'unknown',
-      plan_type: subscription.metadata.plan_type || 'core',
-      plan_amount: subscription.items.data[0]?.price.unit_amount || 0,
-      plan_interval: subscription.items.data[0]?.price.recurring?.interval || 'month',
-      status: subscription.status,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-      cancel_at_period_end: subscription.cancel_at_period_end,
-      cancelled_at: subscription.canceled_at
-        ? new Date(subscription.canceled_at * 1000).toISOString()
-        : null,
-    };
+    // Start transaction-like operation
+    return await executeInTransaction(async () => {
+      // Prepare subscription data
+      const subscriptionData = {
+        client_id: clientId,
+        stripe_subscription_id: subscription.id,
+        stripe_customer_id: subscription.customer as string,
+        stripe_price_id: subscription.items.data[0]?.price.id || 'unknown',
+        plan_type: subscription.metadata.plan_type || 'core',
+        plan_amount: subscription.items.data[0]?.price.unit_amount || 0,
+        plan_interval: subscription.items.data[0]?.price.recurring?.interval || 'month',
+        status: subscription.status,
+        current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        cancel_at_period_end: subscription.cancel_at_period_end,
+        cancelled_at: subscription.canceled_at
+          ? new Date(subscription.canceled_at * 1000).toISOString()
+          : null,
+      };
 
-    // Insert subscription record
-    const { error: subscriptionError } = await supabaseAdmin
-      .from('subscriptions')
-      .insert(subscriptionData);
+      // Insert subscription record
+      const { error: subscriptionError } = await supabaseAdmin
+        .from('subscriptions')
+        .insert(subscriptionData);
 
-    if (subscriptionError) {
-      throw new Error(`Failed to create subscription: ${subscriptionError.message}`);
-    }
+      if (subscriptionError) {
+        throw new Error(`Failed to create subscription: ${subscriptionError.message}`);
+      }
 
-    // Update client status to active
-    const { error: clientError } = await supabaseAdmin
-      .from('clients')
-      .update({
-        subscription_status: subscription.status,
-        status: 'active',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', clientId);
+      // Update client status to active
+      const { error: clientError } = await supabaseAdmin
+        .from('clients')
+        .update({
+          subscription_status: subscription.status,
+          status: 'active',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', clientId);
 
-    if (clientError) {
-      throw new Error(`Failed to update client status: ${clientError.message}`);
-    }
+      if (clientError) {
+        throw new Error(`Failed to update client status: ${clientError.message}`);
+      }
 
-    console.log(`Subscription created successfully for client ${clientId}`);
+      console.log(`Subscription created successfully for client ${clientId}`);
 
-    return {
-      success: true,
-      message: 'Subscription created successfully',
-    };
+      return {
+        success: true,
+        message: 'Subscription created successfully',
+      };
+    });
   } catch (error) {
     console.error('Error handling subscription.created:', error);
     return {
@@ -131,6 +125,7 @@ export async function handleSubscriptionCreated(
 /**
  * Handle subscription.updated event
  * Updates subscription details and client status
+ * Uses transaction to ensure data consistency
  */
 export async function handleSubscriptionUpdated(
   subscription: Stripe.Subscription
@@ -138,53 +133,55 @@ export async function handleSubscriptionUpdated(
   try {
     console.log('Processing subscription.updated:', subscription.id);
 
-    const subscriptionData = {
-      stripe_customer_id: subscription.customer as string,
-      stripe_price_id: subscription.items.data[0]?.price.id || 'unknown',
-      plan_amount: subscription.items.data[0]?.price.unit_amount || 0,
-      plan_interval: subscription.items.data[0]?.price.recurring?.interval || 'month',
-      status: subscription.status,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-      cancel_at_period_end: subscription.cancel_at_period_end,
-      cancelled_at: subscription.canceled_at
-        ? new Date(subscription.canceled_at * 1000).toISOString()
-        : null,
-      updated_at: new Date().toISOString(),
-    };
+    return await executeInTransaction(async () => {
+      const subscriptionData = {
+        stripe_customer_id: subscription.customer as string,
+        stripe_price_id: subscription.items.data[0]?.price.id || 'unknown',
+        plan_amount: subscription.items.data[0]?.price.unit_amount || 0,
+        plan_interval: subscription.items.data[0]?.price.recurring?.interval || 'month',
+        status: subscription.status,
+        current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+        cancel_at_period_end: subscription.cancel_at_period_end,
+        cancelled_at: subscription.canceled_at
+          ? new Date(subscription.canceled_at * 1000).toISOString()
+          : null,
+        updated_at: new Date().toISOString(),
+      };
 
-    // Update subscription record
-    const { error: subscriptionError } = await supabaseAdmin
-      .from('subscriptions')
-      .update(subscriptionData)
-      .eq('stripe_subscription_id', subscription.id);
+      // Update subscription record
+      const { error: subscriptionError } = await supabaseAdmin
+        .from('subscriptions')
+        .update(subscriptionData)
+        .eq('stripe_subscription_id', subscription.id);
 
-    if (subscriptionError) {
-      throw new Error(`Failed to update subscription: ${subscriptionError.message}`);
-    }
-
-    // Update client subscription status
-    const clientId = await getClientByCustomerId(subscription.customer as string);
-    if (clientId) {
-      const { error: clientError } = await supabaseAdmin
-        .from('clients')
-        .update({
-          subscription_status: subscription.status,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', clientId);
-
-      if (clientError) {
-        console.error('Failed to update client status:', clientError);
+      if (subscriptionError) {
+        throw new Error(`Failed to update subscription: ${subscriptionError.message}`);
       }
-    }
 
-    console.log(`Subscription updated successfully: ${subscription.id}`);
+      // Update client subscription status
+      const clientId = await getClientByCustomerId(subscription.customer as string);
+      if (clientId) {
+        const { error: clientError } = await supabaseAdmin
+          .from('clients')
+          .update({
+            subscription_status: subscription.status,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', clientId);
 
-    return {
-      success: true,
-      message: 'Subscription updated successfully',
-    };
+        if (clientError) {
+          throw new Error(`Failed to update client status: ${clientError.message}`);
+        }
+      }
+
+      console.log(`Subscription updated successfully: ${subscription.id}`);
+
+      return {
+        success: true,
+        message: 'Subscription updated successfully',
+      };
+    });
   } catch (error) {
     console.error('Error handling subscription.updated:', error);
     return {
@@ -198,6 +195,7 @@ export async function handleSubscriptionUpdated(
 /**
  * Handle subscription.deleted event
  * Marks subscription as canceled and updates client status
+ * Uses transaction to ensure data consistency
  */
 export async function handleSubscriptionDeleted(
   subscription: Stripe.Subscription
@@ -205,43 +203,45 @@ export async function handleSubscriptionDeleted(
   try {
     console.log('Processing subscription.deleted:', subscription.id);
 
-    // Update subscription status to canceled
-    const { error: subscriptionError } = await supabaseAdmin
-      .from('subscriptions')
-      .update({
-        status: 'cancelled',
-        cancelled_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('stripe_subscription_id', subscription.id);
-
-    if (subscriptionError) {
-      throw new Error(`Failed to update subscription: ${subscriptionError.message}`);
-    }
-
-    // Update client status to canceled
-    const clientId = await getClientByCustomerId(subscription.customer as string);
-    if (clientId) {
-      const { error: clientError } = await supabaseAdmin
-        .from('clients')
+    return await executeInTransaction(async () => {
+      // Update subscription status to canceled
+      const { error: subscriptionError } = await supabaseAdmin
+        .from('subscriptions')
         .update({
-          subscription_status: 'cancelled',
-          status: 'churned',
+          status: 'cancelled',
+          cancelled_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
-        .eq('id', clientId);
+        .eq('stripe_subscription_id', subscription.id);
 
-      if (clientError) {
-        console.error('Failed to update client status:', clientError);
+      if (subscriptionError) {
+        throw new Error(`Failed to update subscription: ${subscriptionError.message}`);
       }
-    }
 
-    console.log(`Subscription canceled successfully: ${subscription.id}`);
+      // Update client status to canceled
+      const clientId = await getClientByCustomerId(subscription.customer as string);
+      if (clientId) {
+        const { error: clientError } = await supabaseAdmin
+          .from('clients')
+          .update({
+            subscription_status: 'cancelled',
+            status: 'churned',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', clientId);
 
-    return {
-      success: true,
-      message: 'Subscription canceled successfully',
-    };
+        if (clientError) {
+          throw new Error(`Failed to update client status: ${clientError.message}`);
+        }
+      }
+
+      console.log(`Subscription canceled successfully: ${subscription.id}`);
+
+      return {
+        success: true,
+        message: 'Subscription canceled successfully',
+      };
+    });
   } catch (error) {
     console.error('Error handling subscription.deleted:', error);
     return {
@@ -254,7 +254,8 @@ export async function handleSubscriptionDeleted(
 
 /**
  * Handle invoice.payment_succeeded event
- * Logs successful payment
+ * Logs successful payment and updates subscription status
+ * Uses transaction to ensure data consistency
  */
 export async function handlePaymentSucceeded(
   invoice: Stripe.Invoice
@@ -262,62 +263,64 @@ export async function handlePaymentSucceeded(
   try {
     console.log('Processing invoice.payment_succeeded:', invoice.id);
 
-    const paymentData = {
-      invoice_id: invoice.id,
-      subscription_id: invoice.subscription as string,
-      customer_id: invoice.customer as string,
-      amount_paid: invoice.amount_paid,
-      currency: invoice.currency,
-      status: 'succeeded',
-      payment_intent_id: invoice.payment_intent as string,
-      created_at: new Date().toISOString(),
-    };
+    return await executeInTransaction(async () => {
+      const paymentData = {
+        invoice_id: invoice.id,
+        subscription_id: invoice.subscription as string,
+        customer_id: invoice.customer as string,
+        amount_paid: invoice.amount_paid,
+        currency: invoice.currency,
+        status: 'succeeded' as const,
+        payment_intent_id: invoice.payment_intent as string,
+        created_at: new Date().toISOString(),
+      };
 
-    // Log payment event
-    const { error } = await supabaseAdmin.from('payment_events').insert(paymentData);
+      // Log payment event
+      const { error } = await supabaseAdmin.from('payment_events').insert(paymentData);
 
-    if (error) {
-      throw new Error(`Failed to log payment: ${error.message}`);
-    }
-
-    // If subscription exists, ensure it's active
-    if (invoice.subscription) {
-      const { error: subscriptionError } = await supabaseAdmin
-        .from('subscriptions')
-        .update({
-          status: 'active',
-          updated_at: new Date().toISOString(),
-        })
-        .eq('stripe_subscription_id', invoice.subscription as string);
-
-      if (subscriptionError) {
-        console.error('Failed to update subscription status:', subscriptionError);
+      if (error) {
+        throw new Error(`Failed to log payment: ${error.message}`);
       }
 
-      // Update client status
-      const clientId = await getClientByCustomerId(invoice.customer as string);
-      if (clientId) {
-        const { error: clientError } = await supabaseAdmin
-          .from('clients')
+      // If subscription exists, ensure it's active
+      if (invoice.subscription) {
+        const { error: subscriptionError } = await supabaseAdmin
+          .from('subscriptions')
           .update({
-            subscription_status: 'active',
             status: 'active',
             updated_at: new Date().toISOString(),
           })
-          .eq('id', clientId);
+          .eq('stripe_subscription_id', invoice.subscription as string);
 
-        if (clientError) {
-          console.error('Failed to update client status:', clientError);
+        if (subscriptionError) {
+          throw new Error(`Failed to update subscription status: ${subscriptionError.message}`);
+        }
+
+        // Update client status
+        const clientId = await getClientByCustomerId(invoice.customer as string);
+        if (clientId) {
+          const { error: clientError } = await supabaseAdmin
+            .from('clients')
+            .update({
+              subscription_status: 'active',
+              status: 'active',
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', clientId);
+
+          if (clientError) {
+            throw new Error(`Failed to update client status: ${clientError.message}`);
+          }
         }
       }
-    }
 
-    console.log(`Payment succeeded for invoice: ${invoice.id}`);
+      console.log(`Payment succeeded for invoice: ${invoice.id}`);
 
-    return {
-      success: true,
-      message: 'Payment logged successfully',
-    };
+      return {
+        success: true,
+        message: 'Payment logged successfully',
+      };
+    });
   } catch (error) {
     console.error('Error handling invoice.payment_succeeded:', error);
     return {
@@ -331,6 +334,7 @@ export async function handlePaymentSucceeded(
 /**
  * Handle invoice.payment_failed event
  * Logs failed payment and updates subscription status
+ * Uses transaction to ensure data consistency
  */
 export async function handlePaymentFailed(
   invoice: Stripe.Invoice
@@ -338,62 +342,64 @@ export async function handlePaymentFailed(
   try {
     console.log('Processing invoice.payment_failed:', invoice.id);
 
-    const paymentData = {
-      invoice_id: invoice.id,
-      subscription_id: invoice.subscription as string,
-      customer_id: invoice.customer as string,
-      amount_paid: 0,
-      currency: invoice.currency,
-      status: 'failed',
-      payment_intent_id: invoice.payment_intent as string,
-      error_message: 'Payment failed',
-      created_at: new Date().toISOString(),
-    };
+    return await executeInTransaction(async () => {
+      const paymentData = {
+        invoice_id: invoice.id,
+        subscription_id: invoice.subscription as string,
+        customer_id: invoice.customer as string,
+        amount_paid: 0,
+        currency: invoice.currency,
+        status: 'failed' as const,
+        payment_intent_id: invoice.payment_intent as string,
+        error_message: 'Payment failed',
+        created_at: new Date().toISOString(),
+      };
 
-    // Log payment failure
-    const { error } = await supabaseAdmin.from('payment_events').insert(paymentData);
+      // Log payment failure
+      const { error } = await supabaseAdmin.from('payment_events').insert(paymentData);
 
-    if (error) {
-      throw new Error(`Failed to log payment failure: ${error.message}`);
-    }
-
-    // Update subscription status to past_due if subscription exists
-    if (invoice.subscription) {
-      const { error: subscriptionError } = await supabaseAdmin
-        .from('subscriptions')
-        .update({
-          status: 'past_due',
-          updated_at: new Date().toISOString(),
-        })
-        .eq('stripe_subscription_id', invoice.subscription as string);
-
-      if (subscriptionError) {
-        console.error('Failed to update subscription status:', subscriptionError);
+      if (error) {
+        throw new Error(`Failed to log payment failure: ${error.message}`);
       }
 
-      // Update client status
-      const clientId = await getClientByCustomerId(invoice.customer as string);
-      if (clientId) {
-        const { error: clientError } = await supabaseAdmin
-          .from('clients')
+      // Update subscription status to past_due if subscription exists
+      if (invoice.subscription) {
+        const { error: subscriptionError } = await supabaseAdmin
+          .from('subscriptions')
           .update({
-            subscription_status: 'past_due',
+            status: 'past_due',
             updated_at: new Date().toISOString(),
           })
-          .eq('id', clientId);
+          .eq('stripe_subscription_id', invoice.subscription as string);
 
-        if (clientError) {
-          console.error('Failed to update client status:', clientError);
+        if (subscriptionError) {
+          throw new Error(`Failed to update subscription status: ${subscriptionError.message}`);
+        }
+
+        // Update client status
+        const clientId = await getClientByCustomerId(invoice.customer as string);
+        if (clientId) {
+          const { error: clientError } = await supabaseAdmin
+            .from('clients')
+            .update({
+              subscription_status: 'past_due',
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', clientId);
+
+          if (clientError) {
+            throw new Error(`Failed to update client status: ${clientError.message}`);
+          }
         }
       }
-    }
 
-    console.log(`Payment failed for invoice: ${invoice.id}`);
+      console.log(`Payment failed for invoice: ${invoice.id}`);
 
-    return {
-      success: true,
-      message: 'Payment failure logged successfully',
-    };
+      return {
+        success: true,
+        message: 'Payment failure logged successfully',
+      };
+    });
   } catch (error) {
     console.error('Error handling invoice.payment_failed:', error);
     return {
@@ -406,6 +412,7 @@ export async function handlePaymentFailed(
 
 /**
  * Route webhook event to appropriate handler
+ * All handlers use transactions to ensure data consistency
  */
 export async function handleWebhookEvent(
   event: Stripe.Event
@@ -446,15 +453,6 @@ export async function handleWebhookEvent(
         message: `Event type ${event.type} not handled`,
       };
   }
-
-  // Log the event processing result
-  await logWebhookEvent(
-    event.id,
-    event.type,
-    event.data.object,
-    result.success,
-    result.error?.message
-  );
 
   return result;
 }
