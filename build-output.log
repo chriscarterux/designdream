@@ -1,0 +1,158 @@
+
+> designdream@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.18
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./src/components/ui/avatar.tsx
+Module not found: Can't resolve '@radix-ui/react-avatar'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/components/admin/topbar.tsx
+./src/app/admin/layout.tsx
+
+./src/components/ui/badge.tsx
+Module not found: Can't resolve 'class-variance-authority'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/app/dashboard/requests/page.tsx
+
+./src/components/ui/button.tsx
+Error: 
+  [31mx[0m Merge conflict marker encountered.
+   ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/button.tsx[0m:1:1]
+ [2m1[0m | <<<<<<< HEAD
+   : [31;1m^^^^^^^[0m
+ [2m2[0m | import * as React from 'react';
+ [2m3[0m | import { Slot } from '@radix-ui/react-slot';
+ [2m4[0m | import { cva, type VariantProps } from 'class-variance-authority';
+   `----
+
+  [31mx[0m Merge conflict marker encountered.
+    ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/button.tsx[0m:33:1]
+ [2m33[0m |     },
+ [2m34[0m |   }
+ [2m35[0m | );
+ [2m36[0m | =======
+    : [31;1m^^^^^^^[0m
+ [2m37[0m | import * as React from "react"
+ [2m38[0m | import { Slot } from "@radix-ui/react-slot"
+ [2m39[0m | import { cva, type VariantProps } from "class-variance-authority"
+    `----
+
+  [31mx[0m Merge conflict marker encountered.
+    ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/button.tsx[0m:68:1]
+ [2m68[0m |     },
+ [2m69[0m |   }
+ [2m70[0m | )
+ [2m71[0m | >>>>>>> origin/main
+    : [31;1m^^^^^^^[0m
+ [2m72[0m | 
+ [2m73[0m | export interface ButtonProps
+ [2m74[0m |   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    `----
+
+  [31mx[0m Expected '{', got 'interface'
+    ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/button.tsx[0m:70:1]
+ [2m70[0m | )
+ [2m71[0m | >>>>>>> origin/main
+ [2m72[0m | 
+ [2m73[0m | export interface ButtonProps
+    : [31;1m       ^^^^^^^^^[0m
+ [2m74[0m |   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+ [2m75[0m |     VariantProps<typeof buttonVariants> {
+ [2m76[0m | <<<<<<< HEAD
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ui/button.tsx
+./src/app/dashboard/page.tsx
+
+./src/components/ui/card.tsx
+Error: 
+  [31mx[0m Merge conflict marker encountered.
+   ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/card.tsx[0m:1:1]
+ [2m1[0m | <<<<<<< HEAD
+   : [31;1m^^^^^^^[0m
+ [2m2[0m | import * as React from 'react';
+ [2m3[0m | 
+ [2m4[0m | import { cn } from '@/lib/utils';
+   `----
+
+  [31mx[0m Merge conflict marker encountered.
+   ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/card.tsx[0m:2:1]
+ [2m2[0m | import * as React from 'react';
+ [2m3[0m | 
+ [2m4[0m | import { cn } from '@/lib/utils';
+ [2m5[0m | =======
+   : [31;1m^^^^^^^[0m
+ [2m6[0m | import * as React from "react"
+ [2m7[0m | 
+ [2m8[0m | import { cn } from "@/lib/utils"
+   `----
+
+  [31mx[0m Merge conflict marker encountered.
+    ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/card.tsx[0m:6:1]
+ [2m 6[0m | import * as React from "react"
+ [2m 7[0m | 
+ [2m 8[0m | import { cn } from "@/lib/utils"
+ [2m 9[0m | >>>>>>> origin/main
+    : [31;1m^^^^^^^[0m
+ [2m10[0m | 
+ [2m11[0m | const Card = React.forwardRef<
+ [2m12[0m |   HTMLDivElement,
+    `----
+
+  [31mx[0m Merge conflict marker encountered.
+    ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/card.tsx[0m:27:1]
+ [2m27[0m | <<<<<<< HEAD
+ [2m28[0m | ));
+ [2m29[0m | Card.displayName = 'Card';
+ [2m30[0m | =======
+    : [31;1m^^^^^^^[0m
+ [2m31[0m | ))
+ [2m32[0m | Card.displayName = "Card"
+ [2m33[0m | >>>>>>> origin/main
+    `----
+
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/howdycarter/Documents/projects/designdream/src/components/ui/card.tsx[0m:27:1]
+ [2m27[0m |     <<<<<<< HEAD
+ [2m28[0m |     ));
+ [2m29[0m |     Card.displayName = 'Card';
+ [2m30[0m | [31;1m,[0m[31;1m-[0m[31;1m>[0m =======
+ [2m31[0m | [31;1m`[0m[31;1m-[0m[31;1m>[0m ))
+ [2m32[0m |     Card.displayName = "Card"
+ [2m33[0m |     >>>>>>> origin/main
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/ui/card.tsx
+./src/app/dashboard/page.tsx
+
+./src/components/ui/checkbox.tsx
+Module not found: Can't resolve '@radix-ui/react-checkbox'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/components/admin/request-card.tsx
+./src/components/admin/global-kanban.tsx
+./src/app/admin/queue/page.tsx
+
+
+> Build failed because of webpack errors
