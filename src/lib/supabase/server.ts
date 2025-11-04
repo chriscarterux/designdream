@@ -1,0 +1,70 @@
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import { Database } from '@/types/database.types';
+
+/**
+ * Creates a Supabase client for use in Server Components, Server Actions, and Route Handlers
+ * This client handles cookie-based authentication with proper cookie management
+ *
+ * @returns Supabase client instance for server-side usage
+ */
+export async function createClient() {
+  const cookieStore = await cookies();
+
+  return createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          try {
+            cookieStore.set(name, value, options);
+          } catch {
+            // The `set` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+        remove(name: string, options: CookieOptions) {
+          try {
+            cookieStore.set(name, '', options);
+          } catch {
+            // The `remove` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+      },
+    }
+  );
+}
+
+/**
+ * Creates a Supabase admin client with service role key for privileged operations
+ * WARNING: This should only be used in server-side code and never exposed to the client
+ * Use sparingly and only when you need to bypass Row Level Security (RLS)
+ *
+ * @returns Supabase admin client with elevated privileges
+ */
+export function createAdminClient() {
+  return createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      cookies: {
+        get() {
+          return undefined;
+        },
+        set() {
+          // Admin client doesn't need to set cookies
+        },
+        remove() {
+          // Admin client doesn't need to remove cookies
+        },
+      },
+    }
+  );
+}
