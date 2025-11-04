@@ -6,7 +6,6 @@ import {
   PaymentEventData,
   SubscriptionStatus,
 } from '@/types/stripe.types';
-import { createCustomerProject } from './basecamp/project-setup';
 
 /**
  * Execute database operation within a transaction
@@ -412,83 +411,6 @@ export async function handlePaymentFailed(
 }
 
 /**
- * Handle checkout.session.completed event
- * Creates a Basecamp project for the new customer
- * This runs asynchronously - we don't block the webhook response
- */
-export async function handleCheckoutCompleted(
-  session: Stripe.Checkout.Session
-): Promise<EventHandlerResult> {
-  try {
-    console.log('Processing checkout.session.completed:', session.id);
-
-    // Extract customer information
-    const customerId = session.customer as string;
-    const customerEmail = session.customer_details?.email || session.customer_email;
-    const customerName = session.customer_details?.name || customerEmail?.split('@')[0];
-    const company = session.metadata?.company;
-
-    if (!customerEmail) {
-      throw new Error('Customer email not found in checkout session');
-    }
-
-    console.log(`Creating Basecamp project for customer: ${customerEmail}`);
-
-    // Create Basecamp project asynchronously (don't block webhook response)
-    createCustomerProject({
-      name: customerName || 'New Customer',
-      email: customerEmail,
-      company: company,
-      stripeCustomerId: customerId,
-    })
-      .then(async (project) => {
-        console.log(`✅ Basecamp project created: ${project.id} - ${project.name}`);
-
-        // Store Basecamp project ID in the database
-        const clientId = await getClientByCustomerId(customerId);
-        if (clientId) {
-          const { error } = await supabaseAdmin
-            .from('clients')
-            .update({
-              basecamp_project_id: project.id.toString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq('id', clientId);
-
-          if (error) {
-            console.error('Failed to store Basecamp project ID:', error);
-          } else {
-            console.log(`✅ Stored Basecamp project ID for client ${clientId}`);
-          }
-        } else {
-          console.warn(`Client not found for customer ${customerId} - will retry later`);
-        }
-      })
-      .catch((error) => {
-        console.error('❌ Failed to create Basecamp project:', error);
-        // Don't throw - we don't want to fail the webhook response
-        // The customer's subscription will still be created
-        // TODO: Add to dead letter queue for retry
-      });
-
-    console.log(`Checkout completed for customer: ${customerEmail}`);
-
-    return {
-      success: true,
-      message: 'Checkout completed, Basecamp project creation initiated',
-    };
-  } catch (error) {
-    console.error('Error handling checkout.session.completed:', error);
-    // Return success even on error - don't block webhook processing
-    return {
-      success: true,
-      message: 'Checkout completed (Basecamp creation failed)',
-      error: error as Error,
-    };
-  }
-}
-
-/**
  * Route webhook event to appropriate handler
  * All handlers use transactions to ensure data consistency
  */
@@ -498,12 +420,6 @@ export async function handleWebhookEvent(
   let result: EventHandlerResult;
 
   switch (event.type) {
-    case 'checkout.session.completed':
-      result = await handleCheckoutCompleted(
-        event.data.object as Stripe.Checkout.Session
-      );
-      break;
-
     case 'customer.subscription.created':
       result = await handleSubscriptionCreated(
         event.data.object as Stripe.Subscription
