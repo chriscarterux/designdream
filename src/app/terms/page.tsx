@@ -1,5 +1,11 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service - Design Dream',
+  description: 'Design Dream Terms of Service - Subscription terms, service limitations, and legal agreement for unlimited design and development services.',
+};
 
 export default function TermsOfService() {
   return (
@@ -20,12 +26,12 @@ export default function TermsOfService() {
             Terms of Service
           </h1>
           <p className="text-gray-600">
-            Last updated: November 3, 2025
+            Last updated: November 3, 2024
           </p>
         </div>
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none">
+        <main role="main" className="prose prose-lg max-w-none">
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Agreement to Terms</h2>
             <p className="text-gray-700 mb-4">
@@ -249,7 +255,7 @@ export default function TermsOfService() {
               By subscribing to Design Dream, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
             </p>
           </div>
-        </div>
+        </main>
 
         {/* Footer Links */}
         <div className="mt-12 pt-8 border-t border-gray-200">

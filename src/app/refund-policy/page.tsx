@@ -1,5 +1,11 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Refund Policy - Design Dream',
+  description: 'Design Dream Refund Policy - Fair, transparent refund process for our subscription design and development service.',
+};
 
 export default function RefundPolicy() {
   return (
@@ -20,12 +26,12 @@ export default function RefundPolicy() {
             Refund Policy
           </h1>
           <p className="text-gray-600">
-            Last updated: November 3, 2025
+            Last updated: November 3, 2024
           </p>
         </div>
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none">
+        <main role="main" className="prose prose-lg max-w-none">
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Overview</h2>
             <p className="text-gray-700 mb-4">
@@ -294,7 +300,7 @@ export default function RefundPolicy() {
               Your satisfaction is our priority. While we don't offer automatic refunds, we are committed to working with you to resolve any issues and deliver work you're happy with. Most concerns can be addressed through communication, revisions, and collaboration. We encourage you to reach out at the first sign of dissatisfaction so we can make things right.
             </p>
           </div>
-        </div>
+        </main>
 
         {/* Footer Links */}
         <div className="mt-12 pt-8 border-t border-gray-200">

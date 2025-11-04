@@ -1,5 +1,11 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy - Design Dream',
+  description: 'Learn how Design Dream collects, uses, and protects your data. GDPR and CCPA compliant privacy practices for our subscription design service.',
+};
 
 export default function PrivacyPolicy() {
   return (
@@ -20,12 +26,12 @@ export default function PrivacyPolicy() {
             Privacy Policy
           </h1>
           <p className="text-gray-600">
-            Last updated: November 3, 2025
+            Last updated: November 3, 2024
           </p>
         </div>
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none">
+        <main role="main" className="prose prose-lg max-w-none">
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
             <p className="text-gray-700 mb-4">
@@ -315,7 +321,7 @@ export default function PrivacyPolicy() {
               <li>• We comply with GDPR, CCPA, and other privacy regulations</li>
             </ul>
           </div>
-        </div>
+        </main>
 
         {/* Footer Links */}
         <div className="mt-12 pt-8 border-t border-gray-200">
