@@ -20,6 +20,7 @@ import {
   MessageSquare,
   RefreshCw
 } from 'lucide-react';
+import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
 
 export default function Home() {
   return (
@@ -28,35 +29,45 @@ export default function Home() {
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-8">
-              <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700">
-                Built by a VP who's shipped at Microsoft, JPMorgan Chase, and Home Depot
-              </span>
-            </div>
+            <FadeIn delay={0.1} direction="down">
+              <div className="mb-8">
+                <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700">
+                  Built by a VP who's shipped at Microsoft, JPMorgan Chase, and Home Depot
+                </span>
+              </div>
+            </FadeIn>
 
-            <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Your Always-On Design & Development Partner
-            </h1>
+            <FadeIn delay={0.2}>
+              <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                Your Always-On Design & Development Partner
+              </h1>
+            </FadeIn>
 
-            <p className="mb-8 text-xl text-gray-600 sm:text-2xl">
-              Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
-            </p>
+            <FadeIn delay={0.3}>
+              <p className="mb-8 text-xl text-gray-600 sm:text-2xl">
+                Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
+              </p>
+            </FadeIn>
 
-            <p className="mb-10 text-lg text-gray-500">
-              No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
-            </p>
+            <FadeIn delay={0.4}>
+              <p className="mb-10 text-lg text-gray-500">
+                No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
+              </p>
+            </FadeIn>
 
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg" className="text-lg">
-                <Link href="/subscribe">
-                  Start Your Subscription
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg">
-                <a href="#how-it-works">See How It Works</a>
-              </Button>
-            </div>
+            <FadeIn delay={0.5}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+                <Button asChild size="lg" className="text-lg">
+                  <Link href="/subscribe">
+                    Start Your Subscription
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="text-lg">
+                  <a href="#how-it-works">See How It Works</a>
+                </Button>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -64,15 +75,19 @@ export default function Home() {
       {/* Social Proof Bar */}
       <section className="border-b border-t bg-gray-50 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="mb-6 text-center text-sm font-medium text-gray-500">
-            Trusted by startups, agencies, and growth teams at:
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 text-gray-400">
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">SaaS</div>
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">E-Commerce</div>
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">Fintech</div>
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">AI</div>
-          </div>
+          <FadeIn delay={0.2}>
+            <p className="mb-6 text-center text-sm font-medium text-gray-500">
+              Trusted by startups, agencies, and growth teams at:
+            </p>
+          </FadeIn>
+          <FadeInStagger staggerDelay={0.1}>
+            <div className="flex flex-wrap items-center justify-center gap-8 text-gray-400">
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">SaaS</div>
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">E-Commerce</div>
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">Fintech</div>
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">AI</div>
+            </div>
+          </FadeInStagger>
         </div>
       </section>
 
@@ -80,14 +95,18 @@ export default function Home() {
       <section className="py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Design Dream Exists
-            </h2>
-            <p className="mb-12 text-xl font-semibold text-gray-900">
-              Building a product is hard enough. Managing vendors shouldn't make it harder.
-            </p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Why Design Dream Exists
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-xl font-semibold text-gray-900">
+                Building a product is hard enough. Managing vendors shouldn't make it harder.
+              </p>
+            </FadeIn>
 
-            <div className="mb-12 grid gap-6 text-left sm:grid-cols-2">
+            <FadeInStagger staggerDelay={0.15} className="mb-12 grid gap-6 text-left sm:grid-cols-2">
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-3">
@@ -123,9 +142,11 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </FadeInStagger>
 
-            <p className="text-2xl font-bold text-gray-900">There's a better way.</p>
+            <FadeIn delay={0.3}>
+              <p className="text-2xl font-bold text-gray-900">There's a better way.</p>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -134,14 +155,18 @@ export default function Home() {
       <section className="bg-blue-600 py-20 text-white sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold sm:text-4xl">
-              One Subscription. Unlimited Requests. Consistent Quality.
-            </h2>
-            <p className="mb-12 text-xl text-blue-100">
-              Design Dream is your embedded design + dev partner.
-            </p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold sm:text-4xl">
+                One Subscription. Unlimited Requests. Consistent Quality.
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-xl text-blue-100">
+                Design Dream is your embedded design + dev partner.
+              </p>
+            </FadeIn>
 
-            <div className="mb-12 grid gap-6 text-left sm:grid-cols-2">
+            <FadeInStagger staggerDelay={0.12} className="mb-12 grid gap-6 text-left sm:grid-cols-2">
               <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-3 text-white">
@@ -186,11 +211,13 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </FadeInStagger>
 
-            <p className="text-xl font-semibold">
-              No vendor juggling. No handoff delays. Just fast, high-quality work.
-            </p>
+            <FadeIn delay={0.3}>
+              <p className="text-xl font-semibold">
+                No vendor juggling. No handoff delays. Just fast, high-quality work.
+              </p>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -199,12 +226,16 @@ export default function Home() {
       <section id="how-it-works" className="py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              How It Works
-            </h2>
-            <p className="mb-12 text-lg text-gray-600">Simple 5-Step Process</p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                How It Works
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-lg text-gray-600">Simple 5-Step Process</p>
+            </FadeIn>
 
-            <div className="grid gap-8">
+            <FadeInStagger staggerDelay={0.15} className="grid gap-8">
               {[
                 {
                   number: '1',
@@ -249,7 +280,7 @@ export default function Home() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+            </FadeInStagger>
           </div>
         </div>
       </section>
@@ -258,11 +289,13 @@ export default function Home() {
       <section className="bg-gray-50 py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
-            <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              What You Get
-            </h2>
+            <FadeIn>
+              <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                What You Get
+              </h2>
+            </FadeIn>
 
-            <div className="grid gap-8 md:grid-cols-2">
+            <FadeInStagger staggerDelay={0.15} className="grid gap-8 md:grid-cols-2">
               <Card>
                 <CardHeader>
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
@@ -332,7 +365,7 @@ export default function Home() {
                   </ul>
                 </CardContent>
               </Card>
-            </div>
+            </FadeInStagger>
           </div>
         </div>
       </section>
@@ -341,12 +374,17 @@ export default function Home() {
       <section id="pricing" className="py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Pricing
-            </h2>
-            <p className="mb-12 text-lg text-gray-600">One Simple Plan</p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Pricing
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-lg text-gray-600">One Simple Plan</p>
+            </FadeIn>
 
-            <Card className="border-2 border-blue-600">
+            <ScaleIn delay={0.2} duration={0.4}>
+              <Card className="border-2 border-blue-600">
               <CardHeader className="space-y-4 pb-8">
                 <div className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
                   Limited Time
@@ -404,6 +442,7 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
+            </ScaleIn>
           </div>
         </div>
       </section>
@@ -411,21 +450,29 @@ export default function Home() {
       {/* CTA */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-700 py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
-            Stop Juggling Vendors. Start Shipping.
-          </h2>
-          <p className="mb-8 text-xl text-blue-100">
-            Unlimited design. Unlimited development. One expert partner.
-          </p>
-          <p className="mb-10 text-lg text-blue-100">
-            Pause or cancel anytime. No contracts. No risk.
-          </p>
-          <Button asChild size="lg" variant="secondary" className="text-lg">
-            <Link href="/subscribe">
-              Start Your Subscription
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+          <FadeIn>
+            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
+              Stop Juggling Vendors. Start Shipping.
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <p className="mb-8 text-xl text-blue-100">
+              Unlimited design. Unlimited development. One expert partner.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <p className="mb-10 text-lg text-blue-100">
+              Pause or cancel anytime. No contracts. No risk.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.3}>
+            <Button asChild size="lg" variant="secondary" className="text-lg">
+              <Link href="/subscribe">
+                Start Your Subscription
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </FadeIn>
         </div>
       </section>
 
