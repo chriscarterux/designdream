@@ -1,19 +1,44 @@
-import { Toaster } from 'sonner';
+'use client';
 
-export default function DashboardLayout({
+import { useState, useEffect } from 'react';
+import { ClientSidebar } from '@/components/client/ClientSidebar';
+import { ClientTopBar } from '@/components/client/ClientTopBar';
+
+export default function ClientDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Mock user - in production this would come from auth context
+  const user = {
+    name: 'John Doe',
+    email: 'john@example.com',
+    avatar: undefined,
+  };
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="border-b">
-        <div className="container mx-auto flex h-16 items-center px-8">
-          <h1 className="text-xl font-bold">DesignDream Dashboard</h1>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <ClientSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+
+      {/* Main content */}
+      <div className="lg:pl-64">
+        <ClientTopBar
+          onMenuClick={() => setIsSidebarOpen(true)}
+          user={user}
+        />
+        <main className="p-4 lg:p-6">{children}</main>
       </div>
-      <main>{children}</main>
-      <Toaster richColors position="top-right" />
     </div>
   );
 }
