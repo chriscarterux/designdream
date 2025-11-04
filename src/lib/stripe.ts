@@ -65,7 +65,7 @@ export const stripe = new Stripe(validatedKey, {
 >>>>>>> origin/main
   typescript: true,
   appInfo: {
-    name: 'DesignDream',
+    name: 'Design Dream',
     version: '0.1.0',
   },
 <<<<<<< HEAD
