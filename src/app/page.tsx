@@ -8,6 +8,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import {
   CheckCircle2,
   XCircle,
   ArrowRight,
@@ -404,6 +410,121 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 sm:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Frequently Asked Questions
+            </h2>
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="text-left">
+                  How fast do you actually deliver?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Most tasks are delivered within 48 business hours. Simple updates (copy changes, minor tweaks) often come back same-day. Complex projects (new features, integrations) may take a few days, but I'll always give you a realistic timeline upfront.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2">
+                <AccordionTrigger className="text-left">
+                  What exactly counts as "one task at a time"?
+                </AccordionTrigger>
+                <AccordionContent>
+                  One task = one deliverable item in your queue. For example: "Design the homepage hero section" or "Build the user authentication flow." I focus on completing one task fully before moving to the next to ensure quality and speed. You can have unlimited tasks in your backlog—we just work through them sequentially.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3">
+                <AccordionTrigger className="text-left">
+                  Can I pause my subscription?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Yes! Pause anytime. Your billing stops immediately, and you can resume whenever you're ready. No penalties, no questions asked. Perfect for when you're between projects or need to focus on other priorities.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4">
+                <AccordionTrigger className="text-left">
+                  What if I need revisions?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Unlimited revisions are included. If something isn't quite right, just let me know and I'll refine it until you're happy. Clear feedback = faster turnaround, so the more specific you are, the better.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5">
+                <AccordionTrigger className="text-left">
+                  What can't you build?
+                </AccordionTrigger>
+                <AccordionContent>
+                  I focus on web and mobile applications, AI integrations, and SaaS products. I don't do: game development, native iOS/Android (I use React Native), blockchain/crypto projects, or highly specialized industries like medical devices or financial trading platforms.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6">
+                <AccordionTrigger className="text-left">
+                  How do we communicate?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Everything happens in Basecamp. You submit requests, I ask clarifying questions, share progress updates, and deliver work—all in one organized place. No scattered Slack threads or lost emails. Async-first, so you're never waiting on me for a meeting.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-7">
+                <AccordionTrigger className="text-left">
+                  What if I only need design or only development?
+                </AccordionTrigger>
+                <AccordionContent>
+                  That's totally fine! You get both with the subscription, so use whatever you need. Some clients only need design for months, then switch to dev work. Others bounce between both. It's your call—no need to pick one.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-8">
+                <AccordionTrigger className="text-left">
+                  Do you handle hosting and deployment?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Yes. I can deploy to Vercel, Netlify, AWS, or your preferred platform. I'll also set up CI/CD pipelines, domain configuration, and SSL certificates. Hosting costs are separate (you pay directly to the provider), but I handle all the technical setup.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-9">
+                <AccordionTrigger className="text-left">
+                  Can I cancel anytime?
+                </AccordionTrigger>
+                <AccordionContent>
+                  Absolutely. No contracts, no commitments. Cancel through the Stripe customer portal whenever you want. You'll have access until the end of your current billing period, then billing stops automatically.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-10">
+                <AccordionTrigger className="text-left">
+                  Why not just hire a full-time developer?
+                </AccordionTrigger>
+                <AccordionContent>
+                  A senior full-stack developer costs $120K-180K+ per year, plus benefits, recruitment fees, and management overhead. Design Dream gives you senior-level expertise for $53,940/year with zero hiring hassle, instant start, and the flexibility to pause when you don't need help. Plus, you get design and development in one.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            <div className="mt-12 text-center">
+              <p className="mb-6 text-gray-600">
+                Still have questions?
+              </p>
+              <Button asChild variant="outline" size="lg">
+                <a href="mailto:hello@designdream.is">
+                  Email Me Directly
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
