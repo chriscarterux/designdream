@@ -27,7 +27,7 @@ import Stripe from 'stripe';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, userId, customerName } = body;
+    const { email, userId, customerName, metadata } = body;
 
     // Validate required fields
     if (!email || typeof email !== 'string') {
@@ -89,6 +89,7 @@ export async function POST(request: NextRequest) {
           name: customerName,
           metadata: {
             ...(userId && { userId }),
+            ...(metadata?.company && { company: metadata.company }),
             createdAt: new Date().toISOString(),
           },
         });
@@ -128,6 +129,7 @@ export async function POST(request: NextRequest) {
         cancel_url: stripeConfig.urls.cancel,
         metadata: {
           ...(userId && { userId }),
+          ...(metadata?.company && { company: metadata.company }),
           productType: 'monthly_subscription',
           priceAmount: priceAmount.toString(),
           createdAt: new Date().toISOString(),
