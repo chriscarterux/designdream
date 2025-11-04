@@ -22,6 +22,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Plausible Analytics - Privacy-friendly, GDPR compliant */}
+        {process.env.NODE_ENV === 'production' && (
+          <script
+            defer
+            data-domain="designdream.is"
+            src="https://plausible.io/js/script.js"
+          />
+        )}
+      </head>
       <body className={inter.className}>
         <AuthProvider>{children}</AuthProvider>
       </body>

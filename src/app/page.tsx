@@ -674,9 +674,9 @@ export default function Home() {
               </a>
             </p>
             <div className="mb-6 flex justify-center gap-6 text-sm text-gray-600">
-              <Link href="/legal/terms" className="hover:text-gray-900">Terms of Service</Link>
-              <Link href="/legal/privacy" className="hover:text-gray-900">Privacy Policy</Link>
-              <Link href="/legal/refund" className="hover:text-gray-900">Refund Policy</Link>
+              <Link href="/terms" className="hover:text-gray-900">Terms of Service</Link>
+              <Link href="/privacy" className="hover:text-gray-900">Privacy Policy</Link>
+              <Link href="/refund-policy" className="hover:text-gray-900">Refund Policy</Link>
             </div>
             <p className="text-sm text-gray-500">
               © 2025 Design Dream. All rights reserved.
