@@ -1,12 +1,6 @@
 import { LinearClient } from '@linear/sdk';
 
-const LINEAR_API_KEY = process.env.LINEAR_API_KEY;
-
-if (!LINEAR_API_KEY) {
-  console.error('❌ LINEAR_API_KEY environment variable is not set');
-  process.exit(1);
-}
-
+const LINEAR_API_KEY = 'YOUR_LINEAR_API_KEY_HERE';
 const client = new LinearClient({ apiKey: LINEAR_API_KEY });
 
 interface GraphicIssue {
@@ -248,7 +242,7 @@ async function createGraphicsIssues() {
     // Get existing labels (case-insensitive search)
     const allLabels = await client.issueLabels();
     let graphicsLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'graphics');
-    let designLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'design' || l.name.toLowerCase() === 'design-graphics');
+    let designLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'design');
     let visualContentLabel = allLabels.nodes.find(l => l.name.toLowerCase() === 'visual-content');
 
     // Create labels if they don't exist
@@ -266,14 +260,14 @@ async function createGraphicsIssues() {
 
     if (!designLabel) {
       const labelResponse = await client.createIssueLabel({
-        name: 'design',
+        name: 'design-graphics',
         color: '#3B82F6',
         teamId: team.id
       });
       designLabel = await labelResponse.issueLabel;
-      console.log('Created label: design');
+      console.log('Created label: design-graphics');
     } else {
-      console.log(`Found existing label: ${designLabel.name}`);
+      console.log('Found existing label: design');
     }
 
     if (!visualContentLabel) {
@@ -379,12 +373,10 @@ ${issue.midjourneyPrompt}
     p3Issues.forEach(i => console.log(`  - ${i.identifier}: ${i.title}`));
 
     console.log('\n' + '='.repeat(80));
-    console.log('TOP 3 PRIORITY MIDJOURNEY PROMPTS');
+    console.log('MIDJOURNEY PROMPTS');
     console.log('='.repeat(80) + '\n');
 
-    // Show top 3 priority issues with full prompts
-    const top3 = p1Issues.slice(0, 3);
-    top3.forEach((issue, index) => {
+    createdIssues.forEach((issue, index) => {
       console.log(`${index + 1}. ${issue.identifier} - ${issue.title}`);
       console.log(`   ${issue.url}`);
       console.log('');
