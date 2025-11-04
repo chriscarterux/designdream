@@ -1,0 +1,169 @@
+// Email template rendering functions
+
+import { render } from '@react-email/render';
+import SLAWarningEmail from '@/emails/sla-warning';
+import SLAViolationEmail from '@/emails/sla-violation';
+import NewRequestEmail from '@/emails/new-request';
+import StatusChangedEmail from '@/emails/status-changed';
+import CommentAddedEmail from '@/emails/comment-added';
+import WelcomeEmail from '@/emails/welcome';
+import type {
+  EmailData,
+  SLAWarningEmailData,
+  SLAViolationEmailData,
+  NewRequestEmailData,
+  StatusChangedEmailData,
+  CommentAddedEmailData,
+  WelcomeEmailData,
+} from '@/types/email.types';
+
+// Template rendering functions
+export function renderSLAWarningEmail(data: SLAWarningEmailData): string {
+  return render(
+    SLAWarningEmail({
+      requestTitle: data.request.title,
+      requestStatus: data.request.status,
+      requestPriority: data.request.priority,
+      hoursRemaining: data.sla.hoursRemaining,
+      hoursElapsed: data.sla.hoursElapsed,
+      targetHours: data.sla.targetHours,
+      warningLevel: data.sla.warningLevel,
+      companyName: data.client.companyName,
+      assignedToName: data.assignedTo?.name,
+      requestUrl: data.requestUrl,
+      recipientName: data.recipient.name,
+    })
+  );
+}
+
+export function renderSLAViolationEmail(data: SLAViolationEmailData): string {
+  return render(
+    SLAViolationEmail({
+      requestTitle: data.request.title,
+      requestStatus: data.request.status,
+      requestPriority: data.request.priority,
+      hoursElapsed: data.sla.hoursElapsed,
+      targetHours: data.sla.targetHours,
+      hoursOverdue: data.sla.hoursOverdue,
+      companyName: data.client.companyName,
+      assignedToName: data.assignedTo?.name,
+      requestUrl: data.requestUrl,
+      recipientName: data.recipient.name,
+    })
+  );
+}
+
+export function renderNewRequestEmail(data: NewRequestEmailData): string {
+  return render(
+    NewRequestEmail({
+      requestTitle: data.request.title,
+      requestDescription: data.request.description,
+      requestType: data.request.type,
+      requestPriority: data.request.priority,
+      companyName: data.client.companyName,
+      contactName: data.client.contactName,
+      requestUrl: data.requestUrl,
+      recipientName: data.recipient.name,
+    })
+  );
+}
+
+export function renderStatusChangedEmail(data: StatusChangedEmailData): string {
+  return render(
+    StatusChangedEmail({
+      requestTitle: data.request.title,
+      oldStatus: data.request.oldStatus,
+      newStatus: data.request.newStatus,
+      message: data.message,
+      nextSteps: data.nextSteps,
+      estimatedCompletion: data.estimatedCompletion,
+      requestUrl: data.requestUrl,
+      recipientName: data.recipient.name,
+    })
+  );
+}
+
+export function renderCommentAddedEmail(data: CommentAddedEmailData): string {
+  return render(
+    CommentAddedEmail({
+      requestTitle: data.request.title,
+      commentPreview: data.comment.preview,
+      commentContent: data.comment.content,
+      authorName: data.comment.authorName,
+      authorType: data.comment.authorType,
+      requestUrl: data.requestUrl,
+      recipientName: data.recipient.name,
+    })
+  );
+}
+
+export function renderWelcomeEmail(data: WelcomeEmailData): string {
+  return render(
+    WelcomeEmail({
+      companyName: data.client.companyName,
+      contactName: data.client.contactName,
+      planType: data.subscription.planType,
+      dashboardUrl: data.dashboardUrl,
+      resourcesUrl: data.resourcesUrl,
+    })
+  );
+}
+
+// Main template renderer
+export function renderEmailTemplate(data: EmailData): string {
+  switch (data.type) {
+    case 'sla_warning_yellow':
+    case 'sla_warning_red':
+      return renderSLAWarningEmail(data as SLAWarningEmailData);
+
+    case 'sla_violation':
+      return renderSLAViolationEmail(data as SLAViolationEmailData);
+
+    case 'new_request':
+      return renderNewRequestEmail(data as NewRequestEmailData);
+
+    case 'status_changed':
+      return renderStatusChangedEmail(data as StatusChangedEmailData);
+
+    case 'comment_added':
+      return renderCommentAddedEmail(data as CommentAddedEmailData);
+
+    case 'welcome':
+      return renderWelcomeEmail(data as WelcomeEmailData);
+
+    default:
+      throw new Error(`Unknown email type: ${(data as any).type}`);
+  }
+}
+
+// Get email subject based on type
+export function getEmailSubject(data: EmailData): string {
+  switch (data.type) {
+    case 'sla_warning_yellow':
+      return `SLA Warning: ${(data as SLAWarningEmailData).request.title} - ${Math.round((data as SLAWarningEmailData).sla.hoursRemaining)} hours remaining`;
+
+    case 'sla_warning_red':
+      return `URGENT: ${(data as SLAWarningEmailData).request.title} - ${Math.round((data as SLAWarningEmailData).sla.hoursRemaining)} hours remaining`;
+
+    case 'sla_violation':
+      return `SLA VIOLATED: ${(data as SLAViolationEmailData).request.title}`;
+
+    case 'new_request':
+      return `New Request: ${(data as NewRequestEmailData).request.title}`;
+
+    case 'status_changed':
+      const statusData = data as StatusChangedEmailData;
+      const status = statusData.request.newStatus.replace('_', ' ');
+      return `Status Update: ${statusData.request.title} is now ${status}`;
+
+    case 'comment_added':
+      const commentData = data as CommentAddedEmailData;
+      return `New comment from ${commentData.comment.authorName} on "${commentData.request.title}"`;
+
+    case 'welcome':
+      return `Welcome to DesignDream, ${(data as WelcomeEmailData).client.contactName}!`;
+
+    default:
+      return 'DesignDream Notification';
+  }
+}
