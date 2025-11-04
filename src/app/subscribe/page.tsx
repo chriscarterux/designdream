@@ -23,6 +23,15 @@ export default function SubscribePage() {
         throw new Error('Please enter a valid email address');
       }
 
+      // Validate name (at least 2 characters)
+      const trimmedName = name.trim();
+      if (!trimmedName || trimmedName.length < 2) {
+        throw new Error('Please enter a valid name');
+      }
+
+      // Sanitize inputs
+      const sanitizedCompany = company.trim().slice(0, 100);
+
       // Create checkout session
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
@@ -30,13 +39,12 @@ export default function SubscribePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email,
-          customerName: name || undefined,
+          email: email.trim(),
+          customerName: trimmedName,
           metadata: {
-            company: company || undefined,
+            company: sanitizedCompany || undefined,
           },
-          // In a real app, you'd get userId from authentication
-          userId: 'user_placeholder',
+          // Note: userId will be added when authentication is implemented
         }),
       });
 
@@ -155,6 +163,9 @@ export default function SubscribePage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
                   placeholder="Chris Carter"
                   required
+                  maxLength={100}
+                  aria-required="true"
+                  aria-invalid={error ? 'true' : 'false'}
                   disabled={loading}
                 />
               </div>
@@ -172,6 +183,9 @@ export default function SubscribePage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
                   placeholder="chris@yourcompany.com"
                   required
+                  maxLength={254}
+                  aria-required="true"
+                  aria-invalid={error ? 'true' : 'false'}
                   disabled={loading}
                 />
               </div>
@@ -188,16 +202,18 @@ export default function SubscribePage() {
                   onChange={(e) => setCompany(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
                   placeholder="Your Company"
+                  maxLength={100}
                   disabled={loading}
                 />
               </div>
 
               {/* Error Message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div role="alert" aria-live="polite" className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <div className="flex">
                     <svg
                       className="h-5 w-5 text-red-400 mr-2 flex-shrink-0"
+                      aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
