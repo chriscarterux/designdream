@@ -408,6 +408,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Chris Carter */}
+      <section id="about" className="py-20 sm:py-32 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Meet Your Partner
+            </h2>
+
+            <Card className="overflow-hidden">
+              <CardContent className="p-0">
+                <div className="grid gap-8 md:grid-cols-2">
+                  {/* Image Side */}
+                  <div className="relative h-64 md:h-auto">
+                    <img
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop"
+                      alt="Chris Carter - Design Dreams Founder"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  {/* Content Side */}
+                  <div className="p-8">
+                    <div className="mb-4">
+                      <h3 className="mb-2 text-2xl font-bold text-gray-900">
+                        Chris Carter
+                      </h3>
+                      <p className="text-lg text-blue-600 font-medium">
+                        Founder & Lead Developer
+                      </p>
+                    </div>
+
+                    <div className="space-y-4 text-gray-700">
+                      <p className="leading-relaxed">
+                        I've spent over a decade building products at companies like{' '}
+                        <span className="font-semibold">Microsoft</span>,{' '}
+                        <span className="font-semibold">JPMorgan Chase</span>, and{' '}
+                        <span className="font-semibold">Home Depot</span>—leading teams,
+                        shipping features, and learning what it takes to move fast without breaking things.
+                      </p>
+
+                      <p className="leading-relaxed">
+                        Design Dream was born from frustration. Too many great ideas stall because
+                        startups can't find reliable design and development help. Freelancers flake.
+                        Agencies over-promise and under-deliver. Hiring is expensive and slow.
+                      </p>
+
+                      <p className="leading-relaxed">
+                        I built Design Dream to be the partner I wish I had: <strong>consistent,
+                        fast, and deeply invested</strong> in your success. No bullshit. No surprises.
+                        Just great work, delivered on time.
+                      </p>
+
+                      <div className="mt-6 pt-6 border-t">
+                        <p className="text-sm text-gray-600">
+                          <strong>Experience:</strong> Product VP • Full-Stack Developer • UI/UX Designer
+                        </p>
+                        <p className="text-sm text-gray-600 mt-2">
+                          <strong>Tech Stack:</strong> React, Next.js, TypeScript, Node.js, Python, Supabase, AWS
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-700 py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
