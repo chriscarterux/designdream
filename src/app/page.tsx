@@ -8,6 +8,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import {
   CheckCircle2,
   XCircle,
   ArrowRight,
@@ -20,6 +26,7 @@ import {
   MessageSquare,
   RefreshCw
 } from 'lucide-react';
+import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
 
 export default function Home() {
   return (
@@ -28,35 +35,45 @@ export default function Home() {
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-8">
-              <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700">
-                Built by a VP who's shipped at Microsoft, JPMorgan Chase, and Home Depot
-              </span>
-            </div>
+            <FadeIn delay={0.1} direction="down">
+              <div className="mb-8">
+                <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700">
+                  Built by a VP who's shipped at Microsoft, JPMorgan Chase, and Home Depot
+                </span>
+              </div>
+            </FadeIn>
 
-            <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Your Always-On Design & Development Partner
-            </h1>
+            <FadeIn delay={0.2}>
+              <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                Your Always-On Design & Development Partner
+              </h1>
+            </FadeIn>
 
-            <p className="mb-8 text-xl text-gray-600 sm:text-2xl">
-              Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
-            </p>
+            <FadeIn delay={0.3}>
+              <p className="mb-8 text-xl text-gray-600 sm:text-2xl">
+                Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
+              </p>
+            </FadeIn>
 
-            <p className="mb-10 text-lg text-gray-500">
-              No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
-            </p>
+            <FadeIn delay={0.4}>
+              <p className="mb-10 text-lg text-gray-500">
+                No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
+              </p>
+            </FadeIn>
 
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg" className="text-lg">
-                <Link href="/subscribe">
-                  Start Your Subscription
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg">
-                <a href="#how-it-works">See How It Works</a>
-              </Button>
-            </div>
+            <FadeIn delay={0.5}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+                <Button asChild size="lg" className="text-lg">
+                  <Link href="/subscribe">
+                    Start Your Subscription
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="text-lg">
+                  <a href="#how-it-works">See How It Works</a>
+                </Button>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -64,15 +81,19 @@ export default function Home() {
       {/* Social Proof Bar */}
       <section className="border-b border-t bg-gray-50 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="mb-6 text-center text-sm font-medium text-gray-500">
-            Trusted by startups, agencies, and growth teams at:
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 text-gray-400">
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">SaaS</div>
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">E-Commerce</div>
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">Fintech</div>
-            <div className="rounded-lg bg-white px-6 py-3 font-semibold">AI</div>
-          </div>
+          <FadeIn delay={0.2}>
+            <p className="mb-6 text-center text-sm font-medium text-gray-500">
+              Trusted by startups, agencies, and growth teams at:
+            </p>
+          </FadeIn>
+          <FadeInStagger staggerDelay={0.1}>
+            <div className="flex flex-wrap items-center justify-center gap-8 text-gray-400">
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">SaaS</div>
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">E-Commerce</div>
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">Fintech</div>
+              <div className="rounded-lg bg-white px-6 py-3 font-semibold">AI</div>
+            </div>
+          </FadeInStagger>
         </div>
       </section>
 
@@ -80,14 +101,18 @@ export default function Home() {
       <section className="py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Design Dream Exists
-            </h2>
-            <p className="mb-12 text-xl font-semibold text-gray-900">
-              Building a product is hard enough. Managing vendors shouldn't make it harder.
-            </p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Why Design Dream Exists
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-xl font-semibold text-gray-900">
+                Building a product is hard enough. Managing vendors shouldn't make it harder.
+              </p>
+            </FadeIn>
 
-            <div className="mb-12 grid gap-6 text-left sm:grid-cols-2">
+            <FadeInStagger staggerDelay={0.15} className="mb-12 grid gap-6 text-left sm:grid-cols-2">
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-3">
@@ -123,9 +148,11 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </FadeInStagger>
 
-            <p className="text-2xl font-bold text-gray-900">There's a better way.</p>
+            <FadeIn delay={0.3}>
+              <p className="text-2xl font-bold text-gray-900">There's a better way.</p>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -134,14 +161,18 @@ export default function Home() {
       <section className="bg-blue-600 py-20 text-white sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold sm:text-4xl">
-              One Subscription. Unlimited Requests. Consistent Quality.
-            </h2>
-            <p className="mb-12 text-xl text-blue-100">
-              Design Dream is your embedded design + dev partner.
-            </p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold sm:text-4xl">
+                One Subscription. Unlimited Requests. Consistent Quality.
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-xl text-blue-100">
+                Design Dream is your embedded design + dev partner.
+              </p>
+            </FadeIn>
 
-            <div className="mb-12 grid gap-6 text-left sm:grid-cols-2">
+            <FadeInStagger staggerDelay={0.12} className="mb-12 grid gap-6 text-left sm:grid-cols-2">
               <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-3 text-white">
@@ -186,11 +217,13 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </FadeInStagger>
 
-            <p className="text-xl font-semibold">
-              No vendor juggling. No handoff delays. Just fast, high-quality work.
-            </p>
+            <FadeIn delay={0.3}>
+              <p className="text-xl font-semibold">
+                No vendor juggling. No handoff delays. Just fast, high-quality work.
+              </p>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -199,12 +232,16 @@ export default function Home() {
       <section id="how-it-works" className="py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              How It Works
-            </h2>
-            <p className="mb-12 text-lg text-gray-600">Simple 5-Step Process</p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                How It Works
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-lg text-gray-600">Simple 5-Step Process</p>
+            </FadeIn>
 
-            <div className="grid gap-8">
+            <FadeInStagger staggerDelay={0.15} className="grid gap-8">
               {[
                 {
                   number: '1',
@@ -249,7 +286,7 @@ export default function Home() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+            </FadeInStagger>
           </div>
         </div>
       </section>
@@ -258,11 +295,13 @@ export default function Home() {
       <section className="bg-gray-50 py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
-            <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              What You Get
-            </h2>
+            <FadeIn>
+              <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                What You Get
+              </h2>
+            </FadeIn>
 
-            <div className="grid gap-8 md:grid-cols-2">
+            <FadeInStagger staggerDelay={0.15} className="grid gap-8 md:grid-cols-2">
               <Card>
                 <CardHeader>
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
@@ -332,7 +371,7 @@ export default function Home() {
                   </ul>
                 </CardContent>
               </Card>
-            </div>
+            </FadeInStagger>
           </div>
         </div>
       </section>
@@ -341,12 +380,17 @@ export default function Home() {
       <section id="pricing" className="py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Pricing
-            </h2>
-            <p className="mb-12 text-lg text-gray-600">One Simple Plan</p>
+            <FadeIn>
+              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Pricing
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="mb-12 text-lg text-gray-600">One Simple Plan</p>
+            </FadeIn>
 
-            <Card className="border-2 border-blue-600">
+            <ScaleIn delay={0.2} duration={0.4}>
+              <Card className="border-2 border-blue-600">
               <CardHeader className="space-y-4 pb-8">
                 <div className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
                   Limited Time
@@ -404,28 +448,218 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
+            </ScaleIn>
           </div>
+        </div>
+      </section>
+
+      {/* About Chris Carter */}
+      <section className="bg-white py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
+                Built by Someone Who's Been in Your Shoes
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Design Dream was created by Chris Carter, a former VP of Engineering and Product who got tired of watching great ideas die in backlogs.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <FadeIn delay={0.2} direction="left">
+              <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
+                  alt="Chris Carter, Founder of Design Dream"
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.3} direction="right">
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    15+ Years Building Products at Scale
+                  </h3>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    I've spent my career at companies like <span className="font-semibold text-gray-900">Microsoft</span>, <span className="font-semibold text-gray-900">JPMorgan Chase</span>, <span className="font-semibold text-gray-900">Home Depot</span>, and <span className="font-semibold text-gray-900">Indeed</span>, leading teams that shipped products used by millions.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    But I kept seeing the same problem: <span className="italic">great ideas stuck in limbo</span> because teams couldn't find reliable design and development partners who understood their urgency.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    So I built Design Dream to be the partner I always wished I had—someone who could take an idea from concept to shipped product without the typical agency overhead, miscommunication, or delays.
+                  </p>
+                </div>
+
+                <div className="pt-4">
+                  <div className="bg-blue-50 rounded-lg p-6 border border-blue-100">
+                    <p className="text-base text-gray-700 leading-relaxed">
+                      <span className="font-semibold text-gray-900">"I'm not running an agency.</span> I'm your embedded design and development partner. I work directly on your projects, understand your business context, and treat your deadlines like they're my own."
+                    </p>
+                    <p className="text-sm text-gray-600 mt-3 font-medium">
+                      — Chris Carter, Founder
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                    Former VP Engineering
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                    Full-Stack Developer
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                    Product Designer
+                  </span>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-gray-50 py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Everything you need to know about how Design Dream works
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.2}>
+            <div className="max-w-3xl mx-auto">
+              <Accordion type="single" collapsible className="space-y-4">
+                <AccordionItem value="item-1" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    How does the monthly subscription work?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    For $4,495/month, you get unlimited design and development requests. You can add as many requests to your queue as you need, and I'll work through them one at a time. Each task is delivered within 48 business hours (Mon-Fri, 9am-5pm Central). Once a task is complete, I immediately start the next one in your queue.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    What's the typical turnaround time for requests?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Most requests are delivered within 48 business hours. Simple tasks (bug fixes, minor UI tweaks) can be done in 24 hours or less. More complex features might take 2-3 business days. You'll get daily progress updates via Basecamp, and I'll always set clear expectations before starting work.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    Can I pause or cancel my subscription?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Absolutely. You can pause your subscription at any time and resume when you're ready. There are no contracts or cancellation fees. If you pause, you won't be charged for the time you're not using the service. Many clients pause during holidays or slow periods and reactivate when they have a new backlog.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    What if I don't like the work or need revisions?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Each request includes two rounds of revisions at no additional cost. If you need changes, just let me know what to adjust, and I'll make it right. My goal is your complete satisfaction. If something's not working, we'll iterate until it does.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-5" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    What types of requests can I submit?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Almost anything related to web design and development: landing pages, web apps, mobile apps (React Native), UI/UX design, frontend development, backend APIs, bug fixes, feature additions, refactoring, performance optimization, responsive design, accessibility improvements, and more. If it can be built with modern web technologies, I can help.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-6" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    What if I have multiple projects or brands?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    No problem! You can submit requests for multiple projects, websites, or brands. Just specify which project each request is for in Basecamp. I'll work through your queue in priority order, regardless of which project each task belongs to.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-7" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    How do we communicate and manage requests?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Everything happens in Basecamp. When you subscribe, you'll get access to your dedicated project workspace where you can post requests, share files, give feedback, and see daily progress updates. It's simple, organized, and keeps everything in one place. No jumping between Slack, email, and project management tools.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-8" className="bg-white rounded-lg border border-gray-200 px-6">
+                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
+                    Are there any setup fees or long-term contracts?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed">
+                    Nope. No setup fees, no onboarding costs, no long-term commitments. Just a simple monthly subscription that you can pause or cancel anytime. You're billed monthly, and you can adjust your plan whenever your needs change.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              <div className="mt-12 text-center">
+                <p className="text-gray-600 mb-4">
+                  Still have questions?
+                </p>
+                <Button asChild variant="outline" size="lg">
+                  <a href="mailto:hello@designdream.is">
+                    Email hello@designdream.is
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* CTA */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-700 py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
-            Stop Juggling Vendors. Start Shipping.
-          </h2>
-          <p className="mb-8 text-xl text-blue-100">
-            Unlimited design. Unlimited development. One expert partner.
-          </p>
-          <p className="mb-10 text-lg text-blue-100">
-            Pause or cancel anytime. No contracts. No risk.
-          </p>
-          <Button asChild size="lg" variant="secondary" className="text-lg">
-            <Link href="/subscribe">
-              Start Your Subscription
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+          <FadeIn>
+            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
+              Stop Juggling Vendors. Start Shipping.
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <p className="mb-8 text-xl text-blue-100">
+              Unlimited design. Unlimited development. One expert partner.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <p className="mb-10 text-lg text-blue-100">
+              Pause or cancel anytime. No contracts. No risk.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.3}>
+            <Button asChild size="lg" variant="secondary" className="text-lg">
+              <Link href="/subscribe">
+                Start Your Subscription
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </FadeIn>
         </div>
       </section>
 
@@ -440,9 +674,9 @@ export default function Home() {
               </a>
             </p>
             <div className="mb-6 flex justify-center gap-6 text-sm text-gray-600">
-              <Link href="/legal/terms" className="hover:text-gray-900">Terms of Service</Link>
-              <Link href="/legal/privacy" className="hover:text-gray-900">Privacy Policy</Link>
-              <Link href="/legal/refund" className="hover:text-gray-900">Refund Policy</Link>
+              <Link href="/terms" className="hover:text-gray-900">Terms of Service</Link>
+              <Link href="/privacy" className="hover:text-gray-900">Privacy Policy</Link>
+              <Link href="/refund-policy" className="hover:text-gray-900">Refund Policy</Link>
             </div>
             <p className="text-sm text-gray-500">
               © 2025 Design Dream. All rights reserved.
