@@ -24,7 +24,7 @@ Your application is already registered with these credentials:
 - **Company:** Design Dream
 - **Website:** https://designdream.is
 - **Client ID:** `9193364e288b329638a2d1256d35e3279636b00b`
-- **Client Secret:** `7597b1373480183565b9db9d112498341f5a4f06`
+- **Client Secret:** `[Stored securely in .env.local - see Linear HOW-204]`
 - **Redirect URI:** `https://designdream.is/api/auth/basecamp/callback`
 
 These credentials are already configured in your `.env.local` file.
@@ -132,8 +132,8 @@ If you saved the refresh token, you can exchange it for a new access token:
 curl -X POST https://launchpad.37signals.com/authorization/token \\
   -d type=refresh \\
   -d refresh_token=YOUR_REFRESH_TOKEN \\
-  -d client_id=9193364e288b329638a2d1256d35e3279636b00b \\
-  -d client_secret=7597b1373480183565b9db9d112498341f5a4f06
+  -d client_id=YOUR_CLIENT_ID \\
+  -d client_secret=YOUR_CLIENT_SECRET
 ```
 
 ### Security Best Practices

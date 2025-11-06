@@ -64,26 +64,23 @@ export async function GET(request: NextRequest) {
     // Exchange authorization code for access token
     console.log('Exchanging authorization code for access token...');
 
+    // Create form-encoded body (OAuth 2.0 spec requires form encoding)
+    const params = new URLSearchParams({
+      type: 'web_server',
+      client_id: clientId,
+      client_secret: clientSecret,
+      redirect_uri: redirectUri,
+      code: code,
+    });
+
     const tokenResponse = await axios.post<BasecampTokenResponse>(
       'https://launchpad.37signals.com/authorization/token',
+      params.toString(),
       {
-        type: 'web_server',
-        client_id: clientId,
-        client_secret: clientSecret,
-        redirect_uri: redirectUri,
-        code: code,
-      },
-      {
-        params: {
-          type: 'web_server',
-          client_id: clientId,
-          redirect_uri: redirectUri,
-          client_secret: clientSecret,
-          code: code,
-        },
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
+        timeout: 10000, // 10 second timeout
       }
     );
 
