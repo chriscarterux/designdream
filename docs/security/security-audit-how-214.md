@@ -90,9 +90,17 @@
 ## Required Follow-Up Actions
 
 1. **Stripe** – Remove secret key logging, require `STRIPE_WEBHOOK_SECRET`, redact PII in logs.
-2. **Basecamp Webhooks** – Add shared-secret validation, restrict `/api/webhooks/test`.
+2. **Basecamp Webhooks** – ✅ Require shared secret/basic auth for POST & GET; still need to restrict `/api/webhooks/test`.
 3. **HTTP Security** – Add HSTS & CSP headers, tighten CORS on `/api/*`.
-4. **Dependencies** – Plan Next.js upgrade, then update vulnerable packages.
+4. **Dependencies** – Plan Next.js upgrade, then update vulnerable packages (see plan below).
 5. **Privacy & Ops** – Implement cookie consent, document deletion/breach processes, enforce 2FA and access reviews.
 
 Tracking issue: HOW-214 remains open until the above mitigations are implemented and verified.
+
+### Dependency Upgrade Plan
+
+1. Upgrade `next` to ≥14.2.33 (or 15.1+) and rerun `npm audit`.
+2. Update `react-email` (≥4.3.2) so it depends on patched `esbuild`.
+3. Update `@supabase/ssr` (≥0.7.x) to pull `cookie` ≥0.7.0.
+4. Reinstall / redeploy, then re-run: `npm run lint`, `npm run test`, `npm run test:e2e`, manual Stripe checkout smoke test.
+5. Capture results in HOW-214 before closing ticket.
