@@ -36,8 +36,12 @@ function validateStripeKey(): string {
   }
 
   // Log which mode we're in (without exposing the full key)
-  const keyPrefix = key.substring(0, 12);
-  console.log(`✓ Stripe initialized in ${isTestKey ? 'TEST' : 'LIVE'} mode (${keyPrefix}...)`);
+  const modeLabel = isTestKey ? 'TEST' : 'LIVE';
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`✓ Stripe initialized in ${modeLabel} mode`);
+  } else {
+    console.info(`Stripe initialized in ${modeLabel} mode`);
+  }
 
   return key;
 }
@@ -46,18 +50,23 @@ function validateStripeKey(): string {
 const validatedKey = validateStripeKey();
 
 // Webhook secret validation
-if (!process.env.STRIPE_WEBHOOK_SECRET) {
-  console.warn('⚠️  STRIPE_WEBHOOK_SECRET is not defined. Webhooks will not work until configured.');
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+if (!webhookSecret) {
+  throw new Error(
+    'STRIPE_WEBHOOK_SECRET is not defined in environment variables. ' +
+    'Stripe webhooks cannot be verified without this secret.'
+  );
 }
 
-export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
+export const STRIPE_WEBHOOK_SECRET = webhookSecret;
 
 /**
  * Stripe server-side client
  * Used for creating checkout sessions, managing subscriptions, etc.
  */
 export const stripe = new Stripe(validatedKey, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2023-10-16',
   typescript: true,
   appInfo: {
     name: 'Design Dream',

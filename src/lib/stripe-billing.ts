@@ -72,6 +72,13 @@ function formatSubscriptionInfo(
 ): SubscriptionInfo {
   const price = subscription.items.data[0]?.price;
 
+  const product = price?.product;
+  let planName = 'DesignDream Monthly';
+
+  if (product && typeof product !== 'string' && 'name' in product) {
+    planName = product.name || 'DesignDream Monthly';
+  }
+
   return {
     id: subscription.id,
     customerId:
@@ -79,11 +86,7 @@ function formatSubscriptionInfo(
         ? subscription.customer
         : subscription.customer.id,
     status: subscription.status as SubscriptionStatus,
-    planName: price?.product
-      ? typeof price.product === 'string'
-        ? 'DesignDream Monthly'
-        : price.product.name || 'DesignDream Monthly'
-      : 'DesignDream Monthly',
+    planName,
     planPrice: price?.unit_amount || 449500,
     currency: price?.currency || 'usd',
     interval: (price?.recurring?.interval as 'month' | 'year') || 'month',
@@ -120,7 +123,7 @@ function formatPaymentMethodInfo(
     bankAccount: paymentMethod.us_bank_account
       ? {
           bankName: paymentMethod.us_bank_account.bank_name || 'Unknown',
-          last4: paymentMethod.us_bank_account.last4,
+          last4: paymentMethod.us_bank_account.last4 || '',
         }
       : undefined,
   };
@@ -139,8 +142,8 @@ function formatInvoice(invoice: Stripe.Invoice): Invoice {
     status: invoice.status as Invoice['status'],
     created: new Date(invoice.created * 1000),
     dueDate: invoice.due_date ? new Date(invoice.due_date * 1000) : null,
-    pdfUrl: invoice.invoice_pdf,
-    hostedInvoiceUrl: invoice.hosted_invoice_url,
+    pdfUrl: invoice.invoice_pdf || null,
+    hostedInvoiceUrl: invoice.hosted_invoice_url || null,
     periodStart: new Date(invoice.period_start * 1000),
     periodEnd: new Date(invoice.period_end * 1000),
   };
