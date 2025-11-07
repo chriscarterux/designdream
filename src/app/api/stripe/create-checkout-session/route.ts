@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       Date.now().toString().slice(-6) // Last 6 digits of timestamp for uniqueness
     );
 
-    console.log(`Creating checkout session for ${email} with idempotency key: ${idempotencyKey.substring(0, 20)}...`);
+    console.log('Creating checkout session with server-side pricing enforcement');
 
     // Wrap the entire operation in retry logic with exponential backoff
     const session = await retryStripeOperation(async () => {
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
           });
         }
 
-        console.log(`Using existing customer: ${customer.id}`);
+        console.log('Using existing Stripe customer record');
       } else {
         // Create new customer
         customer = await stripe.customers.create({
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
           },
         });
 
-        console.log(`Created new customer: ${customer.id}`);
+        console.log('Created new Stripe customer record');
       }
 
       // Server-side price validation - CRITICAL SECURITY
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       // This prevents attackers from changing the subscription price
       const priceAmount = SERVER_PRICE_CONSTANTS.MONTHLY_SUBSCRIPTION;
 
-      console.log(`Using server-validated price: $${(priceAmount / 100).toFixed(2)}`);
+      console.log('Using server-validated subscription price');
 
       // Create checkout session parameters
       const sessionParams: Stripe.Checkout.SessionCreateParams = {
@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log success (in production, use proper logging service)
-    console.log(`✓ Checkout session created successfully: ${session.id}`);
+    console.log('Checkout session created successfully');
 
     return NextResponse.json(
       {

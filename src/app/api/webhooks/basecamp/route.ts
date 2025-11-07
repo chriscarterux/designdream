@@ -10,6 +10,47 @@ import { NextRequest, NextResponse } from 'next/server';
 import type { BasecampWebhookPayload } from '@/types/basecamp.types';
 import { fetchTodoDetails, postComment, formatAnalysisAsComment } from '@/lib/basecamp';
 import { analyzeTaskComplexity, logAnalysis } from '@/lib/claude-analysis';
+import { Buffer } from 'node:buffer';
+
+const WEBHOOK_SHARED_SECRET = process.env.BASECAMP_WEBHOOK_SECRET;
+const WEBHOOK_BASIC_USERNAME = process.env.BASECAMP_WEBHOOK_USERNAME;
+const WEBHOOK_BASIC_PASSWORD = process.env.BASECAMP_WEBHOOK_PASSWORD;
+
+function ensureWebhookSecretConfigured() {
+  if (!WEBHOOK_SHARED_SECRET && (!WEBHOOK_BASIC_USERNAME || !WEBHOOK_BASIC_PASSWORD)) {
+    throw new Error(
+      'Basecamp webhook secret or basic auth credentials are not configured. ' +
+      'Set BASECAMP_WEBHOOK_SECRET or BASECAMP_WEBHOOK_USERNAME/BASECAMP_WEBHOOK_PASSWORD.'
+    );
+  }
+}
+
+function isAuthorized(request: NextRequest): boolean {
+  const sharedSecretHeader = request.headers.get('x-webhook-secret');
+  if (WEBHOOK_SHARED_SECRET && sharedSecretHeader === WEBHOOK_SHARED_SECRET) {
+    return true;
+  }
+
+  const authHeader = request.headers.get('authorization');
+  if (
+    authHeader &&
+    authHeader.startsWith('Basic ') &&
+    WEBHOOK_BASIC_USERNAME &&
+    WEBHOOK_BASIC_PASSWORD
+  ) {
+    try {
+      const decoded = Buffer.from(authHeader.replace('Basic ', ''), 'base64').toString();
+      const [username, password] = decoded.split(':');
+      if (username === WEBHOOK_BASIC_USERNAME && password === WEBHOOK_BASIC_PASSWORD) {
+        return true;
+      }
+    } catch (error) {
+      console.error('Failed to decode Basecamp webhook auth header:', error);
+    }
+  }
+
+  return false;
+}
 
 /**
  * Basecamp sends webhooks to this endpoint
@@ -17,6 +58,13 @@ import { analyzeTaskComplexity, logAnalysis } from '@/lib/claude-analysis';
  * Basecamp retries up to 10 times with exponential backoff on failure
  */
 export async function POST(request: NextRequest) {
+  ensureWebhookSecretConfigured();
+
+  if (!isAuthorized(request)) {
+    console.warn('Unauthorized Basecamp webhook attempt blocked');
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   console.log('\n========================================');
   console.log('Basecamp webhook received');
   console.log('========================================\n');
@@ -118,19 +166,23 @@ export async function POST(request: NextRequest) {
  * GET endpoint for testing
  * Returns webhook status and configuration
  */
-export async function GET() {
-  const hasBasecampToken = !!process.env.BASECAMP_ACCESS_TOKEN;
-  const hasAnthropicKey = !!process.env.ANTHROPIC_API_KEY;
-  const accountId = process.env.BASECAMP_ACCOUNT_ID;
+export async function GET(request: NextRequest) {
+  ensureWebhookSecretConfigured();
 
-  return NextResponse.json({
-    status: 'Basecamp webhook receiver is running',
-    configuration: {
-      basecamp_configured: hasBasecampToken,
-      claude_configured: hasAnthropicKey,
-      account_id: accountId,
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  return NextResponse.json(
+    {
+      status: 'Basecamp webhook receiver is running',
+      configuration: {
+        basecamp_configured: !!process.env.BASECAMP_ACCESS_TOKEN,
+        claude_configured: !!process.env.ANTHROPIC_API_KEY,
+      },
+      usage: 'POST webhooks from Basecamp to this endpoint',
+      events_handled: ['todo_created'],
     },
-    usage: 'POST webhooks from Basecamp to this endpoint',
-    events_handled: ['todo_created'],
-  });
+    { status: 200 }
+  );
 }

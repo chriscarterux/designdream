@@ -17,7 +17,8 @@ export async function GET() {
     }
 
     // Test 2: Try to query the database schema to confirm connection
-    const { data: tables, error: tablesError } = await supabase
+    // Using 'any' to bypass type checking for system schema
+    const { data: tables, error: tablesError } = await (supabase as any)
       .from('information_schema.tables')
       .select('table_name')
       .eq('table_schema', 'public')
