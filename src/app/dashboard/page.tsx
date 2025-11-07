@@ -41,8 +41,8 @@ export default function ClientDashboardPage() {
 
       {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="cursor-pointer hover:shadow-md transition-shadow" asChild>
-          <Link href="/dashboard/submit">
+        <Link href="/dashboard/submit">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-purple-100 rounded-lg">
@@ -54,11 +54,11 @@ export default function ClientDashboardPage() {
                 </div>
               </div>
             </CardHeader>
-          </Link>
-        </Card>
+          </Card>
+        </Link>
 
-        <Card className="cursor-pointer hover:shadow-md transition-shadow" asChild>
-          <Link href="/dashboard/requests">
+        <Link href="/dashboard/requests">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-blue-100 rounded-lg">
@@ -70,11 +70,11 @@ export default function ClientDashboardPage() {
                 </div>
               </div>
             </CardHeader>
-          </Link>
-        </Card>
+          </Card>
+        </Link>
 
-        <Card className="cursor-pointer hover:shadow-md transition-shadow" asChild>
-          <Link href="/dashboard/billing">
+        <Link href="/dashboard/billing">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-green-100 rounded-lg">
@@ -86,8 +86,8 @@ export default function ClientDashboardPage() {
                 </div>
               </div>
             </CardHeader>
-          </Link>
-        </Card>
+          </Card>
+        </Link>
       </div>
 
       {/* Stats Cards */}

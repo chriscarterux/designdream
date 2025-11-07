@@ -18,8 +18,8 @@ import type {
 } from '@/types/email.types';
 
 // Template rendering functions
-export function renderSLAWarningEmail(data: SLAWarningEmailData): string {
-  return render(
+export async function renderSLAWarningEmail(data: SLAWarningEmailData): Promise<string> {
+  return await render(
     SLAWarningEmail({
       requestTitle: data.request.title,
       requestStatus: data.request.status,
@@ -36,8 +36,8 @@ export function renderSLAWarningEmail(data: SLAWarningEmailData): string {
   );
 }
 
-export function renderSLAViolationEmail(data: SLAViolationEmailData): string {
-  return render(
+export async function renderSLAViolationEmail(data: SLAViolationEmailData): Promise<string> {
+  return await render(
     SLAViolationEmail({
       requestTitle: data.request.title,
       requestStatus: data.request.status,
@@ -53,8 +53,8 @@ export function renderSLAViolationEmail(data: SLAViolationEmailData): string {
   );
 }
 
-export function renderNewRequestEmail(data: NewRequestEmailData): string {
-  return render(
+export async function renderNewRequestEmail(data: NewRequestEmailData): Promise<string> {
+  return await render(
     NewRequestEmail({
       requestTitle: data.request.title,
       requestDescription: data.request.description,
@@ -68,8 +68,8 @@ export function renderNewRequestEmail(data: NewRequestEmailData): string {
   );
 }
 
-export function renderStatusChangedEmail(data: StatusChangedEmailData): string {
-  return render(
+export async function renderStatusChangedEmail(data: StatusChangedEmailData): Promise<string> {
+  return await render(
     StatusChangedEmail({
       requestTitle: data.request.title,
       oldStatus: data.request.oldStatus,
@@ -83,8 +83,8 @@ export function renderStatusChangedEmail(data: StatusChangedEmailData): string {
   );
 }
 
-export function renderCommentAddedEmail(data: CommentAddedEmailData): string {
-  return render(
+export async function renderCommentAddedEmail(data: CommentAddedEmailData): Promise<string> {
+  return await render(
     CommentAddedEmail({
       requestTitle: data.request.title,
       commentPreview: data.comment.preview,
@@ -97,8 +97,8 @@ export function renderCommentAddedEmail(data: CommentAddedEmailData): string {
   );
 }
 
-export function renderWelcomeEmail(data: WelcomeEmailData): string {
-  return render(
+export async function renderWelcomeEmail(data: WelcomeEmailData): Promise<string> {
+  return await render(
     WelcomeEmail({
       companyName: data.client.companyName,
       contactName: data.client.contactName,
@@ -110,26 +110,26 @@ export function renderWelcomeEmail(data: WelcomeEmailData): string {
 }
 
 // Main template renderer
-export function renderEmailTemplate(data: EmailData): string {
+export async function renderEmailTemplate(data: EmailData): Promise<string> {
   switch (data.type) {
     case 'sla_warning_yellow':
     case 'sla_warning_red':
-      return renderSLAWarningEmail(data as SLAWarningEmailData);
+      return await renderSLAWarningEmail(data as SLAWarningEmailData);
 
     case 'sla_violation':
-      return renderSLAViolationEmail(data as SLAViolationEmailData);
+      return await renderSLAViolationEmail(data as SLAViolationEmailData);
 
     case 'new_request':
-      return renderNewRequestEmail(data as NewRequestEmailData);
+      return await renderNewRequestEmail(data as NewRequestEmailData);
 
     case 'status_changed':
-      return renderStatusChangedEmail(data as StatusChangedEmailData);
+      return await renderStatusChangedEmail(data as StatusChangedEmailData);
 
     case 'comment_added':
-      return renderCommentAddedEmail(data as CommentAddedEmailData);
+      return await renderCommentAddedEmail(data as CommentAddedEmailData);
 
     case 'welcome':
-      return renderWelcomeEmail(data as WelcomeEmailData);
+      return await renderWelcomeEmail(data as WelcomeEmailData);
 
     default:
       throw new Error(`Unknown email type: ${(data as any).type}`);
