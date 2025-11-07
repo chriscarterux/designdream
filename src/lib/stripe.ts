@@ -307,3 +307,32 @@ export function generateIdempotencyKey(
 
   return parts.substring(0, 255); // Stripe limit
 }
+
+/**
+ * Stripe webhook secret for verifying webhook signatures
+ */
+export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
+
+/**
+ * Format timestamp or Date to readable date string
+ */
+export function formatDate(timestamp: number | Date): string {
+  const date = timestamp instanceof Date ? timestamp : new Date(timestamp * 1000);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+/**
+ * Format timestamp or Date to short date string
+ */
+export function formatShortDate(timestamp: number | Date): string {
+  const date = timestamp instanceof Date ? timestamp : new Date(timestamp * 1000);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}

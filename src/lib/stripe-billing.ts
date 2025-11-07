@@ -82,7 +82,7 @@ function formatSubscriptionInfo(
     planName: price?.product
       ? typeof price.product === 'string'
         ? 'DesignDream Monthly'
-        : price.product.name || 'DesignDream Monthly'
+        : (price.product && 'name' in price.product ? price.product.name : null) || 'DesignDream Monthly'
       : 'DesignDream Monthly',
     planPrice: price?.unit_amount || 449500,
     currency: price?.currency || 'usd',
@@ -120,7 +120,7 @@ function formatPaymentMethodInfo(
     bankAccount: paymentMethod.us_bank_account
       ? {
           bankName: paymentMethod.us_bank_account.bank_name || 'Unknown',
-          last4: paymentMethod.us_bank_account.last4,
+          last4: paymentMethod.us_bank_account.last4 || '',
         }
       : undefined,
   };
@@ -139,8 +139,8 @@ function formatInvoice(invoice: Stripe.Invoice): Invoice {
     status: invoice.status as Invoice['status'],
     created: new Date(invoice.created * 1000),
     dueDate: invoice.due_date ? new Date(invoice.due_date * 1000) : null,
-    pdfUrl: invoice.invoice_pdf,
-    hostedInvoiceUrl: invoice.hosted_invoice_url,
+    pdfUrl: invoice.invoice_pdf || null,
+    hostedInvoiceUrl: invoice.hosted_invoice_url || null,
     periodStart: new Date(invoice.period_start * 1000),
     periodEnd: new Date(invoice.period_end * 1000),
   };

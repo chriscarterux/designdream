@@ -13,7 +13,9 @@ import {
 import { useRouter } from 'next/navigation';
 import { Loader2, ExternalLink, CreditCard, FolderKanban } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase-client';
+import { createClient } from '@/lib/supabase/client';
+
+const supabase = createClient();
 
 interface ClientData {
   basecamp_project_id: string | null;
