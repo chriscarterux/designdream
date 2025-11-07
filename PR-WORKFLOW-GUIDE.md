@@ -6,6 +6,15 @@ This guide explains the automated PR review and fix workflow using Code Rabbit A
 
 ---
 
+## ✅ Testing Expectations
+
+| Stage | Required Commands | Notes |
+| --- | --- | --- |
+| **Local (before pushing)** | `npm run lint`<br>`npm run type-check`<br>Targeted tests (`npm run test -- <pattern>`) | Keep iterations fast. Run the suites that exercise the code you touched. |
+| **PR / CI** | `npm run lint`<br>`npm run type-check`<br>`npm run test`<br>`npm run test:e2e` (Playwright) | Executed automatically via GitHub Actions. Wait for green builds before merging. |
+
+> **Tip:** If you need a full regression locally (e.g., release candidate), run `npm run test:all`, but it’s not required for every iteration—CI covers it once the PR is open.
+
 ## 🔄 Complete Workflow
 
 ### Step 1: Create Feature Branch & PR
