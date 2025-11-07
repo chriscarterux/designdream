@@ -150,28 +150,94 @@ export default function SubscriptionSuccessPage() {
         {/* Next Steps */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            What's Next?
+            What Happens Next?
           </h2>
-          <ul className="space-y-2 text-gray-600">
-            <li className="flex items-start">
-              <svg className="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Check your email for a confirmation and receipt</span>
-            </li>
-            <li className="flex items-start">
-              <svg className="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Access your dashboard to start creating projects</span>
-            </li>
-            <li className="flex items-start">
-              <svg className="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Invite team members to collaborate</span>
-            </li>
-          </ul>
+          <div className="space-y-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm mr-3">
+                1
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 mb-1">Check Your Email (Within 5 Minutes)</h3>
+                <p className="text-sm text-gray-600">
+                  You'll receive a welcome email with your Basecamp project invite and onboarding guide. Check your spam folder if you don't see it.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm mr-3">
+                2
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 mb-1">Join Your Basecamp Project (Today)</h3>
+                <p className="text-sm text-gray-600">
+                  Accept the Basecamp invite and explore your project workspace. This is where all communication, requests, and deliveries happen.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm mr-3">
+                3
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 mb-1">Submit Your First Request (Anytime)</h3>
+                <p className="text-sm text-gray-600">
+                  Post your first design or development request in Basecamp. Be as detailed as possible with requirements, links, and examples.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm mr-3">
+                4
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 mb-1">Get Your First Delivery (48 Hours)</h3>
+                <p className="text-sm text-gray-600">
+                  Your completed task will be delivered within 48 business hours. Review it and request up to two rounds of revisions if needed.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Workflow Explanation */}
+        <div className="bg-blue-50 rounded-lg p-6 mb-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            How DesignDream Works
+          </h2>
+          <p className="text-sm text-gray-600 mb-4">
+            Your subscription includes unlimited requests with one active task at a time. Here's our workflow:
+          </p>
+          <div className="grid grid-cols-5 gap-2 text-center text-xs">
+            <div className="bg-white rounded-lg p-3">
+              <div className="font-semibold text-gray-900 mb-1">Queue</div>
+              <div className="text-gray-600">Awaiting start</div>
+            </div>
+            <div className="bg-white rounded-lg p-3">
+              <div className="font-semibold text-gray-900 mb-1">In Progress</div>
+              <div className="text-gray-600">Being worked on</div>
+            </div>
+            <div className="bg-white rounded-lg p-3">
+              <div className="font-semibold text-gray-900 mb-1">Review</div>
+              <div className="text-gray-600">Ready for feedback</div>
+            </div>
+            <div className="bg-white rounded-lg p-3">
+              <div className="font-semibold text-gray-900 mb-1">Revisions</div>
+              <div className="text-gray-600">Making changes</div>
+            </div>
+            <div className="bg-white rounded-lg p-3">
+              <div className="font-semibold text-gray-900 mb-1">Complete</div>
+              <div className="text-gray-600">Delivered!</div>
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 mt-4">
+            <strong>⏱️ Turnaround:</strong> 48 business hours per task (Mon-Fri, 9am-5pm Central)<br/>
+            <strong>🔄 Revisions:</strong> Two rounds included per task<br/>
+            <strong>📊 Updates:</strong> Daily progress reports via Basecamp
+          </p>
         </div>
 
         {/* Action Buttons */}
@@ -192,9 +258,9 @@ export default function SubscriptionSuccessPage() {
 
         {/* Help Text */}
         <p className="text-center text-sm text-gray-500 mt-6">
-          Need help?{' '}
-          <a href="mailto:support@designdream.com" className="text-gray-900 hover:underline">
-            Contact support
+          Questions or need help?{' '}
+          <a href="mailto:hello@designdream.is" className="text-blue-600 hover:underline font-medium">
+            hello@designdream.is
           </a>
         </p>
       </div>

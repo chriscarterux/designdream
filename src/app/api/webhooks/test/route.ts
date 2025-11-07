@@ -17,8 +17,21 @@ export const runtime = 'nodejs';
 /**
  * GET /api/webhooks/test
  * Returns webhook configuration and recent events
+ *
+ * SECURITY: Only available in development mode
  */
 export async function GET(req: NextRequest) {
+  // Restrict to development environment only
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      {
+        error: 'Not found',
+        message: 'This endpoint is only available in development mode',
+      },
+      { status: 404 }
+    );
+  }
+
   try {
     // Check if webhook secret is configured
     const webhookSecretConfigured = !!STRIPE_WEBHOOK_SECRET;
@@ -80,12 +93,25 @@ export async function GET(req: NextRequest) {
  * POST /api/webhooks/test
  * Test webhook signature verification
  *
+ * SECURITY: Only available in development mode
+ *
  * Usage:
  * 1. Use Stripe CLI to forward events: stripe listen --forward-to localhost:3000/api/webhooks/stripe
  * 2. Trigger a test event: stripe trigger payment_intent.succeeded
  * 3. Or manually test signature verification by passing event data
  */
 export async function POST(req: NextRequest) {
+  // Restrict to development environment only
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      {
+        error: 'Not found',
+        message: 'This endpoint is only available in development mode',
+      },
+      { status: 404 }
+    );
+  }
+
   try {
     const body = await req.text();
     const signature = req.headers.get('stripe-signature');
@@ -172,8 +198,21 @@ export async function POST(req: NextRequest) {
 /**
  * DELETE /api/webhooks/test
  * Clean up test webhook events (development only)
+ *
+ * SECURITY: Only available in development mode
  */
 export async function DELETE() {
+  // Restrict to development environment only
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      {
+        error: 'Not found',
+        message: 'This endpoint is only available in development mode',
+      },
+      { status: 404 }
+    );
+  }
+
   try {
     // Delete test events (events with 'test_' prefix)
     const { error } = await supabaseAdmin

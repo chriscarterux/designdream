@@ -6,6 +6,7 @@ import {
   PaymentEventData,
   SubscriptionStatus,
 } from '@/types/stripe.types';
+import { sendEmail } from './email/send';
 
 /**
  * Execute database operation within a transaction
@@ -106,6 +107,48 @@ export async function handleSubscriptionCreated(
       }
 
       console.log(`Subscription created successfully for client ${clientId}`);
+
+      // Send welcome email (don't fail webhook if email fails)
+      try {
+        // Fetch client details for email
+        const { data: clientData } = await supabaseAdmin
+          .from('clients')
+          .select('email, contact_name, company_name')
+          .eq('id', clientId)
+          .single();
+
+        if (clientData && clientData.email) {
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
+          // Send welcome email
+          const emailResult = await sendEmail({
+            type: 'welcome',
+            recipient: {
+              email: clientData.email,
+              name: clientData.contact_name || 'there',
+              userId: clientId,
+            },
+            client: {
+              companyName: clientData.company_name || clientData.contact_name || 'your company',
+              contactName: clientData.contact_name || 'there',
+            },
+            subscription: {
+              planType: subscription.metadata.plan_type || 'premium',
+            },
+            dashboardUrl: `${appUrl}/dashboard`,
+            resourcesUrl: `${appUrl}/resources`,
+          });
+
+          if (emailResult.success) {
+            console.log(`Welcome email sent to ${clientData.email}`);
+          } else {
+            console.error(`Failed to send welcome email: ${emailResult.error}`);
+          }
+        }
+      } catch (emailError) {
+        // Log error but don't fail the webhook
+        console.error('Error sending welcome email:', emailError);
+      }
 
       return {
         success: true,
