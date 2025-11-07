@@ -66,7 +66,7 @@ export const STRIPE_WEBHOOK_SECRET = webhookSecret;
  * Used for creating checkout sessions, managing subscriptions, etc.
  */
 export const stripe = new Stripe(validatedKey, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2023-10-16',
   typescript: true,
   appInfo: {
     name: 'Design Dream',
