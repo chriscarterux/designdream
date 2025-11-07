@@ -72,6 +72,13 @@ function formatSubscriptionInfo(
 ): SubscriptionInfo {
   const price = subscription.items.data[0]?.price;
 
+  const product = price?.product;
+  let planName = 'DesignDream Monthly';
+
+  if (product && typeof product !== 'string' && 'name' in product) {
+    planName = product.name || 'DesignDream Monthly';
+  }
+
   return {
     id: subscription.id,
     customerId:
@@ -79,11 +86,7 @@ function formatSubscriptionInfo(
         ? subscription.customer
         : subscription.customer.id,
     status: subscription.status as SubscriptionStatus,
-    planName: price?.product
-      ? typeof price.product === 'string'
-        ? 'DesignDream Monthly'
-        : (price.product && 'name' in price.product ? price.product.name : null) || 'DesignDream Monthly'
-      : 'DesignDream Monthly',
+    planName,
     planPrice: price?.unit_amount || 449500,
     currency: price?.currency || 'usd',
     interval: (price?.recurring?.interval as 'month' | 'year') || 'month',

@@ -36,14 +36,30 @@ function validateStripeKey(): string {
   }
 
   // Log which mode we're in (without exposing the full key)
-  const keyPrefix = key.substring(0, 12);
-  console.log(`✓ Stripe initialized in ${isTestKey ? 'TEST' : 'LIVE'} mode (${keyPrefix}...)`);
+  const modeLabel = isTestKey ? 'TEST' : 'LIVE';
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`✓ Stripe initialized in ${modeLabel} mode`);
+  } else {
+    console.info(`Stripe initialized in ${modeLabel} mode`);
+  }
 
   return key;
 }
 
 // Validate key on module load
 const validatedKey = validateStripeKey();
+
+// Webhook secret validation
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+if (!webhookSecret) {
+  throw new Error(
+    'STRIPE_WEBHOOK_SECRET is not defined in environment variables. ' +
+    'Stripe webhooks cannot be verified without this secret.'
+  );
+}
+
+export const STRIPE_WEBHOOK_SECRET = webhookSecret;
 
 /**
  * Stripe server-side client
@@ -87,17 +103,42 @@ export const stripeConfig = {
   urls: {
     success: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/success`,
     cancel: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/cancel`,
+    billing: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard/billing`,
   },
 } as const;
 
 /**
  * Helper function to format Stripe amount (cents) to USD
  */
-export function formatStripeAmount(amount: number): string {
+export function formatStripeAmount(amount: number, currency = 'USD'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency,
   }).format(amount / 100);
+}
+
+/**
+ * Helper function to format date
+ */
+export function formatDate(date: Date | string | number): string {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(d);
+}
+
+/**
+ * Helper function to format short date
+ */
+export function formatShortDate(date: Date | string | number): string {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).format(d);
 }
 
 /**
