@@ -161,21 +161,48 @@ const ENV_CONFIG: EnvVarConfig[] = [
     example: 'https://yourdomain.com or http://localhost:3000'
   },
 
-  // Basecamp (Optional)
+  // Linear (Optional - for client project management)
+  {
+    key: 'LINEAR_API_KEY',
+    required: false,
+    description: 'Linear personal API key for issue tracking',
+    example: 'lin_api_...'
+  },
+  {
+    key: 'LINEAR_TEAM_ID',
+    required: false,
+    description: 'Linear team ID (UUID format)',
+    example: 'c3997b49-d6a3-45a3-93ab-605db58b7434'
+  },
+  {
+    key: 'LINEAR_WEBHOOK_SECRET',
+    required: false,
+    description: 'Linear webhook verification secret',
+  },
+
+  // Anthropic Claude (Optional - for AI task analysis)
+  {
+    key: 'ANTHROPIC_API_KEY',
+    required: false,
+    description: 'Anthropic API key for Claude AI analysis',
+    example: 'sk-ant-...'
+  },
+
+  // Legacy Basecamp (Deprecated - migrating to Linear)
   {
     key: 'BASECAMP_CLIENT_ID',
     required: false,
-    description: 'Basecamp OAuth client ID',
+    description: '[DEPRECATED] Basecamp OAuth client ID - use Linear instead',
   },
   {
     key: 'BASECAMP_CLIENT_SECRET',
     required: false,
-    description: 'Basecamp OAuth client secret',
+    description: '[DEPRECATED] Basecamp OAuth client secret - use Linear instead',
   },
   {
     key: 'BASECAMP_ACCOUNT_ID',
     required: false,
-    description: 'Basecamp account ID',
+    description: '[DEPRECATED] Basecamp account ID - use Linear instead',
   },
 ]
 
@@ -322,7 +349,19 @@ export const env = {
     resendApiKey: getEnvVar('RESEND_API_KEY', ''),
   },
 
-  // Basecamp
+  // Linear
+  linear: {
+    apiKey: getEnvVar('LINEAR_API_KEY', ''),
+    teamId: getEnvVar('LINEAR_TEAM_ID', ''),
+    webhookSecret: getEnvVar('LINEAR_WEBHOOK_SECRET', ''),
+  },
+
+  // Anthropic Claude
+  anthropic: {
+    apiKey: getEnvVar('ANTHROPIC_API_KEY', ''),
+  },
+
+  // Legacy Basecamp (Deprecated)
   basecamp: {
     clientId: getEnvVar('BASECAMP_CLIENT_ID', ''),
     clientSecret: getEnvVar('BASECAMP_CLIENT_SECRET', ''),
