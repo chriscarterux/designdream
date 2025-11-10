@@ -1,5 +1,5 @@
 // Request Types for Design Dream
-// These types are used for requests managed in Basecamp
+// These types are used for requests managed in Linear
 
 export type RequestPriority = 'urgent' | 'high' | 'medium' | 'low';
 export type RequestType = 'design' | 'development' | 'bug-fix' | 'enhancement' | 'consultation';
@@ -17,12 +17,12 @@ export interface Request {
   clientName: string;
   createdAt: string;
   updatedAt: string;
-  basecampTodoId?: string; // Basecamp to-do item ID
-  basecampProjectId?: string; // Basecamp project ID
+  linearIssueId?: string; // Linear issue ID
+  linearProjectId?: string; // Linear project ID
 }
 
-// Basecamp-specific types
-export interface BasecampProject {
+// Linear-specific types
+export interface LinearProject {
   id: string;
   name: string;
   description?: string;
@@ -31,12 +31,12 @@ export interface BasecampProject {
   status: 'active' | 'paused' | 'archived';
 }
 
-export interface BasecampTodo {
+export interface LinearIssue {
   id: string;
   title: string;
   description?: string;
   completed: boolean;
-  todoListId: string;
+  projectId: string;
   assigneeIds: string[];
   createdAt: string;
   completedAt?: string;

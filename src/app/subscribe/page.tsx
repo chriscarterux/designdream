@@ -122,7 +122,7 @@ export default function SubscribePage() {
                   'One task at a time (ensures quality)',
                   '48-hour turnaround per task',
                   'Two rounds of revisions per task',
-                  'Daily progress updates via Basecamp',
+                  'Daily progress updates via Linear',
                   'Pause or cancel anytime',
                 ].map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
@@ -280,7 +280,7 @@ export default function SubscribePage() {
                 </li>
                 <li className="flex gap-2">
                   <span className="text-blue-600">2.</span>
-                  <span>Get instant access to your Basecamp project</span>
+                  <span>Get instant access to your Linear project</span>
                 </li>
                 <li className="flex gap-2">
                   <span className="text-blue-600">3.</span>
