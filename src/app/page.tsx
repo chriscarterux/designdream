@@ -252,7 +252,7 @@ export default function Home() {
                 {
                   number: '2',
                   title: 'Add Requests to Your Queue',
-                  description: 'Use Basecamp to submit unlimited design and development requests. Prioritize what matters most.',
+                  description: 'Use Linear to submit unlimited design and development requests. Prioritize what matters most.',
                   icon: Layers
                 },
                 {
@@ -428,7 +428,7 @@ export default function Home() {
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>Daily progress updates via Basecamp</span>
+                    <span>Daily progress updates via Linear</span>
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
@@ -560,7 +560,7 @@ export default function Home() {
                     What's the typical turnaround time for requests?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed">
-                    Most requests are delivered within 48 business hours. Simple tasks (bug fixes, minor UI tweaks) can be done in 24 hours or less. More complex features might take 2-3 business days. You'll get daily progress updates via Basecamp, and I'll always set clear expectations before starting work.
+                    Most requests are delivered within 48 business hours. Simple tasks (bug fixes, minor UI tweaks) can be done in 24 hours or less. More complex features might take 2-3 business days. You'll get daily progress updates via Linear, and I'll always set clear expectations before starting work.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -596,7 +596,7 @@ export default function Home() {
                     What if I have multiple projects or brands?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed">
-                    No problem! You can submit requests for multiple projects, websites, or brands. Just specify which project each request is for in Basecamp. I'll work through your queue in priority order, regardless of which project each task belongs to.
+                    No problem! You can submit requests for multiple projects, websites, or brands. Just specify which project each request is for in Linear. I'll work through your queue in priority order, regardless of which project each task belongs to.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -605,7 +605,7 @@ export default function Home() {
                     How do we communicate and manage requests?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed">
-                    Everything happens in Basecamp. When you subscribe, you'll get access to your dedicated project workspace where you can post requests, share files, give feedback, and see daily progress updates. It's simple, organized, and keeps everything in one place. No jumping between Slack, email, and project management tools.
+                    Everything happens in Linear. When you subscribe, you'll get access to your dedicated project workspace where you can post requests, share files, give feedback, and see daily progress updates. It's simple, organized, and keeps everything in one place. No jumping between Slack, email, and project management tools.
                   </AccordionContent>
                 </AccordionItem>
 

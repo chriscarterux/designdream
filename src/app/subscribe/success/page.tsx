@@ -160,7 +160,7 @@ export default function SubscriptionSuccessPage() {
               <div>
                 <h3 className="font-medium text-gray-900 mb-1">Check Your Email (Within 5 Minutes)</h3>
                 <p className="text-sm text-gray-600">
-                  You'll receive a welcome email with your Basecamp project invite and onboarding guide. Check your spam folder if you don't see it.
+                  You'll receive a welcome email with your Linear project invite and onboarding guide. Check your spam folder if you don't see it.
                 </p>
               </div>
             </div>
@@ -170,9 +170,9 @@ export default function SubscriptionSuccessPage() {
                 2
               </div>
               <div>
-                <h3 className="font-medium text-gray-900 mb-1">Join Your Basecamp Project (Today)</h3>
+                <h3 className="font-medium text-gray-900 mb-1">Join Your Linear Project (Today)</h3>
                 <p className="text-sm text-gray-600">
-                  Accept the Basecamp invite and explore your project workspace. This is where all communication, requests, and deliveries happen.
+                  Accept the Linear invite and explore your project workspace. This is where all communication, requests, and deliveries happen.
                 </p>
               </div>
             </div>
@@ -184,7 +184,7 @@ export default function SubscriptionSuccessPage() {
               <div>
                 <h3 className="font-medium text-gray-900 mb-1">Submit Your First Request (Anytime)</h3>
                 <p className="text-sm text-gray-600">
-                  Post your first design or development request in Basecamp. Be as detailed as possible with requirements, links, and examples.
+                  Post your first design or development request in Linear. Be as detailed as possible with requirements, links, and examples.
                 </p>
               </div>
             </div>
@@ -236,7 +236,7 @@ export default function SubscriptionSuccessPage() {
           <p className="text-sm text-gray-600 mt-4">
             <strong>⏱️ Turnaround:</strong> 48 business hours per task (Mon-Fri, 9am-5pm Central)<br/>
             <strong>🔄 Revisions:</strong> Two rounds included per task<br/>
-            <strong>📊 Updates:</strong> Daily progress reports via Basecamp
+            <strong>📊 Updates:</strong> Daily progress reports via Linear
           </p>
         </div>
 

@@ -52,7 +52,7 @@ export default function TermsOfService() {
               <li>Web development (Next.js, React, Node.js)</li>
               <li>Mobile app development (React Native)</li>
               <li>AI-powered features and automations</li>
-              <li>Project management via Basecamp</li>
+              <li>Project management via Linear</li>
             </ul>
             <p className="text-gray-700">
               Work is delivered one task at a time with an average turnaround of 48 business hours per task. Larger projects are broken into multiple tasks delivered sequentially.
