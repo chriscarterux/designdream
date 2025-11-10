@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -25,7 +26,7 @@ interface RateLimitError {
   message?: string;
 }
 
-export default function SignupPage() {
+function SignupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signUp } = useAuth();
@@ -308,5 +309,20 @@ export default function SignupPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <div className="text-center">
+          <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
+          <p className="mt-4 text-sm text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    }>
+      <SignupContent />
+    </Suspense>
   );
 }
