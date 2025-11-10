@@ -68,10 +68,11 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          # Mock environment variables for build
+          # Environment variables for build
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_APP_URL: https://designdream.is
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
