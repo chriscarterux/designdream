@@ -7,6 +7,8 @@ import {
   SubscriptionStatus,
 } from '@/types/stripe.types';
 import { sendEmail } from './email/send';
+import { executeClientOnboarding } from './onboarding/orchestrator';
+import { stripe } from './stripe';
 
 /**
  * Execute database operation within a transaction
@@ -46,8 +48,51 @@ async function getClientByCustomerId(
 }
 
 /**
+ * Split full name into first and last name
+ * Handles various name formats gracefully
+ */
+function splitName(fullName: string | null | undefined): { firstName: string; lastName: string } {
+  if (!fullName || fullName.trim() === '') {
+    return { firstName: 'Valued', lastName: 'Client' };
+  }
+
+  const parts = fullName.trim().split(/\s+/);
+
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: '' };
+  }
+
+  // First word is first name, rest is last name
+  const firstName = parts[0];
+  const lastName = parts.slice(1).join(' ');
+
+  return { firstName, lastName };
+}
+
+/**
+ * Generate Stripe customer portal link
+ */
+async function generatePortalLink(customerId: string): Promise<string> {
+  try {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${appUrl}/dashboard`,
+    });
+
+    return session.url;
+  } catch (error) {
+    console.error('Failed to generate portal link:', error);
+    // Return fallback URL
+    return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  }
+}
+
+/**
  * Handle subscription.created event
  * Creates a new subscription record and activates the client
+ * Triggers automated client onboarding for new subscriptions
  * Uses transaction to ensure data consistency
  */
 export async function handleSubscriptionCreated(
@@ -61,6 +106,14 @@ export async function handleSubscriptionCreated(
       throw new Error(
         `Client not found for customer ID: ${subscription.customer}`
       );
+    }
+
+    // Fetch customer details from Stripe for onboarding
+    let customer: Stripe.Customer | null = null;
+    try {
+      customer = await stripe.customers.retrieve(subscription.customer as string) as Stripe.Customer;
+    } catch (error) {
+      console.error('Failed to fetch customer from Stripe:', error);
     }
 
     // Start transaction-like operation
@@ -108,46 +161,53 @@ export async function handleSubscriptionCreated(
 
       console.log(`Subscription created successfully for client ${clientId}`);
 
-      // Send welcome email (don't fail webhook if email fails)
+      // Trigger automated client onboarding (don't fail webhook if onboarding fails)
       try {
-        // Fetch client details for email
+        // Fetch client details for onboarding
         const { data: clientData } = await supabaseAdmin
           .from('clients')
           .select('email, contact_name, company_name')
           .eq('id', clientId)
           .single();
 
-        if (clientData && clientData.email) {
-          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        if (clientData && clientData.email && customer) {
+          // Extract customer information
+          const { firstName, lastName } = splitName(
+            customer.name || clientData.contact_name || ''
+          );
+          const companyName = (customer.metadata?.company as string) ||
+                              clientData.company_name ||
+                              clientData.contact_name ||
+                              'Your Company';
 
-          // Send welcome email
-          const emailResult = await sendEmail({
-            type: 'welcome',
-            recipient: {
-              email: clientData.email,
-              name: clientData.contact_name || 'there',
-              userId: clientId,
-            },
-            client: {
-              companyName: clientData.company_name || clientData.contact_name || 'your company',
-              contactName: clientData.contact_name || 'there',
-            },
-            subscription: {
-              planType: subscription.metadata.plan_type || 'premium',
-            },
-            dashboardUrl: `${appUrl}/dashboard`,
-            resourcesUrl: `${appUrl}/resources`,
+          // Generate Stripe portal link
+          const stripePortalUrl = await generatePortalLink(subscription.customer as string);
+
+          console.log('\n🚀 Triggering automated client onboarding...');
+
+          // Execute complete onboarding automation
+          const onboardingResult = await executeClientOnboarding({
+            email: clientData.email,
+            firstName,
+            lastName,
+            companyName,
+            stripeCustomerId: subscription.customer as string,
+            stripeSubscriptionId: subscription.id,
+            stripePortalUrl,
           });
 
-          if (emailResult.success) {
-            console.log(`Welcome email sent to ${clientData.email}`);
+          if (onboardingResult.success) {
+            console.log('✅ Client onboarding completed successfully');
           } else {
-            console.error(`Failed to send welcome email: ${emailResult.error}`);
+            console.error('⚠️  Client onboarding had failures:', onboardingResult.errors);
+            // Don't fail the webhook - onboarding failures are logged separately
           }
+        } else {
+          console.warn('Skipping onboarding - missing required customer data');
         }
-      } catch (emailError) {
+      } catch (onboardingError) {
         // Log error but don't fail the webhook
-        console.error('Error sending welcome email:', emailError);
+        console.error('Error during client onboarding:', onboardingError);
       }
 
       return {
