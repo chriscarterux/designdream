@@ -7,6 +7,7 @@ import NewRequestEmail from '@/emails/new-request';
 import StatusChangedEmail from '@/emails/status-changed';
 import CommentAddedEmail from '@/emails/comment-added';
 import WelcomeEmail from '@/emails/welcome';
+import PaymentFailedEmail from '@/emails/payment-failed';
 import type {
   EmailData,
   SLAWarningEmailData,
@@ -15,6 +16,7 @@ import type {
   StatusChangedEmailData,
   CommentAddedEmailData,
   WelcomeEmailData,
+  PaymentFailedEmailData,
 } from '@/types/email.types';
 
 // Template rendering functions
@@ -109,6 +111,23 @@ export async function renderWelcomeEmail(data: WelcomeEmailData): Promise<string
   );
 }
 
+export async function renderPaymentFailedEmail(data: PaymentFailedEmailData): Promise<string> {
+  return await render(
+    PaymentFailedEmail({
+      recipientName: data.recipient.name,
+      companyName: data.client.companyName,
+      planName: data.payment.planName,
+      amountDue: data.payment.amountDue,
+      currency: data.payment.currency,
+      attemptNumber: data.payment.attemptNumber,
+      nextAttemptDate: data.payment.nextAttemptDate,
+      reason: data.payment.reason,
+      invoiceUrl: data.invoiceUrl,
+      portalUrl: data.portalUrl,
+    })
+  );
+}
+
 // Main template renderer
 export async function renderEmailTemplate(data: EmailData): Promise<string> {
   switch (data.type) {
@@ -130,6 +149,9 @@ export async function renderEmailTemplate(data: EmailData): Promise<string> {
 
     case 'welcome':
       return await renderWelcomeEmail(data as WelcomeEmailData);
+
+    case 'payment_failed':
+      return await renderPaymentFailedEmail(data as PaymentFailedEmailData);
 
     default:
       throw new Error(`Unknown email type: ${(data as any).type}`);
@@ -162,6 +184,10 @@ export function getEmailSubject(data: EmailData): string {
 
     case 'welcome':
       return `Welcome to DesignDream, ${(data as WelcomeEmailData).client.contactName}!`;
+
+    case 'payment_failed':
+      const paymentData = data as PaymentFailedEmailData;
+      return `Payment Failed: ${paymentData.payment.planName} - Action Required`;
 
     default:
       return 'DesignDream Notification';

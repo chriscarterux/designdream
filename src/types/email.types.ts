@@ -7,7 +7,8 @@ export type EmailType =
   | 'new_request'
   | 'status_changed'
   | 'comment_added'
-  | 'welcome';
+  | 'welcome'
+  | 'payment_failed';
 
 export interface EmailRecipient {
   email: string;
@@ -123,13 +124,31 @@ export interface WelcomeEmailData extends BaseEmailData {
   resourcesUrl: string;
 }
 
+export interface PaymentFailedEmailData extends BaseEmailData {
+  type: 'payment_failed';
+  client: {
+    companyName: string;
+  };
+  payment: {
+    planName: string;
+    amountDue: number;
+    currency: string;
+    attemptNumber: number;
+    nextAttemptDate?: string;
+    reason?: string;
+  };
+  invoiceUrl: string;
+  portalUrl: string;
+}
+
 export type EmailData =
   | SLAWarningEmailData
   | SLAViolationEmailData
   | NewRequestEmailData
   | StatusChangedEmailData
   | CommentAddedEmailData
-  | WelcomeEmailData;
+  | WelcomeEmailData
+  | PaymentFailedEmailData;
 
 export interface EmailPreferences {
   userId: string;

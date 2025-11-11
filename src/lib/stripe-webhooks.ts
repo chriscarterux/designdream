@@ -479,7 +479,7 @@ export async function handlePaymentFailed(
           throw new Error(`Failed to update subscription status: ${subscriptionError.message}`);
         }
 
-        // Update client status
+        // Update client status and send notification email
         const clientId = await getClientByCustomerId(invoice.customer as string);
         if (clientId) {
           const { error: clientError } = await supabaseAdmin
@@ -492,6 +492,58 @@ export async function handlePaymentFailed(
 
           if (clientError) {
             throw new Error(`Failed to update client status: ${clientError.message}`);
+          }
+
+          // Fetch client details for email notification
+          try {
+            const { data: clientData } = await supabaseAdmin
+              .from('clients')
+              .select('email, contact_name, company_name')
+              .eq('id', clientId)
+              .single();
+
+            const { data: subscriptionData } = await supabaseAdmin
+              .from('subscriptions')
+              .select('plan_type, plan_amount, plan_interval')
+              .eq('stripe_subscription_id', invoice.subscription as string)
+              .single();
+
+            if (clientData && clientData.email && subscriptionData) {
+              // Determine attempt number and next retry date
+              const attemptNumber = invoice.attempt_count || 1;
+              const nextAttemptDate = attemptNumber < 4 ? 'in 3 days' : undefined;
+
+              // Get Stripe portal link
+              const portalUrl = await generatePortalLink(invoice.customer as string);
+
+              // Send payment failure email
+              await sendEmail({
+                type: 'payment_failed',
+                recipient: {
+                  email: clientData.email,
+                  name: clientData.contact_name || 'Valued Client',
+                  userId: clientId,
+                },
+                client: {
+                  companyName: clientData.company_name || clientData.contact_name || 'Your Company',
+                },
+                payment: {
+                  planName: `${subscriptionData.plan_type} Plan`,
+                  amountDue: subscriptionData.plan_amount,
+                  currency: invoice.currency,
+                  attemptNumber,
+                  nextAttemptDate,
+                  reason: 'Your payment method was declined. Please update your payment information.',
+                },
+                invoiceUrl: invoice.hosted_invoice_url || '#',
+                portalUrl,
+              });
+
+              console.log(`Payment failure email sent to ${clientData.email}`);
+            }
+          } catch (emailError) {
+            // Log error but don't fail the webhook
+            console.error('Error sending payment failure email:', emailError);
           }
         }
       }
