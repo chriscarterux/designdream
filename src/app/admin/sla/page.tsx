@@ -1,272 +1,189 @@
-import { Clock, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import { Download, RefreshCw, Loader2, AlertTriangle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { useSLAData } from '@/hooks/use-sla-data';
+import { ActiveSLACard } from '@/components/sla/ActiveSLACard';
+import { SLAChart } from '@/components/sla/SLAChart';
+import { ClientMetricsTable } from '@/components/sla/ClientMetricsTable';
 
 export default function SLADashboardPage() {
-  const metrics = [
-    {
-      label: 'Overall SLA Compliance',
-      value: '98.2%',
-      trend: '+2.1%',
-      status: 'good',
-      icon: CheckCircle2,
-    },
-    {
-      label: 'Avg First Response Time',
-      value: '2.4h',
-      trend: '-0.3h',
-      status: 'good',
-      icon: Clock,
-    },
-    {
-      label: 'Avg Resolution Time',
-      value: '18.5h',
-      trend: '+1.2h',
-      status: 'warning',
-      icon: TrendingUp,
-    },
-    {
-      label: 'SLA Violations (30d)',
-      value: '3',
-      trend: '-2',
-      status: 'good',
-      icon: AlertTriangle,
-    },
-  ];
+  const { activeSLAs, clientMetrics, historicalData, isLoading, error, refetch } = useSLAData();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
-  const recentViolations = [
-    {
-      id: 'REQ-145',
-      title: 'Mobile app UI improvements',
-      client: 'Tech Startup',
-      violationType: 'Response Time',
-      date: 'Oct 28, 2024',
-      delay: '4.2 hours',
-    },
-    {
-      id: 'REQ-132',
-      title: 'E-commerce checkout flow',
-      client: 'Acme Corp',
-      violationType: 'Resolution Time',
-      date: 'Oct 25, 2024',
-      delay: '6.5 hours',
-    },
-    {
-      id: 'REQ-118',
-      title: 'Dashboard analytics integration',
-      client: 'Design Studio',
-      violationType: 'Response Time',
-      date: 'Oct 22, 2024',
-      delay: '2.1 hours',
-    },
-  ];
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setIsRefreshing(false);
+  };
 
-  const clientCompliance = [
-    { name: 'Acme Corp', compliance: 99.1, requests: 45 },
-    { name: 'Tech Startup', compliance: 97.8, requests: 32 },
-    { name: 'Design Studio', compliance: 98.5, requests: 28 },
-    { name: 'Beta Inc', compliance: 96.2, requests: 18 },
-  ];
+  const exportToCSV = () => {
+    setIsExporting(true);
+    try {
+      // Prepare CSV data
+      const headers = [
+        'Client',
+        'Total Requests',
+        'SLAs Met',
+        'SLAs Violated',
+        'Adherence %',
+        'Avg Completion (hours)',
+        'At Risk Count',
+      ];
+
+      const rows = clientMetrics.map((metric) => [
+        metric.company_name,
+        metric.total_completed_requests.toString(),
+        metric.sla_met_count.toString(),
+        metric.sla_violated_count.toString(),
+        metric.sla_adherence_percent.toFixed(2),
+        metric.avg_completion_hours.toFixed(2),
+        metric.current_at_risk_count.toString(),
+      ]);
+
+      // Create CSV content
+      const csvContent = [
+        headers.join(','),
+        ...rows.map((row) => row.join(',')),
+      ].join('\n');
+
+      // Create download link
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+
+      link.setAttribute('href', url);
+      link.setAttribute('download', `sla-metrics-${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error exporting CSV:', err);
+      alert('Failed to export CSV. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // Count violations
+  const violationsCount = activeSLAs.filter((sla) => sla.warning_level === 'red').length;
+  const warningsCount = activeSLAs.filter((sla) => sla.warning_level === 'yellow').length;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-purple-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading SLA dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="py-8">
+            <div className="text-center">
+              <p className="text-red-800 font-medium mb-2">Error Loading SLA Dashboard</p>
+              <p className="text-sm text-red-600 mb-4">{error}</p>
+              <Button onClick={handleRefresh} variant="outline">
+                Try Again
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-          SLA Dashboard
-        </h1>
-        <p className="mt-2 text-slate-600">
-          Monitor service level agreement compliance and response times
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">SLA Dashboard</h1>
+          <p className="text-gray-600 mt-1">Monitor service level agreement compliance and performance</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={exportToCSV}
+            disabled={isExporting || clientMetrics.length === 0}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            {isExporting ? 'Exporting...' : 'Export CSV'}
+          </Button>
+        </div>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {metrics.map((metric) => {
-          const Icon = metric.icon;
-          return (
-            <div
-              key={metric.label}
-              className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-600">
-                    {metric.label}
-                  </p>
-                  <p className="mt-2 text-3xl font-bold text-slate-900">
-                    {metric.value}
-                  </p>
-                  <p
-                    className={`mt-2 flex items-center text-sm ${
-                      metric.status === 'good'
-                        ? 'text-green-600'
-                        : metric.status === 'warning'
-                        ? 'text-yellow-600'
-                        : 'text-red-600'
-                    }`}
-                  >
-                    <span>{metric.trend} from last period</span>
-                  </p>
-                </div>
-                <div
-                  className={`rounded-lg p-3 ${
-                    metric.status === 'good'
-                      ? 'bg-green-100'
-                      : metric.status === 'warning'
-                      ? 'bg-yellow-100'
-                      : 'bg-red-100'
-                  }`}
-                >
-                  <Icon
-                    className={`h-6 w-6 ${
-                      metric.status === 'good'
-                        ? 'text-green-600'
-                        : metric.status === 'warning'
-                        ? 'text-yellow-600'
-                        : 'text-red-600'
-                    }`}
-                  />
-                </div>
+      {/* Alert Summary */}
+      {(violationsCount > 0 || warningsCount > 0) && (
+        <Card className="border-orange-200 bg-orange-50">
+          <CardContent className="py-4">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="h-5 w-5 text-orange-600 flex-shrink-0" />
+              <div>
+                <p className="font-medium text-orange-900">
+                  Active SLA Alerts
+                </p>
+                <p className="text-sm text-orange-700">
+                  {violationsCount > 0 && `${violationsCount} SLA${violationsCount !== 1 ? 's' : ''} violated`}
+                  {violationsCount > 0 && warningsCount > 0 && ' • '}
+                  {warningsCount > 0 && `${warningsCount} approaching deadline`}
+                </p>
               </div>
             </div>
-          );
-        })}
-      </div>
+          </CardContent>
+        </Card>
+      )}
 
-      {/* Two Column Layout */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Recent SLA Violations */}
-        <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Recent SLA Violations
-          </h2>
-          <div className="mt-4 space-y-3">
-            {recentViolations.length > 0 ? (
-              recentViolations.map((violation) => (
-                <div
-                  key={violation.id}
-                  className="rounded-lg border border-slate-100 p-4"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-slate-900">
-                          {violation.id}
-                        </span>
-                        <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">
-                          {violation.violationType}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-sm text-slate-600">
-                        {violation.title}
-                      </p>
-                      <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-                        <span>{violation.client}</span>
-                        <span>•</span>
-                        <span>{violation.date}</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-red-600">
-                        +{violation.delay}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <CheckCircle2 className="h-12 w-12 text-green-500" />
-                <p className="mt-2 text-sm font-medium text-slate-900">
-                  No recent violations
-                </p>
-                <p className="mt-1 text-xs text-slate-500">
-                  All SLAs are being met
-                </p>
+      {/* Active SLAs */}
+      <div>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Active SLAs ({activeSLAs.length})
+        </h2>
+        {activeSLAs.length === 0 ? (
+          <Card>
+            <CardContent className="py-12">
+              <div className="text-center text-gray-500">
+                <p className="text-lg font-medium mb-1">No Active SLAs</p>
+                <p className="text-sm">All requests are either completed or not yet in progress</p>
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Client Compliance */}
-        <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Client SLA Compliance
-          </h2>
-          <div className="mt-4 space-y-4">
-            {clientCompliance.map((client) => (
-              <div key={client.name}>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium text-slate-900">
-                    {client.name}
-                  </span>
-                  <span
-                    className={`font-semibold ${
-                      client.compliance >= 98
-                        ? 'text-green-600'
-                        : client.compliance >= 95
-                        ? 'text-yellow-600'
-                        : 'text-red-600'
-                    }`}
-                  >
-                    {client.compliance}%
-                  </span>
-                </div>
-                <div className="mt-2 flex items-center gap-2">
-                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
-                    <div
-                      className={`h-full transition-all ${
-                        client.compliance >= 98
-                          ? 'bg-green-500'
-                          : client.compliance >= 95
-                          ? 'bg-yellow-500'
-                          : 'bg-red-500'
-                      }`}
-                      style={{ width: `${client.compliance}%` }}
-                    />
-                  </div>
-                </div>
-                <p className="mt-1 text-xs text-slate-500">
-                  {client.requests} requests completed
-                </p>
-              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {activeSLAs.map((sla) => (
+              <ActiveSLACard key={sla.sla_id} sla={sla} />
             ))}
           </div>
-        </div>
+        )}
       </div>
 
-      {/* SLA Targets */}
-      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">SLA Targets</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border border-slate-100 p-4">
-            <p className="text-sm font-medium text-slate-600">
-              First Response Time
-            </p>
-            <p className="mt-2 text-2xl font-bold text-slate-900">{'< 4h'}</p>
-            <p className="mt-1 text-xs text-green-600">
-              Currently meeting target
-            </p>
-          </div>
-          <div className="rounded-lg border border-slate-100 p-4">
-            <p className="text-sm font-medium text-slate-600">
-              Resolution Time (Simple)
-            </p>
-            <p className="mt-2 text-2xl font-bold text-slate-900">{'< 24h'}</p>
-            <p className="mt-1 text-xs text-green-600">
-              Currently meeting target
-            </p>
-          </div>
-          <div className="rounded-lg border border-slate-100 p-4">
-            <p className="text-sm font-medium text-slate-600">
-              Resolution Time (Complex)
-            </p>
-            <p className="mt-2 text-2xl font-bold text-slate-900">{'< 48h'}</p>
-            <p className="mt-1 text-xs text-yellow-600">
-              Average: 42h (within range)
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Historical Chart */}
+      <SLAChart data={historicalData} />
+
+      {/* Client Metrics Table */}
+      <ClientMetricsTable metrics={clientMetrics} />
     </div>
   );
 }
