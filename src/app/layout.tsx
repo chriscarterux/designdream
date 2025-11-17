@@ -3,8 +3,6 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/components/providers/auth-provider';
 import { validateEnv } from '@/lib/env';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 // Validate environment variables at application startup
 // This will throw an error with helpful messages if anything is missing or invalid
@@ -24,20 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Plausible Analytics - Privacy-friendly, GDPR compliant */}
-        {process.env.NODE_ENV === 'production' && (
-          <script
-            defer
-            data-domain="designdream.is"
-            src="https://plausible.io/js/script.js"
-          />
-        )}
-      </head>
       <body className={inter.className}>
         <AuthProvider>{children}</AuthProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
