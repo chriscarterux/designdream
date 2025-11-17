@@ -1,5 +1,11 @@
 import Stripe from 'stripe';
 
+<<<<<<< HEAD
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('STRIPE_SECRET_KEY is not defined in environment variables');
+}
+
+=======
 /**
  * Validates Stripe secret key format and environment
  * Throws if key is missing or invalid
@@ -36,12 +42,8 @@ function validateStripeKey(): string {
   }
 
   // Log which mode we're in (without exposing the full key)
-  const modeLabel = isTestKey ? 'TEST' : 'LIVE';
-  if (process.env.NODE_ENV !== 'production') {
-    console.log(`✓ Stripe initialized in ${modeLabel} mode`);
-  } else {
-    console.info(`Stripe initialized in ${modeLabel} mode`);
-  }
+  const keyPrefix = key.substring(0, 12);
+  console.log(`✓ Stripe initialized in ${isTestKey ? 'TEST' : 'LIVE'} mode (${keyPrefix}...)`);
 
   return key;
 }
@@ -49,29 +51,28 @@ function validateStripeKey(): string {
 // Validate key on module load
 const validatedKey = validateStripeKey();
 
-// Webhook secret validation
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-if (!webhookSecret) {
-  throw new Error(
-    'STRIPE_WEBHOOK_SECRET is not defined in environment variables. ' +
-    'Stripe webhooks cannot be verified without this secret.'
-  );
-}
-
-export const STRIPE_WEBHOOK_SECRET = webhookSecret;
-
+>>>>>>> origin/main
 /**
  * Stripe server-side client
  * Used for creating checkout sessions, managing subscriptions, etc.
  */
+<<<<<<< HEAD
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2024-11-20.acacia',
+=======
 export const stripe = new Stripe(validatedKey, {
   apiVersion: '2023-10-16',
+>>>>>>> origin/main
   typescript: true,
   appInfo: {
     name: 'Design Dream',
     version: '0.1.0',
   },
+<<<<<<< HEAD
+});
+
+/**
+=======
   maxNetworkRetries: 3, // Retry failed requests up to 3 times
   timeout: 30000, // 30 second timeout
 });
@@ -85,6 +86,7 @@ export const SERVER_PRICE_CONSTANTS = {
 } as const;
 
 /**
+>>>>>>> origin/main
  * Stripe configuration
  */
 export const stripeConfig = {
@@ -93,7 +95,11 @@ export const stripeConfig = {
     subscription: {
       name: 'DesignDream Monthly Subscription',
       description: 'Full access to DesignDream platform with unlimited projects and team collaboration',
+<<<<<<< HEAD
+      priceAmount: 449500, // $4,495.00 in cents
+=======
       priceAmount: SERVER_PRICE_CONSTANTS.MONTHLY_SUBSCRIPTION,
+>>>>>>> origin/main
       currency: 'usd',
       interval: 'month' as const,
     },
@@ -103,21 +109,32 @@ export const stripeConfig = {
   urls: {
     success: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/success`,
     cancel: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/cancel`,
+<<<<<<< HEAD
     billing: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard/billing`,
+=======
+>>>>>>> origin/main
   },
 } as const;
 
 /**
  * Helper function to format Stripe amount (cents) to USD
  */
+<<<<<<< HEAD
 export function formatStripeAmount(amount: number, currency = 'USD'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
+=======
+export function formatStripeAmount(amount: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+>>>>>>> origin/main
   }).format(amount / 100);
 }
 
 /**
+<<<<<<< HEAD
  * Helper function to format date
  */
 export function formatDate(date: Date | string | number): string {
@@ -139,9 +156,7 @@ export function formatShortDate(date: Date | string | number): string {
     month: 'short',
     day: 'numeric',
   }).format(d);
-}
-
-/**
+=======
  * Validates that an amount matches expected server-side pricing
  * Prevents price manipulation attacks
  */
@@ -347,4 +362,5 @@ export function generateIdempotencyKey(
     .join('-');
 
   return parts.substring(0, 255); // Stripe limit
+>>>>>>> origin/main
 }
