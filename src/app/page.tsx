@@ -1,12 +1,7 @@
-import Link from 'next/link';
+'use client';
+
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
@@ -14,673 +9,584 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import {
-  CheckCircle2,
-  XCircle,
-  ArrowRight,
-  Zap,
-  Layers,
-  Smartphone,
-  Palette,
   Sparkles,
+  Code,
+  Palette,
+  Zap,
+  CheckCircle2,
+  ArrowRight,
   Clock,
-  MessageSquare,
-  RefreshCw
+  Repeat,
+  Infinity,
+  Rocket,
+  Heart,
+  Mail,
+  Twitter,
+  Linkedin,
+  Github,
 } from 'lucide-react';
-import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white py-20 sm:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <FadeIn delay={0.1} direction="down">
-              <div className="mb-8">
-                <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700">
-                  Built by a VP who's shipped at Microsoft, JPMorgan Chase, and Home Depot
-                </span>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.2}>
-              <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Your Always-On Design & Development Partner
-              </h1>
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <p className="mb-8 text-xl text-gray-600 sm:text-2xl">
-                Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.4}>
-              <p className="mb-10 text-lg text-gray-500">
-                No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.5}>
-              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Button asChild size="lg" className="text-lg">
-                  <Link href="/subscribe">
-                    Start Your Subscription
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg">
-                  <a href="#how-it-works">See How It Works</a>
-                </Button>
-              </div>
-            </FadeIn>
-          </div>
+      <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-pulse delay-700" />
         </div>
-      </section>
 
-      {/* Social Proof Bar */}
-      <section className="border-b border-t bg-gray-50 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn delay={0.2}>
-            <p className="mb-6 text-center text-sm font-medium text-gray-500">
-              Trusted by startups, agencies, and growth teams at:
-            </p>
-          </FadeIn>
-          <FadeInStagger staggerDelay={0.1}>
-            <div className="flex flex-wrap items-center justify-center gap-8 text-gray-400">
-              <div className="rounded-lg bg-white px-6 py-3 font-semibold">SaaS</div>
-              <div className="rounded-lg bg-white px-6 py-3 font-semibold">E-Commerce</div>
-              <div className="rounded-lg bg-white px-6 py-3 font-semibold">Fintech</div>
-              <div className="rounded-lg bg-white px-6 py-3 font-semibold">AI</div>
+        <div className="container mx-auto max-w-6xl text-center relative z-10">
+          <div
+            className={`transition-all duration-1000 ${
+              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6 animate-bounce">
+              <Sparkles className="w-4 h-4" />
+              <span className="text-sm font-medium">Unlimited Design, Dev & AI Services</span>
             </div>
-          </FadeInStagger>
+
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              Your Creative Team,
+              <br />
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                On Demand
+              </span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Get unlimited design, development, and AI automation work for one flat monthly fee.
+              <br />
+              No contracts. Pause or cancel anytime.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Button
+                size="lg"
+                className="text-lg px-8 py-6 group"
+                onClick={() => scrollToSection('pricing')}
+              >
+                Start Your Subscription
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 py-6"
+                onClick={() => scrollToSection('how-it-works')}
+              >
+                See How It Works
+              </Button>
+            </div>
+
+            {/* Social proof */}
+            <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>48hr Turnaround</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Unlimited Requests</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                <span>Pause Anytime</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
 
-      {/* Problem Section */}
-      <section className="py-20 sm:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <FadeIn>
-              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Why Design Dream Exists
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="mb-12 text-xl font-semibold text-gray-900">
-                Building a product is hard enough. Managing vendors shouldn't make it harder.
-              </p>
-            </FadeIn>
-
-            <FadeInStagger staggerDelay={0.15} className="mb-12 grid gap-6 text-left sm:grid-cols-2">
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <XCircle className="mt-1 h-5 w-5 flex-shrink-0 text-red-500" />
-                    <p className="text-gray-700">A freelance designer who disappears for weeks</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <XCircle className="mt-1 h-5 w-5 flex-shrink-0 text-red-500" />
-                    <p className="text-gray-700">An agency charging $20k/month with endless meetings</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <XCircle className="mt-1 h-5 w-5 flex-shrink-0 text-red-500" />
-                    <p className="text-gray-700">An overbooked dev team with a 3-month backlog</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <XCircle className="mt-1 h-5 w-5 flex-shrink-0 text-red-500" />
-                    <p className="text-gray-700">Launch dates slipping because handoffs keep failing</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </FadeInStagger>
-
-            <FadeIn delay={0.3}>
-              <p className="text-2xl font-bold text-gray-900">There's a better way.</p>
-            </FadeIn>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center">
+            <div className="w-1.5 h-3 bg-muted-foreground/30 rounded-full mt-2 animate-pulse" />
           </div>
         </div>
       </section>
 
-      {/* Solution Section */}
-      <section className="bg-blue-600 py-20 text-white sm:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <FadeIn>
-              <h2 className="mb-6 text-3xl font-bold sm:text-4xl">
-                One Subscription. Unlimited Requests. Consistent Quality.
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="mb-12 text-xl text-blue-100">
-                Design Dream is your embedded design + dev partner.
-              </p>
-            </FadeIn>
-
-            <FadeInStagger staggerDelay={0.12} className="mb-12 grid gap-6 text-left sm:grid-cols-2">
-              <Card className="bg-white/10 border-white/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3 text-white">
-                    <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0" />
-                    <p><strong>Unlimited design requests</strong> (UI/UX, branding, mobile app screens)</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/10 border-white/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3 text-white">
-                    <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0" />
-                    <p><strong>Unlimited development</strong> (websites, web apps, mobile apps, features)</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/10 border-white/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3 text-white">
-                    <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0" />
-                    <p><strong>AI-powered features</strong> (ChatGPT-style integrations, automations)</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/10 border-white/20">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3 text-white">
-                    <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0" />
-                    <p><strong>One task at a time, delivered in 48 hours</strong></p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/10 border-white/20 sm:col-span-2">
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-center gap-3 text-white">
-                    <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0" />
-                    <p><strong>Pause or cancel anytime</strong> (no contracts, no hard feelings)</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </FadeInStagger>
-
-            <FadeIn delay={0.3}>
-              <p className="text-xl font-semibold">
-                No vendor juggling. No handoff delays. Just fast, high-quality work.
-              </p>
-            </FadeIn>
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-20 px-4 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">How It Works</h2>
+            <p className="text-xl text-muted-foreground">Three simple steps to transform your workflow</p>
           </div>
-        </div>
-      </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="py-20 sm:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <FadeIn>
-              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                How It Works
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="mb-12 text-lg text-gray-600">Simple 5-Step Process</p>
-            </FadeIn>
-
-            <FadeInStagger staggerDelay={0.15} className="grid gap-8">
-              {[
-                {
-                  number: '1',
-                  title: 'Subscribe',
-                  description: 'Choose your plan and start immediately. No onboarding meetings, no sales calls.',
-                  icon: Zap
-                },
-                {
-                  number: '2',
-                  title: 'Add Requests to Your Queue',
-                  description: 'Use Linear to submit unlimited design and development requests. Prioritize what matters most.',
-                  icon: Layers
-                },
-                {
-                  number: '3',
-                  title: 'I Work on One Task at a Time',
-                  description: 'Full focus = better quality and faster delivery. No context switching, no multitasking.',
-                  icon: Clock
-                },
-                {
-                  number: '4',
-                  title: 'Get Daily Updates',
-                  description: 'Know exactly where things stand. Transparency builds trust.',
-                  icon: MessageSquare
-                },
-                {
-                  number: '5',
-                  title: 'Review, Approve, Repeat',
-                  description: 'Love it? Move to the next task. Need tweaks? Two rounds of revisions included per task.',
-                  icon: RefreshCw
-                }
-              ].map((step) => (
-                <Card key={step.number} className="text-left">
-                  <CardContent className="flex gap-6 pt-6">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600">
-                      {step.number}
-                    </div>
-                    <div>
-                      <h3 className="mb-2 text-xl font-bold text-gray-900">{step.title}</h3>
-                      <p className="text-gray-600">{step.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </FadeInStagger>
-          </div>
-        </div>
-      </section>
-
-      {/* What You Get */}
-      <section className="bg-gray-50 py-20 sm:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <FadeIn>
-              <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                What You Get
-              </h2>
-            </FadeIn>
-
-            <FadeInStagger staggerDelay={0.15} className="grid gap-8 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
-                    <Palette className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <CardTitle>Product Design</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> UI/UX for web and mobile apps</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> User flows and wireframes</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Interactive prototypes (Figma, Framer)</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Design systems and component libraries</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Responsive layouts</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
-                    <Layers className="h-5 w-5 text-purple-600" />
-                  </div>
-                  <CardTitle>Web Development</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Landing pages and marketing sites</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Web applications (SaaS, dashboards)</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> E-commerce sites</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> CMS integration</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Frontend + backend (Next.js, React, Node.js)</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
-                    <Smartphone className="h-5 w-5 text-green-600" />
-                  </div>
-                  <CardTitle>Mobile App Design & Development</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> iOS and Android app design (Figma)</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> React Native development</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> App prototypes and user testing</li>
-                    <li className="flex gap-2 text-gray-500"><span className="text-xs">Note: Native iOS/Android quoted separately</span></li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100">
-                    <Sparkles className="h-5 w-5 text-amber-600" />
-                  </div>
-                  <CardTitle>AI & Automation</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> ChatGPT-style chat integrations</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> AI-powered search and recommendations</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Workflow automation</li>
-                    <li className="flex gap-2"><CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green-600 mt-0.5" /> Custom AI features for your product</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </FadeInStagger>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="pricing" className="py-20 sm:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <FadeIn>
-              <h2 className="mb-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Pricing
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <p className="mb-12 text-lg text-gray-600">One Simple Plan</p>
-            </FadeIn>
-
-            <ScaleIn delay={0.2} duration={0.4}>
-              <Card className="border-2 border-blue-600">
-              <CardHeader className="space-y-4 pb-8">
-                <div className="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">
-                  Limited Time
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="relative overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Rocket className="w-6 h-6 text-primary" />
                 </div>
-                <div>
-                  <div className="mb-2 text-5xl font-bold text-gray-900">$4,495</div>
-                  <div className="text-gray-600">/month</div>
-                </div>
-                <p className="text-sm text-amber-600 font-semibold">
-                  First 10 clients lock in $4,495/month forever<br />
-                  (Price increases to $5,995/month after first 10)
-                </p>
+                <div className="text-4xl font-bold text-primary/20 mb-2">01</div>
+                <CardTitle className="text-2xl">Subscribe</CardTitle>
+                <CardDescription className="text-base">
+                  Choose your plan and get instant access to our platform. No setup fees, no hidden costs.
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 pb-8">
-                <div className="space-y-3 text-left">
-                  <div className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>Unlimited design requests</span>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>Unlimited development requests</span>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>One task active at a time (ensures quality + speed)</span>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>48-hour turnaround per task</span>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>Two rounds of revisions per task</span>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>Daily progress updates via Linear</span>
-                  </div>
-                  <div className="flex gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>Pause or cancel anytime</span>
-                  </div>
+            </Card>
+
+            <Card className="relative overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                  <Repeat className="w-6 h-6 text-accent" />
+                </div>
+                <div className="text-4xl font-bold text-accent/20 mb-2">02</div>
+                <CardTitle className="text-2xl">Submit Requests</CardTitle>
+                <CardDescription className="text-base">
+                  Add unlimited requests to your queue. We&apos;ll work through them one by one, prioritizing as you need.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="relative overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500" />
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Clock className="w-6 h-6 text-primary" />
+                </div>
+                <div className="text-4xl font-bold text-primary/20 mb-2">03</div>
+                <CardTitle className="text-2xl">Get Deliverables</CardTitle>
+                <CardDescription className="text-base">
+                  Receive your completed work in 48 hours or less. Request revisions until you&apos;re 100% satisfied.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* What You Get Section */}
+      <section className="py-20 px-4 bg-secondary/20">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">What You Get</h2>
+            <p className="text-xl text-muted-foreground">
+              All the services you need, included in one subscription
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Design Services */}
+            <Card className="hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center mb-6">
+                  <Palette className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-2xl mb-4">Design</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {[
+                    'UI/UX Design',
+                    'Brand Identity',
+                    'Logo Design',
+                    'Marketing Graphics',
+                    'Social Media Assets',
+                    'Presentation Decks',
+                    'Wireframes & Prototypes',
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* Development Services */}
+            <Card className="hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-6">
+                  <Code className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-2xl mb-4">Development</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {[
+                    'Web Development',
+                    'Mobile Apps',
+                    'Full-Stack Solutions',
+                    'API Integration',
+                    'Database Design',
+                    'E-commerce Sites',
+                    'Custom Features',
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* AI & Automation Services */}
+            <Card className="hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-6">
+                  <Zap className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-2xl mb-4">AI & Automation</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {[
+                    'AI Integration',
+                    'Workflow Automation',
+                    'ChatGPT Integration',
+                    'Data Processing',
+                    'Custom Bots',
+                    'API Automation',
+                    'Process Optimization',
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 px-4 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Simple, Transparent Pricing</h2>
+            <p className="text-xl text-muted-foreground">One plan. Unlimited possibilities.</p>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            <Card className="relative overflow-hidden border-2 border-primary shadow-2xl">
+              <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-sm font-semibold">
+                MOST POPULAR
+              </div>
+              <CardHeader className="text-center pb-8 pt-12">
+                <CardTitle className="text-3xl mb-2">Core Plan</CardTitle>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <span className="text-5xl font-bold">$4,495</span>
+                  <span className="text-xl text-muted-foreground">/month</span>
+                </div>
+                <CardDescription className="text-base">
+                  Everything you need to scale your business
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4 mb-8">
+                  {[
+                    { icon: Infinity, text: 'Unlimited design & dev requests' },
+                    { icon: Clock, text: '48-hour average turnaround' },
+                    { icon: Repeat, text: 'Unlimited revisions' },
+                    { icon: CheckCircle2, text: 'Dedicated team member' },
+                    { icon: Zap, text: 'AI & automation included' },
+                    { icon: Code, text: 'Full-stack development' },
+                    { icon: Palette, text: 'Professional design work' },
+                    { icon: Heart, text: 'Pause or cancel anytime' },
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <item.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <span className="text-lg">{item.text}</span>
+                    </div>
+                  ))}
                 </div>
 
-                <Button asChild size="lg" className="w-full text-lg">
-                  <Link href="/subscribe">
-                    Lock In Launch Pricing
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
+                <Button size="lg" className="w-full text-lg py-6 group" onClick={() => scrollToSection('contact')}>
+                  Start Your Subscription
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
-                <p className="text-sm text-gray-500 pt-4">
-                  Perfect for startups, marketing teams, agencies, and product teams with backlogs.
+                <p className="text-center text-sm text-muted-foreground mt-6">
+                  No contracts. No setup fees. Cancel anytime.
                 </p>
               </CardContent>
             </Card>
-            </ScaleIn>
           </div>
         </div>
       </section>
 
-      {/* About Chris Carter */}
-      <section className="bg-white py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
-                Built by Someone Who's Been in Your Shoes
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Design Dream was created by Chris Carter, a former VP of Engineering and Product who got tired of watching great ideas die in backlogs.
-              </p>
-            </div>
-          </FadeIn>
+      {/* About Section */}
+      <section className="py-20 px-4 bg-secondary/20">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Meet Your Partner</h2>
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <FadeIn delay={0.2} direction="left">
-              <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
-                  alt="Chris Carter, Founder of Design Dream"
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.3} direction="right">
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    15+ Years Building Products at Scale
-                  </h3>
-                  <p className="text-lg text-gray-600 leading-relaxed">
-                    I've spent my career at companies like <span className="font-semibold text-gray-900">Microsoft</span>, <span className="font-semibold text-gray-900">JPMorgan Chase</span>, <span className="font-semibold text-gray-900">Home Depot</span>, and <span className="font-semibold text-gray-900">Indeed</span>, leading teams that shipped products used by millions.
-                  </p>
+          <Card className="overflow-hidden">
+            <CardContent className="p-8 md:p-12">
+              <div className="flex flex-col md:flex-row gap-8 items-center">
+                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-4xl font-bold flex-shrink-0">
+                  CC
                 </div>
-
-                <div>
-                  <p className="text-lg text-gray-600 leading-relaxed">
-                    But I kept seeing the same problem: <span className="italic">great ideas stuck in limbo</span> because teams couldn't find reliable design and development partners who understood their urgency.
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-lg text-gray-600 leading-relaxed">
-                    So I built Design Dream to be the partner I always wished I had—someone who could take an idea from concept to shipped product without the typical agency overhead, miscommunication, or delays.
-                  </p>
-                </div>
-
-                <div className="pt-4">
-                  <div className="bg-blue-50 rounded-lg p-6 border border-blue-100">
-                    <p className="text-base text-gray-700 leading-relaxed">
-                      <span className="font-semibold text-gray-900">"I'm not running an agency.</span> I'm your embedded design and development partner. I work directly on your projects, understand your business context, and treat your deadlines like they're my own."
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-2xl font-bold mb-4">Hi, I&apos;m Chris</h3>
+                  <div className="space-y-4 text-muted-foreground">
+                    <p>
+                      I&apos;m a full-stack developer and designer based in Texas with a passion for creating
+                      exceptional digital experiences. After years of working with startups and businesses,
+                      I realized something: traditional agency models are broken.
                     </p>
-                    <p className="text-sm text-gray-600 mt-3 font-medium">
-                      — Chris Carter, Founder
+                    <p>
+                      Too many companies struggle with expensive retainers, slow turnarounds, and unpredictable
+                      costs. That&apos;s why I created this service - to give you unlimited access to world-class
+                      design, development, and AI automation for one flat monthly fee.
+                    </p>
+                    <p className="font-semibold text-foreground">
+                      No meetings. No contracts. Just exceptional work, delivered fast.
                     </p>
                   </div>
                 </div>
-
-                <div className="flex flex-wrap gap-3 pt-2">
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                    Former VP Engineering
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                    Full-Stack Developer
-                  </span>
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                    Product Designer
-                  </span>
-                </div>
               </div>
-            </FadeIn>
+            </CardContent>
+          </Card>
+
+          <div className="mt-12 grid md:grid-cols-3 gap-6">
+            <Card>
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-primary mb-2">10+</div>
+                <div className="text-muted-foreground">Years Experience</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-primary mb-2">100+</div>
+                <div className="text-muted-foreground">Projects Delivered</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-primary mb-2">48h</div>
+                <div className="text-muted-foreground">Average Turnaround</div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="bg-gray-50 py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Everything you need to know about how Design Dream works
-              </p>
-            </div>
-          </FadeIn>
+      {/* FAQ Section */}
+      <section className="py-20 px-4 bg-background">
+        <div className="container mx-auto max-w-3xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-muted-foreground">Everything you need to know</p>
+          </div>
 
-          <FadeIn delay={0.2}>
-            <div className="max-w-3xl mx-auto">
-              <Accordion type="single" collapsible className="space-y-4">
-                <AccordionItem value="item-1" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    How does the monthly subscription work?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    For $4,495/month, you get unlimited design and development requests. You can add as many requests to your queue as you need, and I'll work through them one at a time. Each task is delivered within 48 business hours (Mon-Fri, 9am-5pm Central). Once a task is complete, I immediately start the next one in your queue.
-                  </AccordionContent>
-                </AccordionItem>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-left text-lg">
+                How does the subscription work?
+              </AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">
+                Once subscribed, you get access to our project dashboard where you can add unlimited
+                design, development, and AI automation requests. We work on one request at a time,
+                delivering each within 48 hours on average. You can prioritize your queue and request
+                revisions until you&apos;re completely satisfied.
+              </AccordionContent>
+            </AccordionItem>
 
-                <AccordionItem value="item-2" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    What's the typical turnaround time for requests?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    Most requests are delivered within 48 business hours. Simple tasks (bug fixes, minor UI tweaks) can be done in 24 hours or less. More complex features might take 2-3 business days. You'll get daily progress updates via Linear, and I'll always set clear expectations before starting work.
-                  </AccordionContent>
-                </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger className="text-left text-lg">
+                What is the average turnaround time?
+              </AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">
+                Most requests are completed within 48 hours on average. Complex projects may take longer,
+                but we&apos;ll always communicate timelines upfront. Simple tasks like landing pages or UI
+                components often come back even faster.
+              </AccordionContent>
+            </AccordionItem>
 
-                <AccordionItem value="item-3" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    Can I pause or cancel my subscription?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    Absolutely. You can pause your subscription at any time and resume when you're ready. There are no contracts or cancellation fees. If you pause, you won't be charged for the time you're not using the service. Many clients pause during holidays or slow periods and reactivate when they have a new backlog.
-                  </AccordionContent>
-                </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger className="text-left text-lg">
+                How many requests can I have at once?
+              </AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">
+                You can add as many requests as you&apos;d like to your queue. We work on one request at a
+                time to ensure quality and speed. You can prioritize your queue at any time to focus on
+                what&apos;s most important to your business.
+              </AccordionContent>
+            </AccordionItem>
 
-                <AccordionItem value="item-4" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    What if I don't like the work or need revisions?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    Each request includes two rounds of revisions at no additional cost. If you need changes, just let me know what to adjust, and I'll make it right. My goal is your complete satisfaction. If something's not working, we'll iterate until it does.
-                  </AccordionContent>
-                </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="text-left text-lg">
+                What if I don&apos;t like the work?
+              </AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">
+                No problem! We include unlimited revisions with every request. We&apos;ll keep refining until
+                you&apos;re completely happy with the result. Your satisfaction is our priority.
+              </AccordionContent>
+            </AccordionItem>
 
-                <AccordionItem value="item-5" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    What types of requests can I submit?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    Almost anything related to web design and development: landing pages, web apps, mobile apps (React Native), UI/UX design, frontend development, backend APIs, bug fixes, feature additions, refactoring, performance optimization, responsive design, accessibility improvements, and more. If it can be built with modern web technologies, I can help.
-                  </AccordionContent>
-                </AccordionItem>
+            <AccordionItem value="item-5">
+              <AccordionTrigger className="text-left text-lg">
+                Can I pause or cancel my subscription?
+              </AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">
+                Absolutely! You can pause or cancel your subscription at any time, no questions asked.
+                When you pause, your billing cycle stops and you can resume whenever you&apos;re ready. No
+                contracts, no commitments.
+              </AccordionContent>
+            </AccordionItem>
 
-                <AccordionItem value="item-6" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    What if I have multiple projects or brands?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    No problem! You can submit requests for multiple projects, websites, or brands. Just specify which project each request is for in Linear. I'll work through your queue in priority order, regardless of which project each task belongs to.
-                  </AccordionContent>
-                </AccordionItem>
+            <AccordionItem value="item-6">
+              <AccordionTrigger className="text-left text-lg">
+                What technologies do you work with?
+              </AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">
+                We work with modern web technologies including React, Next.js, Vue, Node.js, Python,
+                TypeScript, and more. For design, we use Figma, Adobe Creative Suite, and other industry-
+                standard tools. We&apos;re also experienced with AI integrations, automation platforms, and
+                various APIs.
+              </AccordionContent>
+            </AccordionItem>
 
-                <AccordionItem value="item-7" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    How do we communicate and manage requests?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    Everything happens in Linear. When you subscribe, you'll get access to your dedicated project workspace where you can post requests, share files, give feedback, and see daily progress updates. It's simple, organized, and keeps everything in one place. No jumping between Slack, email, and project management tools.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-8" className="bg-white rounded-lg border border-gray-200 px-6">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
-                    Are there any setup fees or long-term contracts?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed">
-                    Nope. No setup fees, no onboarding costs, no long-term commitments. Just a simple monthly subscription that you can pause or cancel anytime. You're billed monthly, and you can adjust your plan whenever your needs change.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-
-              <div className="mt-12 text-center">
-                <p className="text-gray-600 mb-4">
-                  Still have questions?
-                </p>
-                <Button asChild variant="outline" size="lg">
-                  <a href="mailto:hello@designdream.is">
-                    Email hello@designdream.is
-                  </a>
-                </Button>
-              </div>
-            </div>
-          </FadeIn>
+            <AccordionItem value="item-7">
+              <AccordionTrigger className="text-left text-lg">
+                Is there a refund policy?
+              </AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">
+                Due to the high-quality nature of our work, we don&apos;t offer refunds. However, you can
+                cancel your subscription at any time to stop future charges. We also offer unlimited
+                revisions to ensure you&apos;re satisfied with every deliverable.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-700 py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <FadeIn>
-            <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
-              Stop Juggling Vendors. Start Shipping.
-            </h2>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <p className="mb-8 text-xl text-blue-100">
-              Unlimited design. Unlimited development. One expert partner.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p className="mb-10 text-lg text-blue-100">
-              Pause or cancel anytime. No contracts. No risk.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.3}>
-            <Button asChild size="lg" variant="secondary" className="text-lg">
-              <Link href="/subscribe">
-                Start Your Subscription
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+      {/* CTA Section */}
+      <section id="contact" className="py-20 px-4 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/20">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Ready to Transform Your Workflow?
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Join forward-thinking businesses who are scaling faster with unlimited design,
+            development, and AI automation.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button size="lg" className="text-lg px-8 py-6 group">
+              Start Your Subscription
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-          </FadeIn>
+            <Button size="lg" variant="outline" className="text-lg px-8 py-6">
+              <Mail className="mr-2 w-5 h-5" />
+              Contact Us
+            </Button>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-gray-50 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <p className="mb-6 text-gray-600">
-              Still have questions? Email me:{' '}
-              <a href="mailto:hello@designdream.is" className="text-blue-600 hover:underline">
-                hello@designdream.is
-              </a>
-            </p>
-            <div className="mb-6 flex justify-center gap-6 text-sm text-gray-600">
-              <Link href="/terms" className="hover:text-gray-900">Terms of Service</Link>
-              <Link href="/privacy" className="hover:text-gray-900">Privacy Policy</Link>
-              <Link href="/refund-policy" className="hover:text-gray-900">Refund Policy</Link>
+      <footer className="bg-background border-t">
+        <div className="container mx-auto max-w-6xl px-4 py-12">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div className="md:col-span-2">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Design Dreams
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Unlimited design, development, and AI automation for one flat monthly fee.
+              </p>
+              <div className="flex gap-4">
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                >
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                >
+                  <Github className="w-5 h-5" />
+                </a>
+              </div>
             </div>
-            <p className="text-sm text-gray-500">
-              © 2025 Design Dream. All rights reserved.
-            </p>
+
+            <div>
+              <h4 className="font-semibold mb-4">Services</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Design
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Development
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    AI & Automation
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground transition-colors">
+                    Refund Policy
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+            <p>&copy; {new Date().getFullYear()} Design Dreams. All rights reserved.</p>
+            <p>Based in Texas, serving clients worldwide.</p>
           </div>
         </div>
       </footer>
