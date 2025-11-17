@@ -6,9 +6,6 @@ import {
   PaymentEventData,
   SubscriptionStatus,
 } from '@/types/stripe.types';
-import { sendEmail } from './email/send';
-import { executeClientOnboarding } from './onboarding/orchestrator';
-import { stripe } from './stripe';
 
 /**
  * Execute database operation within a transaction
@@ -48,51 +45,8 @@ async function getClientByCustomerId(
 }
 
 /**
- * Split full name into first and last name
- * Handles various name formats gracefully
- */
-function splitName(fullName: string | null | undefined): { firstName: string; lastName: string } {
-  if (!fullName || fullName.trim() === '') {
-    return { firstName: 'Valued', lastName: 'Client' };
-  }
-
-  const parts = fullName.trim().split(/\s+/);
-
-  if (parts.length === 1) {
-    return { firstName: parts[0], lastName: '' };
-  }
-
-  // First word is first name, rest is last name
-  const firstName = parts[0];
-  const lastName = parts.slice(1).join(' ');
-
-  return { firstName, lastName };
-}
-
-/**
- * Generate Stripe customer portal link
- */
-async function generatePortalLink(customerId: string): Promise<string> {
-  try {
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-
-    const session = await stripe.billingPortal.sessions.create({
-      customer: customerId,
-      return_url: `${appUrl}/dashboard`,
-    });
-
-    return session.url;
-  } catch (error) {
-    console.error('Failed to generate portal link:', error);
-    // Return fallback URL
-    return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  }
-}
-
-/**
  * Handle subscription.created event
  * Creates a new subscription record and activates the client
- * Triggers automated client onboarding for new subscriptions
  * Uses transaction to ensure data consistency
  */
 export async function handleSubscriptionCreated(
@@ -106,14 +60,6 @@ export async function handleSubscriptionCreated(
       throw new Error(
         `Client not found for customer ID: ${subscription.customer}`
       );
-    }
-
-    // Fetch customer details from Stripe for onboarding
-    let customer: Stripe.Customer | null = null;
-    try {
-      customer = await stripe.customers.retrieve(subscription.customer as string) as Stripe.Customer;
-    } catch (error) {
-      console.error('Failed to fetch customer from Stripe:', error);
     }
 
     // Start transaction-like operation
@@ -160,55 +106,6 @@ export async function handleSubscriptionCreated(
       }
 
       console.log(`Subscription created successfully for client ${clientId}`);
-
-      // Trigger automated client onboarding (don't fail webhook if onboarding fails)
-      try {
-        // Fetch client details for onboarding
-        const { data: clientData } = await supabaseAdmin
-          .from('clients')
-          .select('email, contact_name, company_name')
-          .eq('id', clientId)
-          .single();
-
-        if (clientData && clientData.email && customer) {
-          // Extract customer information
-          const { firstName, lastName } = splitName(
-            customer.name || clientData.contact_name || ''
-          );
-          const companyName = (customer.metadata?.company as string) ||
-                              clientData.company_name ||
-                              clientData.contact_name ||
-                              'Your Company';
-
-          // Generate Stripe portal link
-          const stripePortalUrl = await generatePortalLink(subscription.customer as string);
-
-          console.log('\n🚀 Triggering automated client onboarding...');
-
-          // Execute complete onboarding automation
-          const onboardingResult = await executeClientOnboarding({
-            email: clientData.email,
-            firstName,
-            lastName,
-            companyName,
-            stripeCustomerId: subscription.customer as string,
-            stripeSubscriptionId: subscription.id,
-            stripePortalUrl,
-          });
-
-          if (onboardingResult.success) {
-            console.log('✅ Client onboarding completed successfully');
-          } else {
-            console.error('⚠️  Client onboarding had failures:', onboardingResult.errors);
-            // Don't fail the webhook - onboarding failures are logged separately
-          }
-        } else {
-          console.warn('Skipping onboarding - missing required customer data');
-        }
-      } catch (onboardingError) {
-        // Log error but don't fail the webhook
-        console.error('Error during client onboarding:', onboardingError);
-      }
 
       return {
         success: true,
@@ -479,7 +376,7 @@ export async function handlePaymentFailed(
           throw new Error(`Failed to update subscription status: ${subscriptionError.message}`);
         }
 
-        // Update client status and send notification email
+        // Update client status
         const clientId = await getClientByCustomerId(invoice.customer as string);
         if (clientId) {
           const { error: clientError } = await supabaseAdmin
@@ -492,58 +389,6 @@ export async function handlePaymentFailed(
 
           if (clientError) {
             throw new Error(`Failed to update client status: ${clientError.message}`);
-          }
-
-          // Fetch client details for email notification
-          try {
-            const { data: clientData } = await supabaseAdmin
-              .from('clients')
-              .select('email, contact_name, company_name')
-              .eq('id', clientId)
-              .single();
-
-            const { data: subscriptionData } = await supabaseAdmin
-              .from('subscriptions')
-              .select('plan_type, plan_amount, plan_interval')
-              .eq('stripe_subscription_id', invoice.subscription as string)
-              .single();
-
-            if (clientData && clientData.email && subscriptionData) {
-              // Determine attempt number and next retry date
-              const attemptNumber = invoice.attempt_count || 1;
-              const nextAttemptDate = attemptNumber < 4 ? 'in 3 days' : undefined;
-
-              // Get Stripe portal link
-              const portalUrl = await generatePortalLink(invoice.customer as string);
-
-              // Send payment failure email
-              await sendEmail({
-                type: 'payment_failed',
-                recipient: {
-                  email: clientData.email,
-                  name: clientData.contact_name || 'Valued Client',
-                  userId: clientId,
-                },
-                client: {
-                  companyName: clientData.company_name || clientData.contact_name || 'Your Company',
-                },
-                payment: {
-                  planName: `${subscriptionData.plan_type} Plan`,
-                  amountDue: subscriptionData.plan_amount,
-                  currency: invoice.currency,
-                  attemptNumber,
-                  nextAttemptDate,
-                  reason: 'Your payment method was declined. Please update your payment information.',
-                },
-                invoiceUrl: invoice.hosted_invoice_url || '#',
-                portalUrl,
-              });
-
-              console.log(`Payment failure email sent to ${clientData.email}`);
-            }
-          } catch (emailError) {
-            // Log error but don't fail the webhook
-            console.error('Error sending payment failure email:', emailError);
           }
         }
       }
