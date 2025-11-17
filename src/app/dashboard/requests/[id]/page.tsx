@@ -6,7 +6,6 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useClientRequest } from '@/hooks/use-client-requests';
-import { CommentList } from '@/components/requests/CommentList';
 
 export default function RequestDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -90,14 +89,13 @@ export default function RequestDetailPage({ params }: { params: Promise<{ id: st
               </dl>
             </div>
 
+            <div className="border-t pt-6">
+              <p className="text-sm text-gray-600">
+                Full request detail view with comments, attachments, and activity timeline would be implemented here.
+                This would reuse components from p0-request-form.
+              </p>
+            </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Comments Section */}
-      <Card>
-        <CardContent className="pt-6">
-          <CommentList requestId={id} />
         </CardContent>
       </Card>
     </div>
