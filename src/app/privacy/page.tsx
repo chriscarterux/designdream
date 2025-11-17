@@ -54,7 +54,7 @@ export default function PrivacyPolicy() {
               <li><strong>Payment Information:</strong> Credit card details (processed and stored securely by Stripe, not by us)</li>
               <li><strong>Account Information:</strong> Username, password, subscription preferences</li>
               <li><strong>Project Information:</strong> Design briefs, project requirements, feedback, assets you upload</li>
-              <li><strong>Communication Data:</strong> Messages, comments, and communications via Linear and email</li>
+              <li><strong>Communication Data:</strong> Messages, comments, and communications via Basecamp and email</li>
             </ul>
 
             <h3 className="text-xl font-semibold text-gray-900 mb-3">2.2 Information Collected Automatically</h3>
@@ -74,7 +74,7 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-6 text-gray-700">
               <li><strong>Stripe:</strong> Payment status, billing information, transaction details</li>
-              <li><strong>Linear:</strong> Project activity, task completions, comment interactions</li>
+              <li><strong>Basecamp:</strong> Project activity, task completions, comment interactions</li>
               <li><strong>Analytics Providers:</strong> Website usage statistics, traffic sources</li>
             </ul>
           </section>
@@ -117,7 +117,7 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-6 text-gray-700 mb-4">
               <li><strong>Stripe:</strong> Payment processing and billing management</li>
-              <li><strong>Linear:</strong> Project management and communication</li>
+              <li><strong>Basecamp:</strong> Project management and communication</li>
               <li><strong>Supabase:</strong> Database and authentication services</li>
               <li><strong>Vercel:</strong> Hosting and infrastructure</li>
               <li><strong>Anthropic (Claude AI):</strong> Request analysis and automation</li>
@@ -269,7 +269,7 @@ export default function PrivacyPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">12. Third-Party Links</h2>
             <p className="text-gray-700">
-              Our service may contain links to third-party websites (e.g., Linear, Stripe). We are not responsible for the privacy practices of these sites. We encourage you to read their privacy policies before providing any information.
+              Our service may contain links to third-party websites (e.g., Basecamp, Stripe). We are not responsible for the privacy practices of these sites. We encourage you to read their privacy policies before providing any information.
             </p>
           </section>
 
