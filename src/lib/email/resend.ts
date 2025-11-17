@@ -34,8 +34,8 @@ export function getRecipientEmail(email: string): string {
 // Helper to format email subject with environment prefix
 export function formatSubject(subject: string): string {
   const env = process.env.NODE_ENV;
-  if (env !== 'production') {
-    return `[${env?.toUpperCase() || 'DEV'}] ${subject}`;
+  if (env === 'development' || env === 'staging') {
+    return `[${env.toUpperCase()}] ${subject}`;
   }
   return subject;
 }

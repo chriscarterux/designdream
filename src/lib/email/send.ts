@@ -121,7 +121,7 @@ export async function sendEmail(data: EmailData, retryCount = 0): Promise<EmailS
     }
 
     // Render email template
-    const html = await renderEmailTemplate(data);
+    const html = renderEmailTemplate(data);
     const subject = formatSubject(getEmailSubject(data));
 
     // Log pending

@@ -180,7 +180,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Render the template
-    const html = await renderEmailTemplate(data);
+    const html = renderEmailTemplate(data);
 
     // Return HTML for preview
     return new NextResponse(html, {

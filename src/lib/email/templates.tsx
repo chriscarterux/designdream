@@ -7,7 +7,6 @@ import NewRequestEmail from '@/emails/new-request';
 import StatusChangedEmail from '@/emails/status-changed';
 import CommentAddedEmail from '@/emails/comment-added';
 import WelcomeEmail from '@/emails/welcome';
-import PaymentFailedEmail from '@/emails/payment-failed';
 import type {
   EmailData,
   SLAWarningEmailData,
@@ -16,12 +15,11 @@ import type {
   StatusChangedEmailData,
   CommentAddedEmailData,
   WelcomeEmailData,
-  PaymentFailedEmailData,
 } from '@/types/email.types';
 
 // Template rendering functions
-export async function renderSLAWarningEmail(data: SLAWarningEmailData): Promise<string> {
-  return await render(
+export function renderSLAWarningEmail(data: SLAWarningEmailData): string {
+  return render(
     SLAWarningEmail({
       requestTitle: data.request.title,
       requestStatus: data.request.status,
@@ -38,8 +36,8 @@ export async function renderSLAWarningEmail(data: SLAWarningEmailData): Promise<
   );
 }
 
-export async function renderSLAViolationEmail(data: SLAViolationEmailData): Promise<string> {
-  return await render(
+export function renderSLAViolationEmail(data: SLAViolationEmailData): string {
+  return render(
     SLAViolationEmail({
       requestTitle: data.request.title,
       requestStatus: data.request.status,
@@ -55,8 +53,8 @@ export async function renderSLAViolationEmail(data: SLAViolationEmailData): Prom
   );
 }
 
-export async function renderNewRequestEmail(data: NewRequestEmailData): Promise<string> {
-  return await render(
+export function renderNewRequestEmail(data: NewRequestEmailData): string {
+  return render(
     NewRequestEmail({
       requestTitle: data.request.title,
       requestDescription: data.request.description,
@@ -70,8 +68,8 @@ export async function renderNewRequestEmail(data: NewRequestEmailData): Promise<
   );
 }
 
-export async function renderStatusChangedEmail(data: StatusChangedEmailData): Promise<string> {
-  return await render(
+export function renderStatusChangedEmail(data: StatusChangedEmailData): string {
+  return render(
     StatusChangedEmail({
       requestTitle: data.request.title,
       oldStatus: data.request.oldStatus,
@@ -85,8 +83,8 @@ export async function renderStatusChangedEmail(data: StatusChangedEmailData): Pr
   );
 }
 
-export async function renderCommentAddedEmail(data: CommentAddedEmailData): Promise<string> {
-  return await render(
+export function renderCommentAddedEmail(data: CommentAddedEmailData): string {
+  return render(
     CommentAddedEmail({
       requestTitle: data.request.title,
       commentPreview: data.comment.preview,
@@ -99,8 +97,8 @@ export async function renderCommentAddedEmail(data: CommentAddedEmailData): Prom
   );
 }
 
-export async function renderWelcomeEmail(data: WelcomeEmailData): Promise<string> {
-  return await render(
+export function renderWelcomeEmail(data: WelcomeEmailData): string {
+  return render(
     WelcomeEmail({
       companyName: data.client.companyName,
       contactName: data.client.contactName,
@@ -111,47 +109,27 @@ export async function renderWelcomeEmail(data: WelcomeEmailData): Promise<string
   );
 }
 
-export async function renderPaymentFailedEmail(data: PaymentFailedEmailData): Promise<string> {
-  return await render(
-    PaymentFailedEmail({
-      recipientName: data.recipient.name,
-      companyName: data.client.companyName,
-      planName: data.payment.planName,
-      amountDue: data.payment.amountDue,
-      currency: data.payment.currency,
-      attemptNumber: data.payment.attemptNumber,
-      nextAttemptDate: data.payment.nextAttemptDate,
-      reason: data.payment.reason,
-      invoiceUrl: data.invoiceUrl,
-      portalUrl: data.portalUrl,
-    })
-  );
-}
-
 // Main template renderer
-export async function renderEmailTemplate(data: EmailData): Promise<string> {
+export function renderEmailTemplate(data: EmailData): string {
   switch (data.type) {
     case 'sla_warning_yellow':
     case 'sla_warning_red':
-      return await renderSLAWarningEmail(data as SLAWarningEmailData);
+      return renderSLAWarningEmail(data as SLAWarningEmailData);
 
     case 'sla_violation':
-      return await renderSLAViolationEmail(data as SLAViolationEmailData);
+      return renderSLAViolationEmail(data as SLAViolationEmailData);
 
     case 'new_request':
-      return await renderNewRequestEmail(data as NewRequestEmailData);
+      return renderNewRequestEmail(data as NewRequestEmailData);
 
     case 'status_changed':
-      return await renderStatusChangedEmail(data as StatusChangedEmailData);
+      return renderStatusChangedEmail(data as StatusChangedEmailData);
 
     case 'comment_added':
-      return await renderCommentAddedEmail(data as CommentAddedEmailData);
+      return renderCommentAddedEmail(data as CommentAddedEmailData);
 
     case 'welcome':
-      return await renderWelcomeEmail(data as WelcomeEmailData);
-
-    case 'payment_failed':
-      return await renderPaymentFailedEmail(data as PaymentFailedEmailData);
+      return renderWelcomeEmail(data as WelcomeEmailData);
 
     default:
       throw new Error(`Unknown email type: ${(data as any).type}`);
@@ -184,10 +162,6 @@ export function getEmailSubject(data: EmailData): string {
 
     case 'welcome':
       return `Welcome to DesignDream, ${(data as WelcomeEmailData).client.contactName}!`;
-
-    case 'payment_failed':
-      const paymentData = data as PaymentFailedEmailData;
-      return `Payment Failed: ${paymentData.payment.planName} - Action Required`;
 
     default:
       return 'DesignDream Notification';
