@@ -17,8 +17,8 @@ import {
 export function validateFileType(file: File, allowedTypes?: string | string[]): FileValidationResult {
   if (!allowedTypes) {
     // Default: allow all types defined in ALLOWED_FILE_TYPES
-    const allAllowedTypes = Object.values(ALLOWED_FILE_TYPES).flat() as string[];
-    const allExtensions = Object.values(FILE_EXTENSIONS).flat() as string[];
+    const allAllowedTypes = Object.values(ALLOWED_FILE_TYPES).flat();
+    const allExtensions = Object.values(FILE_EXTENSIONS).flat();
 
     const isValidMime = allAllowedTypes.includes(file.type);
     const extension = getFileExtension(file.name);
@@ -105,11 +105,11 @@ export function getFileExtension(filename: string): string {
 export function getFileCategory(file: File): 'image' | 'document' | 'design' | 'archive' | 'video' | 'other' {
   const extension = getFileExtension(file.name);
 
-  if ((ALLOWED_FILE_TYPES.images as readonly string[]).includes(file.type)) return 'image';
-  if ((ALLOWED_FILE_TYPES.documents as readonly string[]).includes(file.type)) return 'document';
-  if ((ALLOWED_FILE_TYPES.videos as readonly string[]).includes(file.type)) return 'video';
-  if ((ALLOWED_FILE_TYPES.archives as readonly string[]).includes(file.type)) return 'archive';
-  if ((FILE_EXTENSIONS.design as readonly string[]).includes(extension)) return 'design';
+  if (ALLOWED_FILE_TYPES.images.includes(file.type)) return 'image';
+  if (ALLOWED_FILE_TYPES.documents.includes(file.type)) return 'document';
+  if (ALLOWED_FILE_TYPES.videos.includes(file.type)) return 'video';
+  if (ALLOWED_FILE_TYPES.archives.includes(file.type)) return 'archive';
+  if (FILE_EXTENSIONS.design.includes(extension)) return 'design';
 
   return 'other';
 }
@@ -150,7 +150,7 @@ export function createFilePath(userId: string, folder: string, fileName: string)
  * Check if file is an image
  */
 export function isImageFile(file: File): boolean {
-  return (ALLOWED_FILE_TYPES.images as readonly string[]).includes(file.type);
+  return ALLOWED_FILE_TYPES.images.includes(file.type);
 }
 
 /**
@@ -164,7 +164,7 @@ export function isPdfFile(file: File): boolean {
  * Check if file is a video
  */
 export function isVideoFile(file: File): boolean {
-  return (ALLOWED_FILE_TYPES.videos as readonly string[]).includes(file.type);
+  return ALLOWED_FILE_TYPES.videos.includes(file.type);
 }
 
 /**

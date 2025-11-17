@@ -92,7 +92,7 @@ export function DropZone({
         type="file"
         id="file-upload"
         className="sr-only"
-        accept={Array.isArray(accept) ? accept.join(',') : accept}
+        accept={accept}
         multiple={maxFiles > 1}
         onChange={handleFileInput}
         disabled={disabled}
