@@ -1,11 +1,5 @@
 import Stripe from 'stripe';
 
-<<<<<<< HEAD
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is not defined in environment variables');
-}
-
-=======
 /**
  * Validates Stripe secret key format and environment
  * Throws if key is missing or invalid
@@ -16,7 +10,7 @@ function validateStripeKey(): string {
   if (!key) {
     throw new Error(
       'STRIPE_SECRET_KEY is not defined in environment variables. ' +
-      'Please set it in your .env.local file.'
+        'Please set it in your .env.local file.'
     );
   }
 
@@ -26,8 +20,7 @@ function validateStripeKey(): string {
 
   if (!isTestKey && !isLiveKey) {
     throw new Error(
-      'STRIPE_SECRET_KEY has invalid format. ' +
-      'Expected format: sk_test_... or sk_live_...'
+      'STRIPE_SECRET_KEY has invalid format. ' + 'Expected format: sk_test_... or sk_live_...'
     );
   }
 
@@ -36,8 +29,8 @@ function validateStripeKey(): string {
   if (isProduction && isTestKey) {
     console.warn(
       '⚠️  WARNING: Using Stripe test key in production environment! ' +
-      'This should only be used for staging/testing. ' +
-      'Please use a live key (sk_live_...) for production.'
+        'This should only be used for staging/testing. ' +
+        'Please use a live key (sk_live_...) for production.'
     );
   }
 
@@ -51,28 +44,17 @@ function validateStripeKey(): string {
 // Validate key on module load
 const validatedKey = validateStripeKey();
 
->>>>>>> origin/main
 /**
  * Stripe server-side client
  * Used for creating checkout sessions, managing subscriptions, etc.
  */
-<<<<<<< HEAD
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-11-20.acacia',
-=======
 export const stripe = new Stripe(validatedKey, {
   apiVersion: '2023-10-16',
->>>>>>> origin/main
   typescript: true,
   appInfo: {
     name: 'Design Dream',
     version: '0.1.0',
   },
-<<<<<<< HEAD
-});
-
-/**
-=======
   maxNetworkRetries: 3, // Retry failed requests up to 3 times
   timeout: 30000, // 30 second timeout
 });
@@ -86,7 +68,6 @@ export const SERVER_PRICE_CONSTANTS = {
 } as const;
 
 /**
->>>>>>> origin/main
  * Stripe configuration
  */
 export const stripeConfig = {
@@ -94,12 +75,9 @@ export const stripeConfig = {
   products: {
     subscription: {
       name: 'DesignDream Monthly Subscription',
-      description: 'Full access to DesignDream platform with unlimited projects and team collaboration',
-<<<<<<< HEAD
-      priceAmount: 449500, // $4,495.00 in cents
-=======
+      description:
+        'Full access to DesignDream platform with unlimited projects and team collaboration',
       priceAmount: SERVER_PRICE_CONSTANTS.MONTHLY_SUBSCRIPTION,
->>>>>>> origin/main
       currency: 'usd',
       interval: 'month' as const,
     },
@@ -109,32 +87,32 @@ export const stripeConfig = {
   urls: {
     success: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/success`,
     cancel: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/subscribe/cancel`,
-<<<<<<< HEAD
-    billing: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard/billing`,
-=======
->>>>>>> origin/main
   },
 } as const;
 
 /**
  * Helper function to format Stripe amount (cents) to USD
  */
-<<<<<<< HEAD
-export function formatStripeAmount(amount: number, currency = 'USD'): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-=======
 export function formatStripeAmount(amount: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
->>>>>>> origin/main
   }).format(amount / 100);
 }
 
 /**
-<<<<<<< HEAD
+ * Validates that an amount matches expected server-side pricing
+ * Prevents price manipulation attacks
+ */
+export function validateAmount(
+  amount: number,
+  expectedPriceKey: keyof typeof SERVER_PRICE_CONSTANTS
+): boolean {
+  const expectedAmount = SERVER_PRICE_CONSTANTS[expectedPriceKey];
+  return amount === expectedAmount;
+}
+
+/**
  * Helper function to format date
  */
 export function formatDate(date: Date | string | number): string {
@@ -156,28 +134,21 @@ export function formatShortDate(date: Date | string | number): string {
     month: 'short',
     day: 'numeric',
   }).format(d);
-=======
- * Validates that an amount matches expected server-side pricing
- * Prevents price manipulation attacks
- */
-export function validateAmount(amount: number, expectedPriceKey: keyof typeof SERVER_PRICE_CONSTANTS): boolean {
-  const expectedAmount = SERVER_PRICE_CONSTANTS[expectedPriceKey];
-  return amount === expectedAmount;
 }
 
 /**
  * Enhanced Stripe error types for better error handling
  */
 export type StripeErrorType =
-  | 'card_error'           // Card declined, insufficient funds, etc.
-  | 'invalid_request'      // Invalid API request
+  | 'card_error' // Card declined, insufficient funds, etc.
+  | 'invalid_request' // Invalid API request
   | 'authentication_error' // Authentication with Stripe API failed
-  | 'api_connection'       // Network communication failure
-  | 'api_error'            // Stripe internal error
-  | 'rate_limit'           // Too many requests
-  | 'validation_error'     // Client validation error
-  | 'idempotency_error'    // Idempotent request conflict
-  | 'unknown';             // Unknown error
+  | 'api_connection' // Network communication failure
+  | 'api_error' // Stripe internal error
+  | 'rate_limit' // Too many requests
+  | 'validation_error' // Client validation error
+  | 'idempotency_error' // Idempotent request conflict
+  | 'unknown'; // Unknown error
 
 /**
  * Maps Stripe error to user-friendly message
@@ -331,10 +302,10 @@ export async function retryStripeOperation<T>(
 
         console.log(
           `Stripe operation failed (attempt ${attempt + 1}/${maxRetries + 1}). ` +
-          `Retrying in ${Math.round(totalDelay)}ms... Error: ${error.message}`
+            `Retrying in ${Math.round(totalDelay)}ms... Error: ${error.message}`
         );
 
-        await new Promise(resolve => setTimeout(resolve, totalDelay));
+        await new Promise((resolve) => setTimeout(resolve, totalDelay));
       } else {
         // Non-Stripe errors are not retried
         throw error;
@@ -357,10 +328,7 @@ export function generateIdempotencyKey(
 ): string {
   const timestamp = Date.now();
   const random = Math.random().toString(36).substring(2, 15);
-  const parts = [operation, userId, additionalData, timestamp, random]
-    .filter(Boolean)
-    .join('-');
+  const parts = [operation, userId, additionalData, timestamp, random].filter(Boolean).join('-');
 
   return parts.substring(0, 255); // Stripe limit
->>>>>>> origin/main
 }

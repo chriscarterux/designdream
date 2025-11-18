@@ -1,9 +1,11 @@
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { stripe, STRIPE_WEBHOOK_SECRET } from '@/lib/stripe';
+import { stripe } from '@/lib/stripe';
 import { handleWebhookEvent } from '@/lib/stripe-webhooks';
 import { supabaseAdmin } from '@/lib/supabase-server';
+
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
 
 /**
  * Stripe Webhook Handler with Replay Attack Prevention
