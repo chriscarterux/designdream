@@ -20,6 +20,7 @@ import {
   MessageSquare,
   RefreshCw
 } from 'lucide-react';
+import LandingHeroVideo from '@/components/LandingHeroVideo';
 
 export default function Home() {
   return (
@@ -45,6 +46,18 @@ export default function Home() {
             <p className="mb-10 text-lg text-gray-500">
               No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
             </p>
+
+            <div className="mb-12 flex justify-center">
+              <div className="w-full max-w-2xl">
+                <LandingHeroVideo
+                  autoPlay={false}
+                  showControls={true}
+                  videoUrl="/videos/hero-video.mp4"
+                  posterImage="/videos/hero-poster.jpg"
+                  className="shadow-2xl"
+                />
+              </div>
+            </div>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Button asChild size="lg" className="text-lg">
