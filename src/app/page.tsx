@@ -29,6 +29,19 @@ import {
 import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
