@@ -89,7 +89,7 @@ export interface FilePreviewProps {
 
 export interface DropZoneProps {
   onDrop: (files: File[]) => void;
-  accept?: string;
+  accept?: string | string[];
   maxFiles?: number;
   disabled?: boolean;
   children?: React.ReactNode;

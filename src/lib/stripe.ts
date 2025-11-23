@@ -35,8 +35,12 @@ function validateStripeKey(): string {
   }
 
   // Log which mode we're in (without exposing the full key)
-  const keyPrefix = key.substring(0, 12);
-  console.log(`✓ Stripe initialized in ${isTestKey ? 'TEST' : 'LIVE'} mode (${keyPrefix}...)`);
+  const modeLabel = isTestKey ? 'TEST' : 'LIVE';
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`✓ Stripe initialized in ${modeLabel} mode`);
+  } else {
+    console.info(`Stripe initialized in ${modeLabel} mode`);
+  }
 
   return key;
 }
