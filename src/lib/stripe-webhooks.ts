@@ -1,4 +1,5 @@
 import Stripe from 'stripe';
+import { stripe } from './stripe';
 import { supabaseAdmin } from './supabase-server';
 import {
   EventHandlerResult,

@@ -47,6 +47,12 @@ function validateStripeKey(): string {
 
 // Validate key on module load
 const validatedKey = validateStripeKey();
+
+/**
+ * Stripe webhook secret for verifying webhook signatures
+ */
+export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
+
 /**
  * Stripe server-side client
  * Used for creating checkout sessions, managing subscriptions, etc.
