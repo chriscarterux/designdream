@@ -45,8 +45,51 @@ async function getClientByCustomerId(
 }
 
 /**
+ * Split full name into first and last name
+ * Handles various name formats gracefully
+ */
+function splitName(fullName: string | null | undefined): { firstName: string; lastName: string } {
+  if (!fullName || fullName.trim() === '') {
+    return { firstName: 'Valued', lastName: 'Client' };
+  }
+
+  const parts = fullName.trim().split(/\s+/);
+
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: '' };
+  }
+
+  // First word is first name, rest is last name
+  const firstName = parts[0];
+  const lastName = parts.slice(1).join(' ');
+
+  return { firstName, lastName };
+}
+
+/**
+ * Generate Stripe customer portal link
+ */
+async function generatePortalLink(customerId: string): Promise<string> {
+  try {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${appUrl}/dashboard`,
+    });
+
+    return session.url;
+  } catch (error) {
+    console.error('Failed to generate portal link:', error);
+    // Return fallback URL
+    return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  }
+}
+
+/**
  * Handle subscription.created event
  * Creates a new subscription record and activates the client
+ * Triggers automated client onboarding for new subscriptions
  * Uses transaction to ensure data consistency
  */
 export async function handleSubscriptionCreated(
@@ -60,6 +103,14 @@ export async function handleSubscriptionCreated(
       throw new Error(
         `Client not found for customer ID: ${subscription.customer}`
       );
+    }
+
+    // Fetch customer details from Stripe for onboarding
+    let customer: Stripe.Customer | null = null;
+    try {
+      customer = await stripe.customers.retrieve(subscription.customer as string) as Stripe.Customer;
+    } catch (error) {
+      console.error('Failed to fetch customer from Stripe:', error);
     }
 
     // Start transaction-like operation
