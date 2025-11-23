@@ -48,7 +48,7 @@ const validatedKey = validateStripeKey();
  * Used for creating checkout sessions, managing subscriptions, etc.
  */
 export const stripe = new Stripe(validatedKey, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2023-10-16',
   typescript: true,
   appInfo: {
     name: 'Design Dream',
@@ -134,30 +134,6 @@ export function validateAmount(
 ): boolean {
   const expectedAmount = SERVER_PRICE_CONSTANTS[expectedPriceKey];
   return amount === expectedAmount;
-}
-
-/**
- * Helper function to format date
- */
-export function formatDate(date: Date | string | number): string {
-  const d = new Date(date);
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(d);
-}
-
-/**
- * Helper function to format short date
- */
-export function formatShortDate(date: Date | string | number): string {
-  const d = new Date(date);
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(d);
 }
 
 /**

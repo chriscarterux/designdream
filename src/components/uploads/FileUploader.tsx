@@ -58,13 +58,16 @@ export function FileUploader({
   const totalFiles = files.length + existingFiles.length;
   const remainingSlots = maxFiles - totalFiles;
 
+  // Convert accept array to comma-separated string if needed
+  const acceptString = Array.isArray(accept) ? accept.join(',') : accept;
+
   return (
     <div className="space-y-4">
       {/* Upload Zone */}
       {remainingSlots > 0 && (
         <DropZone
           onDrop={handleDrop}
-          accept={accept}
+          accept={acceptString}
           maxFiles={remainingSlots}
           disabled={isUploading}
         />
