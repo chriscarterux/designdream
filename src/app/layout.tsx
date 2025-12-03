@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/components/providers/auth-provider';
 import { validateEnv } from '@/lib/env';
@@ -14,6 +14,13 @@ const inter = Inter({
   display: 'swap',
   preload: true,
   variable: '--font-inter',
+});
+
+const dmSerif = DM_Serif_Display({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-dm-serif',
 });
 
 export const metadata: Metadata = {
@@ -91,7 +98,7 @@ Cal.ns["15min"]("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${dmSerif.variable} font-sans`}>
         <AuthProvider>{children}</AuthProvider>
         <WebVitals />
       </body>
