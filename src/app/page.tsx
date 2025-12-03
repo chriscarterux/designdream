@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -30,13 +29,16 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
+import { usePlausible } from '@/hooks/use-plausible';
+import { useScrollTracking } from '@/hooks/use-scroll-tracking';
+import LandingHeroVideo from '@/components/LandingHeroVideo';
+import { ScheduleCTA } from '@/components/landing/ScheduleCTA';
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
+  const { trackEvent } = usePlausible();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Track scroll depth milestones
+  useScrollTracking();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -50,46 +52,71 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <FadeIn delay={0.1} direction="down">
-              <div className="mb-8">
-                <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700">
-                  Built by a VP who's shipped at Microsoft, JPMorgan Chase, and Home Depot
-                </span>
+          <div className="mx-auto max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left Column: Content */}
+              <div className="text-center lg:text-left">
+                <FadeIn delay={0.1} direction="down">
+                  <div className="mb-8">
+                    <span className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700">
+                      Built by a full-stack developer & designer who's shipped at Microsoft, JPMorgan Chase, and Home Depot
+                    </span>
+                  </div>
+                </FadeIn>
+
+                <FadeIn delay={0.2}>
+                  <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+                    Your Always-On Design & Development Partner
+                  </h1>
+                </FadeIn>
+
+                <FadeIn delay={0.3}>
+                  <p className="mb-8 text-xl text-gray-600 sm:text-2xl">
+                    Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
+                  </p>
+                </FadeIn>
+
+                <FadeIn delay={0.4}>
+                  <p className="mb-10 text-lg text-gray-500">
+                    No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
+                  </p>
+                </FadeIn>
+
+                <FadeIn delay={0.5}>
+                  <div className="flex flex-col gap-4 sm:flex-row lg:justify-start justify-center">
+                    <Button asChild size="lg" className="text-lg">
+                      <Link
+                        href="/subscribe"
+                        onClick={() => trackEvent('Hero CTA Click', { props: { location: 'hero' } })}
+                      >
+                        Start Your Subscription
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                      </Link>
+                    </Button>
+                    <ScheduleCTA
+                      variant="outline"
+                      size="lg"
+                      source="hero"
+                      className="text-lg"
+                    >
+                      Book a 15-minute intro
+                    </ScheduleCTA>
+                  </div>
+                </FadeIn>
               </div>
-            </FadeIn>
 
-            <FadeIn delay={0.2}>
-              <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Your Always-On Design & Development Partner
-              </h1>
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <p className="mb-8 text-xl text-gray-600 sm:text-2xl">
-                Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.4}>
-              <p className="mb-10 text-lg text-gray-500">
-                No agencies. No freelancer chaos. Just one expert partner who handles design, development, and everything in between.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.5}>
-              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Button asChild size="lg" className="text-lg">
-                  <Link href="/subscribe">
-                    Start Your Subscription
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg">
-                  <a href="#how-it-works">See How It Works</a>
-                </Button>
+              {/* Right Column: Video */}
+              <div className="order-first lg:order-last">
+                <FadeIn delay={0.6} direction="right">
+                  <LandingHeroVideo
+                    videoUrl="/videos/hero-video.mp4"
+                    posterImage="/videos/hero-poster.jpg"
+                    autoPlay={false}
+                    showControls={true}
+                  />
+                </FadeIn>
               </div>
-            </FadeIn>
+            </div>
           </div>
         </div>
       </section>
@@ -237,7 +264,7 @@ export default function Home() {
 
             <FadeIn delay={0.3}>
               <p className="text-xl font-semibold">
-                No vendor juggling. No handoff delays. Just fast, high-quality work.
+                No meetings. No standups. No status updates. Just async work in Linear.
               </p>
             </FadeIn>
           </div>
@@ -262,31 +289,31 @@ export default function Home() {
                 {
                   number: '1',
                   title: 'Subscribe',
-                  description: 'Choose your plan and start immediately. No onboarding meetings, no sales calls.',
+                  description: 'Choose your plan and get instant access to Linear. No onboarding meetings, no sales calls, no standups.',
                   icon: Zap
                 },
                 {
                   number: '2',
-                  title: 'Add Requests to Your Queue',
-                  description: 'Use Basecamp to submit unlimited design and development requests. Prioritize what matters most.',
+                  title: 'Create Issues in Linear',
+                  description: 'Describe what you need (design, development, or both). Add unlimited tasks to your backlog.',
                   icon: Layers
                 },
                 {
                   number: '3',
-                  title: 'I Work on One Task at a Time',
-                  description: 'Full focus = better quality and faster delivery. No context switching, no multitasking.',
+                  title: 'Move One Issue to "In Progress"',
+                  description: 'Drag one task to In Progress when you\'re ready. I\'ll start working on it immediately.',
                   icon: Clock
                 },
                 {
                   number: '4',
-                  title: 'Get Daily Updates',
-                  description: 'Know exactly where things stand. Transparency builds trust.',
+                  title: 'I Work on It',
+                  description: 'Full focus on your task. No meetings, no status updates, no interruptions. Just heads-down work.',
                   icon: MessageSquare
                 },
                 {
                   number: '5',
-                  title: 'Review, Approve, Repeat',
-                  description: 'Love it? Move to the next task. Need tweaks? Two rounds of revisions included per task.',
+                  title: 'Review & Move to "Done"',
+                  description: 'Review the work (in code or design). Love it? Move to Done. Need changes? Add a comment and I\'ll iterate.',
                   icon: RefreshCw
                 }
               ].map((step) => (
@@ -444,7 +471,7 @@ export default function Home() {
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
-                    <span>Daily progress updates via Basecamp</span>
+                    <span>Managed via Linear issues (no meetings)</span>
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
@@ -453,11 +480,26 @@ export default function Home() {
                 </div>
 
                 <Button asChild size="lg" className="w-full text-lg">
-                  <Link href="/subscribe">
+                  <Link
+                    href="/subscribe"
+                    onClick={() => trackEvent('Pricing CTA Click', { props: { location: 'pricing' } })}
+                  >
                     Lock In Launch Pricing
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
+
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 mb-3">or</p>
+                  <ScheduleCTA
+                    variant="ghost"
+                    size="default"
+                    source="pricing"
+                    className="text-blue-600 hover:text-blue-700"
+                  >
+                    Talk to us first
+                  </ScheduleCTA>
+                </div>
 
                 <p className="text-sm text-gray-500 pt-4">
                   Perfect for startups, marketing teams, agencies, and product teams with backlogs.
@@ -478,7 +520,7 @@ export default function Home() {
                 Built by Someone Who's Been in Your Shoes
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Design Dream was created by Chris Carter, a former VP of Engineering and Product who got tired of watching great ideas die in backlogs.
+                Design Dream was created by Chris Carter, a full-stack developer and designer who got tired of watching great ideas die in backlogs.
               </p>
             </div>
           </FadeIn>
@@ -486,10 +528,14 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             <FadeIn delay={0.2} direction="left">
               <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
+                <Image
+                  src="/images/chris-carter.jpg"
                   alt="Chris Carter, Founder of Design Dream"
-                  className="object-cover w-full h-full"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  priority={false}
+                  quality={90}
                 />
               </div>
             </FadeIn>
@@ -501,7 +547,7 @@ export default function Home() {
                     15+ Years Building Products at Scale
                   </h3>
                   <p className="text-lg text-gray-600 leading-relaxed">
-                    I've spent my career at companies like <span className="font-semibold text-gray-900">Microsoft</span>, <span className="font-semibold text-gray-900">JPMorgan Chase</span>, <span className="font-semibold text-gray-900">Home Depot</span>, and <span className="font-semibold text-gray-900">Indeed</span>, leading teams that shipped products used by millions.
+                    I've spent my career at companies like <span className="font-semibold text-gray-900">Microsoft</span>, <span className="font-semibold text-gray-900">JPMorgan Chase</span>, <span className="font-semibold text-gray-900">Home Depot</span>, and <span className="font-semibold text-gray-900">Indeed</span>, building products used by millions.
                   </p>
                 </div>
 
@@ -529,9 +575,6 @@ export default function Home() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 pt-2">
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                    Former VP Engineering
-                  </span>
                   <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
                     Full-Stack Developer
                   </span>
@@ -561,7 +604,16 @@ export default function Home() {
 
           <FadeIn delay={0.2}>
             <div className="max-w-3xl mx-auto">
-              <Accordion type="single" collapsible className="space-y-4">
+              <Accordion
+                type="single"
+                collapsible
+                className="space-y-4"
+                onValueChange={(value) => {
+                  if (value) {
+                    trackEvent('FAQ Item Opened', { props: { question: value } });
+                  }
+                }}
+              >
                 <AccordionItem value="item-1" className="bg-white rounded-lg border border-gray-200 px-6">
                   <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:text-blue-600">
                     How does the monthly subscription work?
@@ -576,7 +628,7 @@ export default function Home() {
                     What's the typical turnaround time for requests?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed">
-                    Most requests are delivered within 48 business hours. Simple tasks (bug fixes, minor UI tweaks) can be done in 24 hours or less. More complex features might take 2-3 business days. You'll get daily progress updates via Basecamp, and I'll always set clear expectations before starting work.
+                    Most requests are delivered within 48 business hours. Simple tasks (bug fixes, minor UI tweaks) can be done in 24 hours or less. More complex features might take 2-3 business days. Track progress directly in Linear—no meetings, no standups, no status calls.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -612,7 +664,7 @@ export default function Home() {
                     What if I have multiple projects or brands?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed">
-                    No problem! You can submit requests for multiple projects, websites, or brands. Just specify which project each request is for in Basecamp. I'll work through your queue in priority order, regardless of which project each task belongs to.
+                    No problem! You can submit requests for multiple projects, websites, or brands. Just specify which project each request is for in Linear with labels or in the issue description. I'll work through your queue in priority order, regardless of which project each task belongs to.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -621,7 +673,7 @@ export default function Home() {
                     How do we communicate and manage requests?
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-600 leading-relaxed">
-                    Everything happens in Basecamp. When you subscribe, you'll get access to your dedicated project workspace where you can post requests, share files, give feedback, and see daily progress updates. It's simple, organized, and keeps everything in one place. No jumping between Slack, email, and project management tools.
+                    Everything happens in Linear. When you subscribe, you'll get access to your dedicated Linear workspace where you create issues for each request. Simply move one issue to "In Progress" when ready, and I'll start working. Review the work in Linear and move it to "Done" when approved. No meetings. No status updates. No standups. Just async work.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -639,11 +691,20 @@ export default function Home() {
                 <p className="text-gray-600 mb-4">
                   Still have questions?
                 </p>
-                <Button asChild variant="outline" size="lg">
-                  <a href="mailto:hello@designdream.is">
-                    Email hello@designdream.is
-                  </a>
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <ScheduleCTA
+                    variant="default"
+                    size="lg"
+                    source="faq"
+                  >
+                    Schedule a call
+                  </ScheduleCTA>
+                  <Button asChild variant="outline" size="lg">
+                    <a href="mailto:hello@designdream.is">
+                      Email us
+                    </a>
+                  </Button>
+                </div>
               </div>
             </div>
           </FadeIn>
@@ -669,12 +730,25 @@ export default function Home() {
             </p>
           </FadeIn>
           <FadeIn delay={0.3}>
-            <Button asChild size="lg" variant="secondary" className="text-lg">
-              <Link href="/subscribe">
-                Start Your Subscription
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" variant="secondary" className="text-lg">
+                <Link
+                  href="/subscribe"
+                  onClick={() => trackEvent('Final CTA Click', { props: { location: 'final-cta' } })}
+                >
+                  Start Your Subscription
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <ScheduleCTA
+                variant="outline"
+                size="lg"
+                source="footer"
+                className="text-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
+              >
+                Have questions? Let's talk
+              </ScheduleCTA>
+            </div>
           </FadeIn>
         </div>
       </section>

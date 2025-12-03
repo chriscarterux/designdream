@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useInView, Variants } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import { motion, Variants } from 'framer-motion';
+import { useRef, ReactNode, useEffect, useState } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
@@ -15,6 +15,7 @@ interface FadeInProps {
 /**
  * FadeIn component with scroll-triggered animations
  * Inspired by designjoy.co's smooth entrance effects
+ * Uses IntersectionObserver for better compatibility
  */
 export function FadeIn({
   children,
@@ -24,8 +25,30 @@ export function FadeIn({
   className = '',
   fullWidth = false,
 }: FadeInProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const ref = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
 
   const directionOffset = {
     up: { y: 40 },
@@ -75,14 +98,37 @@ interface FadeInStaggerProps {
 /**
  * Container for staggered animations
  * Animates children sequentially like designjoy.co
+ * Uses IntersectionObserver for better compatibility
  */
 export function FadeInStagger({
   children,
   staggerDelay = 0.1,
   className = '',
 }: FadeInStaggerProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const ref = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -138,6 +184,7 @@ interface ScaleInProps {
 /**
  * Scale-in animation for emphasis
  * Great for CTAs and important elements
+ * Uses IntersectionObserver for better compatibility
  */
 export function ScaleIn({
   children,
@@ -145,8 +192,30 @@ export function ScaleIn({
   duration = 0.3,
   className = '',
 }: ScaleInProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const ref = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
 
   const variants: Variants = {
     hidden: {

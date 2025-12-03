@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { formatStripeAmount, stripeConfig } from '@/lib/stripe';
 import { ArrowLeft, CheckCircle2, Lock, Sparkles } from 'lucide-react';
+import { usePlausible } from '@/hooks/use-plausible';
 
 export default function SubscribePage() {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ export default function SubscribePage() {
   const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { trackEvent } = usePlausible();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +33,13 @@ export default function SubscribePage() {
 
       // Sanitize inputs
       const sanitizedCompany = company.trim().slice(0, 100);
+
+      // Track subscribe form submission
+      trackEvent('Subscribe Form Submit', {
+        props: {
+          hasCompany: sanitizedCompany ? 'yes' : 'no',
+        },
+      });
 
       // Create checkout session
       const response = await fetch('/api/stripe/create-checkout-session', {

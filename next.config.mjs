@@ -3,6 +3,7 @@ import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone', // Enable standalone output for Docker deployment
+
   images: {
     domains: ['localhost'],
     remotePatterns: [
@@ -10,9 +11,16 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
+    formats: ['image/avif', 'image/webp'],
   },
+
   experimental: {
+    instrumentationHook: true, // Enable instrumentation for Sentry
     serverActions: {
       bodySizeLimit: '10mb',
     },
