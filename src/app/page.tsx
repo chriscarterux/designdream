@@ -33,6 +33,7 @@ import { usePlausible } from '@/hooks/use-plausible';
 import { useScrollTracking } from '@/hooks/use-scroll-tracking';
 import LandingHeroVideo from '@/components/LandingHeroVideo';
 import { ScheduleCTA } from '@/components/landing/ScheduleCTA';
+import { Header } from '@/components/landing/Header';
 
 export default function Home() {
   const { trackEvent } = usePlausible();
@@ -48,9 +49,11 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white py-20 sm:py-32">
+    <div>
+      <Header />
+      <main className="min-h-screen">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white py-20 sm:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -757,6 +760,15 @@ export default function Home() {
       <footer className="border-t bg-gray-50 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
+            <div className="mb-8 flex justify-center">
+              <Image
+                src="/logo.svg"
+                alt="Design Dream"
+                width={180}
+                height={60}
+                className="h-12 w-auto"
+              />
+            </div>
             <p className="mb-6 text-gray-600">
               Still have questions? Email me:{' '}
               <a href="mailto:hello@designdream.is" className="text-blue-600 hover:underline">
@@ -775,5 +787,6 @@ export default function Home() {
         </div>
       </footer>
     </main>
+    </div>
   );
 }
