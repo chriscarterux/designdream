@@ -31,7 +31,6 @@ import {
 import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
 import { usePlausible } from '@/hooks/use-plausible';
 import { useScrollTracking } from '@/hooks/use-scroll-tracking';
-import LandingHeroVideo from '@/components/LandingHeroVideo';
 import { ScheduleCTA } from '@/components/landing/ScheduleCTA';
 import { Header } from '@/components/landing/Header';
 
