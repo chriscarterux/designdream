@@ -15,42 +15,39 @@ const companies = [
 
 export function LogoTicker() {
   return (
-    <div className="w-full overflow-hidden">
-      <div className="relative flex">
+    <div className="w-full overflow-hidden py-4">
+      <div className="logo-track flex gap-16">
         {/* First set of logos */}
-        <div className="flex animate-scroll items-center space-x-16 px-8">
-          {companies.map((company, index) => (
-            <div
-              key={`first-${index}`}
-              className="flex-shrink-0 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
-            >
-              <Image
-                src={company.logo}
-                alt={company.name}
-                width={140}
-                height={60}
-                className="h-12 w-auto object-contain brightness-0 invert"
-              />
-            </div>
-          ))}
-        </div>
+        {companies.map((company, index) => (
+          <div
+            key={`first-${index}`}
+            className="flex-shrink-0 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300 cursor-pointer"
+          >
+            <Image
+              src={company.logo}
+              alt={company.name}
+              width={140}
+              height={60}
+              className="h-12 w-auto object-contain"
+            />
+          </div>
+        ))}
         {/* Duplicate set for seamless loop */}
-        <div className="flex animate-scroll items-center space-x-16 px-8" aria-hidden="true">
-          {companies.map((company, index) => (
-            <div
-              key={`second-${index}`}
-              className="flex-shrink-0 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
-            >
-              <Image
-                src={company.logo}
-                alt={company.name}
-                width={140}
-                height={60}
-                className="h-12 w-auto object-contain brightness-0 invert"
-              />
-            </div>
-          ))}
-        </div>
+        {companies.map((company, index) => (
+          <div
+            key={`second-${index}`}
+            className="flex-shrink-0 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300 cursor-pointer"
+            aria-hidden="true"
+          >
+            <Image
+              src={company.logo}
+              alt={company.name}
+              width={140}
+              height={60}
+              className="h-12 w-auto object-contain"
+            />
+          </div>
+        ))}
       </div>
 
       <style jsx>{`
@@ -59,16 +56,23 @@ export function LogoTicker() {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-100%);
+            transform: translateX(calc(-100% - 4rem));
           }
         }
 
-        .animate-scroll {
-          animation: scroll 30s linear infinite;
+        .logo-track {
+          animation: scroll 40s linear infinite;
+          will-change: transform;
         }
 
-        .animate-scroll:hover {
+        .logo-track:hover {
           animation-play-state: paused;
+        }
+
+        @media (max-width: 768px) {
+          .logo-track {
+            animation-duration: 25s;
+          }
         }
       `}</style>
     </div>
