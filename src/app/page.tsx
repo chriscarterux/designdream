@@ -94,7 +94,7 @@ export default function Home() {
 
               <FadeIn delay={0.3}>
                 <p className="mb-8 text-xl text-muted-foreground sm:text-2xl font-light max-w-3xl mx-auto">
-                  Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in 48 hours.
+                  Ship websites, mobile apps, and AI-powered features—one task at a time, delivered in an average of 48 hours.
                 </p>
               </FadeIn>
 
