@@ -16,19 +16,19 @@ const companies = [
 export function LogoTicker() {
   return (
     <div className="w-full overflow-hidden py-4">
-      <div className="logo-track flex gap-16">
+      <div className="logo-track flex gap-8">
         {/* First set of logos */}
         {companies.map((company, index) => (
           <div
             key={`first-${index}`}
-            className="flex-shrink-0 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300 cursor-pointer"
+            className="flex-shrink-0 rounded-lg bg-white/95 px-6 py-4 hover:bg-white transition-all duration-300 cursor-pointer hover:scale-105"
           >
             <Image
               src={company.logo}
               alt={company.name}
               width={140}
               height={60}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           </div>
         ))}
@@ -36,7 +36,7 @@ export function LogoTicker() {
         {companies.map((company, index) => (
           <div
             key={`second-${index}`}
-            className="flex-shrink-0 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300 cursor-pointer"
+            className="flex-shrink-0 rounded-lg bg-white/95 px-6 py-4 hover:bg-white transition-all duration-300 cursor-pointer hover:scale-105"
             aria-hidden="true"
           >
             <Image
@@ -44,7 +44,7 @@ export function LogoTicker() {
               alt={company.name}
               width={140}
               height={60}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           </div>
         ))}
@@ -56,7 +56,7 @@ export function LogoTicker() {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-100% - 4rem));
+            transform: translateX(calc(-100% - 2rem));
           }
         }
 
