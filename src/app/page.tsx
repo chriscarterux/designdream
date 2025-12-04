@@ -429,15 +429,14 @@ export default function Home() {
               <Card className="border-2 border-primary/50 bg-card shadow-lg shadow-primary/5">
               <CardHeader className="space-y-4 pb-8">
                 <div className="inline-block rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-sm font-semibold text-primary">
-                  Limited Time
+                  Limited Availability
                 </div>
                 <div>
                   <div className="mb-2 text-5xl font-bold text-foreground">$4,495</div>
                   <div className="text-muted-foreground">/month</div>
                 </div>
-                <p className="text-sm text-amber-400 font-semibold">
-                  First 10 clients lock in $4,495/month forever<br />
-                  (Price increases to $5,995/month after first 10)
+                <p className="text-sm text-muted-foreground font-medium">
+                  Only a few spots available each month to ensure quality and focus.
                 </p>
               </CardHeader>
               <CardContent className="space-y-4 pb-8">
