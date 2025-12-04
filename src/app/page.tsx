@@ -476,7 +476,7 @@ export default function Home() {
                     href="/subscribe"
                     onClick={() => trackEvent('Pricing CTA Click', { props: { location: 'pricing' } })}
                   >
-                    Lock In Launch Pricing
+                    Start Shipping Your Dream
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
