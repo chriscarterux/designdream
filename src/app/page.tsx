@@ -29,7 +29,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
-import { RotatingText } from '@/components/animations/RotatingText';
+import { HeadlineRotator } from '@/components/animations/HeadlineRotator';
 import { usePlausible } from '@/hooks/use-plausible';
 import { useScrollTracking } from '@/hooks/use-scroll-tracking';
 import { ScheduleCTA } from '@/components/landing/ScheduleCTA';
@@ -72,23 +72,17 @@ export default function Home() {
 
               <FadeIn delay={0.2}>
                 <h1 className="mb-6 text-5xl font-normal tracking-tight sm:text-6xl lg:text-7xl">
-                  Design Dream is making your{' '}
-                  <RotatingText
-                    words={[
-                      'App',
-                      'Website',
-                      'Logo',
-                      'Slide Deck',
-                      'SaaS',
-                      'AI Chatbot',
-                      'AI App',
-                      'Ecommerce Store',
-                      'Dashboard',
-                      'Mobile App',
+                  <HeadlineRotator
+                    headlines={[
+                      <>Design Dream is making your <span className="text-primary">App</span> a reality and shipping it.</>,
+                      <>Design Dream is making your <span className="text-primary">Website</span> a reality and shipping it.</>,
+                      <>Design Dream is making your <span className="text-primary">SaaS</span> a reality and shipping it.</>,
+                      <>Design Dream is making your <span className="text-primary">AI Chatbot</span> a reality and shipping it.</>,
+                      <>Design Dream is making your <span className="text-primary">Mobile App</span> a reality and shipping it.</>,
+                      <>Design Dream is making your <span className="text-primary">Dashboard</span> a reality and shipping it.</>,
                     ]}
-                    interval={2500}
-                  />{' '}
-                  a reality and shipping it.
+                    interval={3500}
+                  />
                 </h1>
               </FadeIn>
 
