@@ -33,6 +33,7 @@ import { usePlausible } from '@/hooks/use-plausible';
 import { useScrollTracking } from '@/hooks/use-scroll-tracking';
 import { ScheduleCTA } from '@/components/landing/ScheduleCTA';
 import { Header } from '@/components/landing/Header';
+import { LogoTicker } from '@/components/landing/LogoTicker';
 
 export default function Home() {
   const { trackEvent } = usePlausible();
@@ -114,20 +115,15 @@ export default function Home() {
       {/* Social Proof Bar */}
       <section className="border-b border-border py-16">
         <div className="container mx-auto px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
+          <div className="text-center">
             <FadeIn delay={0.2}>
-              <p className="mb-8 text-sm font-medium text-muted-foreground">
-                Trusted by startups, agencies, and growth teams at:
+              <p className="mb-12 text-sm font-medium text-muted-foreground">
+                Trusted by teams at companies including:
               </p>
             </FadeIn>
-            <FadeInStagger staggerDelay={0.1}>
-              <div className="flex flex-wrap items-center justify-center gap-6">
-                <div className="rounded-lg border border-border bg-card px-6 py-3 font-semibold text-foreground">SaaS</div>
-                <div className="rounded-lg border border-border bg-card px-6 py-3 font-semibold text-foreground">E-Commerce</div>
-                <div className="rounded-lg border border-border bg-card px-6 py-3 font-semibold text-foreground">Fintech</div>
-                <div className="rounded-lg border border-border bg-card px-6 py-3 font-semibold text-foreground">AI</div>
-              </div>
-            </FadeInStagger>
+            <FadeIn delay={0.3}>
+              <LogoTicker />
+            </FadeIn>
           </div>
         </div>
       </section>
