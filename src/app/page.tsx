@@ -137,6 +137,31 @@ export default function Home() {
           </div>
         </section>
 
+        <SectionDivider variant="glow" />
+
+        {/* Who We Serve Section */}
+        <section className="py-20 lg:py-32">
+          <div className="container mx-auto px-6 lg:px-8">
+            <div className="mx-auto max-w-4xl text-center">
+              <FadeIn>
+                <h2 className="mb-6 text-4xl font-normal tracking-tight sm:text-5xl">
+                  Who We Serve
+                </h2>
+              </FadeIn>
+              <FadeIn delay={0.1}>
+                <p className="text-xl font-light text-muted-foreground max-w-3xl mx-auto">
+                  From solo founders with an idea to Fortune 500 companies—and everything in between.
+                </p>
+              </FadeIn>
+              <FadeIn delay={0.2}>
+                <p className="mt-6 text-lg text-muted-foreground/80 max-w-2xl mx-auto">
+                  Whether you're launching your first app or scaling your tenth product, Design Dream adapts to your needs. No project too small, no challenge too big.
+                </p>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+
         <SectionDivider variant="subtle" />
 
         {/* Problem Section */}
