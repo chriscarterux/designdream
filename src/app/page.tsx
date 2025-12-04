@@ -555,6 +555,56 @@ export default function Home() {
 
         <SectionDivider variant="gradient" />
 
+        {/* Portfolio Section */}
+        <section className="relative py-20 lg:py-32">
+          <RadialGlow color="cyan" intensity="low" size="lg" position="top-left" />
+
+          <div className="container mx-auto px-6 lg:px-8">
+            <div className="mx-auto max-w-6xl">
+              <FadeIn>
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-normal sm:text-5xl mb-4">
+                    Recent Work
+                  </h2>
+                  <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-light">
+                    Real projects delivered for real clients
+                  </p>
+                </div>
+              </FadeIn>
+
+              <FadeInStagger staggerDelay={0.15} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3, 4, 5, 6].map((item) => (
+                  <Card key={item} className="border-border bg-card hover:border-primary/30 transition-all duration-300 overflow-hidden group">
+                    {/* Placeholder image */}
+                    <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-purple-500/20 relative overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-4xl font-bold text-muted-foreground/20">
+                          Project {item}
+                        </span>
+                      </div>
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <CardContent className="pt-6">
+                      <h3 className="text-xl font-normal text-foreground mb-2">
+                        Example Project {item}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Web App · Mobile App · SaaS
+                      </p>
+                      <p className="text-sm text-muted-foreground/80">
+                        [Placeholder for project description]
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </FadeInStagger>
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider variant="glow" />
+
         {/* About Chris Carter */}
         <section className="relative py-20 lg:py-32">
           <RadialGlow color="purple" intensity="low" size="lg" position="bottom-right" />
