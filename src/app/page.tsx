@@ -697,7 +697,7 @@ export default function Home() {
                     Schedule a call
                   </ScheduleCTA>
                   <Button asChild variant="outline" size="lg">
-                    <a href="mailto:hello@designdream.is">
+                    <a href="mailto:christophercarter@hey.com">
                       Email us
                     </a>
                   </Button>
@@ -770,8 +770,8 @@ export default function Home() {
             </div>
             <p className="mb-6 text-muted-foreground">
               Still have questions? Email me:{' '}
-              <a href="mailto:hello@designdream.is" className="text-primary hover:underline">
-                hello@designdream.is
+              <a href="mailto:christophercarter@hey.com" className="text-primary hover:underline">
+                christophercarter@hey.com
               </a>
             </p>
             <div className="mb-6 flex justify-center gap-6 text-sm text-muted-foreground">

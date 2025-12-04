@@ -305,7 +305,7 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 
 # Email (already configured)
 RESEND_API_KEY=re_...
-RESEND_FROM_EMAIL=DesignDream <hello@designdream.is>
+RESEND_FROM_EMAIL=DesignDream <christophercarter@hey.com>
 ```
 
 ### Add to Vercel

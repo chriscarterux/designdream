@@ -72,7 +72,7 @@ ${data.figmaFileUrl ? `**Design Files:** ${data.figmaFileUrl}\n` : '**Design Fil
 
 ## 💬 Questions?
 
-Contact us at [hello@designdream.is](mailto:hello@designdream.is)
+Contact us at [christophercarter@hey.com](mailto:christophercarter@hey.com)
 
 ---
 

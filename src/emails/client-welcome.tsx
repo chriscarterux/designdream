@@ -198,7 +198,7 @@ export default function ClientWelcomeEmail({
               We're here to support you:
             </Text>
             <Text style={text}>
-              📧 Email: <Link href="mailto:hello@designdream.is" style={link}>hello@designdream.is</Link><br/>
+              📧 Email: <Link href="mailto:christophercarter@hey.com" style={link}>christophercarter@hey.com</Link><br/>
               ⚡ Response Time: Within 4 business hours<br/>
               📖 FAQ: <Link href="https://designdream.is#faq" style={link}>designdream.is/#faq</Link>
             </Text>

@@ -298,8 +298,8 @@ export default function SubscribePage() {
               </ul>
               <p className="text-sm text-gray-600 mt-4">
                 Questions? Email{' '}
-                <a href="mailto:hello@designdream.is" className="text-blue-600 hover:underline">
-                  hello@designdream.is
+                <a href="mailto:christophercarter@hey.com" className="text-blue-600 hover:underline">
+                  christophercarter@hey.com
                 </a>
               </p>
             </div>

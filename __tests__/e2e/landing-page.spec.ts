@@ -229,9 +229,9 @@ test.describe('Landing Page (HOW-195 Requirements)', () => {
     const emailLink = page.locator('a[href^="mailto:"]');
     await expect(emailLink.first()).toBeVisible();
 
-    // Should be hello@designdream.is
+    // Should be christophercarter@hey.com
     const href = await emailLink.first().getAttribute('href');
-    expect(href).toContain('hello@designdream.is');
+    expect(href).toContain('christophercarter@hey.com');
   });
 
   test('should show social proof or company logos', async ({ page }) => {

@@ -91,7 +91,7 @@ Share your brand assets here:
 ## 📞 Support
 
 Questions? Need help? Contact us:
-- **Email:** hello@designdream.is
+- **Email:** christophercarter@hey.com
 - **Response Time:** Within 4 business hours
 
 ---

@@ -260,8 +260,8 @@ function SuccessPageContent() {
         {/* Help Text */}
         <p className="text-center text-sm text-gray-500 mt-6">
           Questions or need help?{' '}
-          <a href="mailto:hello@designdream.is" className="text-blue-600 hover:underline font-medium">
-            hello@designdream.is
+          <a href="mailto:christophercarter@hey.com" className="text-blue-600 hover:underline font-medium">
+            christophercarter@hey.com
           </a>
         </p>
       </div>

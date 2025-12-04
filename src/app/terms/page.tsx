@@ -118,7 +118,7 @@ export default function TermsOfService() {
 
             <h3 className="text-xl font-semibold text-white mb-3">4.1 Cancellation</h3>
             <p className="text-zinc-300 mb-4">
-              You may cancel your subscription at any time by contacting us at hello@designdream.is or through your billing portal. To avoid being charged for the next billing cycle, you must cancel at least 24 hours before your next renewal date.
+              You may cancel your subscription at any time by contacting us at christophercarter@hey.com or through your billing portal. To avoid being charged for the next billing cycle, you must cancel at least 24 hours before your next renewal date.
             </p>
             <p className="text-zinc-300 mb-4">
               Upon cancellation, you will retain access to the service until the end of your current paid billing cycle. No partial refunds are provided for early cancellation within a billing cycle.
@@ -175,7 +175,7 @@ export default function TermsOfService() {
               <strong className="text-white">We strongly encourage pausing your subscription instead of canceling.</strong> Pausing allows you to temporarily suspend billing while retaining your account, work history, and the ability to resume service at any time. There is no limit to how long you can pause.
             </p>
             <p className="text-zinc-300">
-              To pause your subscription, contact us at hello@designdream.is. Pausing takes effect at the end of your current billing cycle.
+              To pause your subscription, contact us at christophercarter@hey.com. Pausing takes effect at the end of your current billing cycle.
             </p>
 
             <h3 className="text-xl font-semibold text-white mb-3 mt-6">4.5 Termination by Design Dream</h3>
@@ -443,7 +443,7 @@ export default function TermsOfService() {
 
             <h3 className="text-xl font-semibold text-white mb-3 mt-6">13.3 Informal Resolution</h3>
             <p className="text-zinc-300 mb-4">
-              Before initiating any legal proceeding, the parties agree to attempt to resolve any dispute informally by contacting us at hello@designdream.is. We will work in good faith to resolve disputes amicably.
+              Before initiating any legal proceeding, the parties agree to attempt to resolve any dispute informally by contacting us at christophercarter@hey.com. We will work in good faith to resolve disputes amicably.
             </p>
 
             <h3 className="text-xl font-semibold text-white mb-3 mt-6">13.4 Binding Arbitration</h3>
@@ -519,7 +519,7 @@ export default function TermsOfService() {
               <p className="text-zinc-300">
                 <strong className="text-white">Design Dream</strong><br />
                 Christopher Carter, Sole Proprietor<br />
-                Email: <a href="mailto:hello@designdream.is" className="text-violet-400 hover:text-violet-300 underline">hello@designdream.is</a><br />
+                Email: <a href="mailto:christophercarter@hey.com" className="text-violet-400 hover:text-violet-300 underline">christophercarter@hey.com</a><br />
                 Website: <a href="https://designdream.is" className="text-violet-400 hover:text-violet-300 underline">designdream.is</a><br />
                 Legal Inquiries: <a href="mailto:legal@designdream.is" className="text-violet-400 hover:text-violet-300 underline">legal@designdream.is</a>
               </p>

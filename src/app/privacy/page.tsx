@@ -593,7 +593,7 @@ export default function PrivacyPolicy() {
                 <strong className="text-white">Design Dream</strong><br />
                 Christopher Carter, Sole Proprietor<br />
                 <strong className="text-white">Privacy Inquiries:</strong> <a href="mailto:privacy@designdream.is" className="text-violet-400 hover:text-violet-300 underline">privacy@designdream.is</a><br />
-                <strong className="text-white">General Support:</strong> <a href="mailto:hello@designdream.is" className="text-violet-400 hover:text-violet-300 underline">hello@designdream.is</a><br />
+                <strong className="text-white">General Support:</strong> <a href="mailto:christophercarter@hey.com" className="text-violet-400 hover:text-violet-300 underline">christophercarter@hey.com</a><br />
                 <strong className="text-white">Website:</strong> <a href="https://designdream.is" className="text-violet-400 hover:text-violet-300 underline">designdream.is</a>
               </p>
             </div>
