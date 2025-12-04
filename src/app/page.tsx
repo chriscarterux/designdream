@@ -775,9 +775,8 @@ export default function Home() {
               </a>
             </p>
             <div className="mb-6 flex justify-center gap-6 text-sm text-muted-foreground">
-              <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+              <Link href="/terms" className="hover:text-foreground transition-colors">Terms & Conditions</Link>
               <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link href="/refund-policy" className="hover:text-foreground transition-colors">Refund Policy</Link>
             </div>
             <p className="text-sm text-muted-foreground/60">
               © 2025 Design Dream. All rights reserved.
