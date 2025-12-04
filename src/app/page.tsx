@@ -118,7 +118,7 @@ export default function Home() {
           <div className="text-center">
             <FadeIn delay={0.2}>
               <p className="mb-12 text-sm font-medium text-muted-foreground">
-                Trusted by teams at companies including:
+                Shipped products with teams at:
               </p>
             </FadeIn>
             <FadeIn delay={0.3}>

@@ -10,7 +10,13 @@ const companies = [
   { name: 'Company 5', logo: '/logos/05_logo.png' },
   { name: 'Company 6', logo: '/logos/06_logo.png' },
   { name: 'Company 7', logo: '/logos/07_logo.png' },
-  { name: 'Company 8', logo: '/logos/09_logo.png' },
+  { name: 'Company 9', logo: '/logos/09_logo.png' },
+  { name: 'Company 10', logo: '/logos/10_logo.png' },
+  { name: 'Company 11', logo: '/logos/11_logo.png' },
+  { name: 'Company 12', logo: '/logos/12_logo.png' },
+  { name: 'Company 13', logo: '/logos/13_logo.png' },
+  { name: 'Company 14', logo: '/logos/14_logo.png' },
+  { name: 'Company 15', logo: '/logos/15_logo.png' },
 ];
 
 export function LogoTicker() {
@@ -61,7 +67,7 @@ export function LogoTicker() {
         }
 
         .logo-track {
-          animation: scroll 40s linear infinite;
+          animation: scroll 60s linear infinite;
           will-change: transform;
         }
 
@@ -71,7 +77,7 @@ export function LogoTicker() {
 
         @media (max-width: 768px) {
           .logo-track {
-            animation-duration: 25s;
+            animation-duration: 40s;
           }
         }
       `}</style>
