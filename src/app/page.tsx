@@ -29,6 +29,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { FadeIn, FadeInStagger, ScaleIn } from '@/components/animations/fade-in';
+import { RotatingText } from '@/components/animations/RotatingText';
 import { usePlausible } from '@/hooks/use-plausible';
 import { useScrollTracking } from '@/hooks/use-scroll-tracking';
 import { ScheduleCTA } from '@/components/landing/ScheduleCTA';
@@ -71,7 +72,23 @@ export default function Home() {
 
               <FadeIn delay={0.2}>
                 <h1 className="mb-6 text-5xl font-normal tracking-tight sm:text-6xl lg:text-7xl">
-                  Your Always-On Design & Development Partner
+                  Design Dream is making your{' '}
+                  <RotatingText
+                    words={[
+                      'App',
+                      'Website',
+                      'Logo',
+                      'Slide Deck',
+                      'SaaS',
+                      'AI Chatbot',
+                      'AI App',
+                      'Ecommerce Store',
+                      'Dashboard',
+                      'Mobile App',
+                    ]}
+                    interval={2500}
+                  />{' '}
+                  a reality and shipping it.
                 </h1>
               </FadeIn>
 
