@@ -464,7 +464,7 @@ export default function Home() {
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary mt-0.5" />
-                    <span className="text-foreground">Two rounds of revisions per task</span>
+                    <span className="text-foreground">Unlimited revisions (you control priority)</span>
                   </div>
                   <div className="flex gap-3">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary mt-0.5" />
@@ -643,7 +643,7 @@ export default function Home() {
                     What if I don't like the work or need revisions?
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Each request includes two rounds of revisions at no additional cost. If you need changes, just let me know what to adjust, and I'll make it right. My goal is your complete satisfaction. If something's not working, we'll iterate until it does.
+                    Simply move the issue back to "In Progress" and I'll start working on it immediately—since you can only have one active issue at a time, it becomes the priority. Add a comment explaining what to change, and I'll make it happen. You control the board, so you decide what gets worked on. There's no limit on revisions—it's unlimited design and development, one issue at a time, until you're completely satisfied.
                   </AccordionContent>
                 </AccordionItem>
 
